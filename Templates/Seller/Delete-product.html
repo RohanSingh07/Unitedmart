@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block Navbar1 %}
+    {% include 'Base/Navbar1.html' %}
+{% endblock %}
+{% block content %}
+<div class="container-fluid mt-5 pt-2">
+  <h3>Select item you want to delete</h3>
+  <form method="post">
+    {% csrf_token %}
+  <div class="row " id="ProductToBeDeleted">
+
+    {% for item in MyProducts.all %}
+    <!--Grid column-->
+
+        <div class="col-lg-4 col-md-6  col-xl-3  d-flex  align-items-stretch pr-0 pl-1 pb-1">
+
+          <!--Card-->
+          <div class="card" onclick="" >
+
+            <!--Card image-->
+            <div class="view overlay">
+
+              <img src="{{ item.image_url }}" class="card-img-top " height="300" >
+              <a href="{{item.get_delete_product_url}}">
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
+
+            <!--Card image-->
+
+            <!--Card content-->
+            <div class="card-body text-center  "  >
+              <!--Category & Title-->
+              <a href="" class="grey-text">
+                <h5></h5> <!-- Getting the category and displaying it -->
+              </a>
+              <h5>
+                <strong>
+                  <a href="{{item.get_delete_product_url}}" class="dark-grey-text">{{ item.Name }}  <!-- Here we have used reverse and passes the url of product -->
+                    <span class="badge -color">NEW</span> <!-- Used for fetching data from label-->
+                  </a>
+                </strong>
+              </h5>
+
+              <h4 class="font-weight-bold blue-text">
+                <strong>
+                  {% if item.discount_price %}
+                  ₹{{ item.discount_price }}
+                  {% else %}
+                  ₹{{ item.price }}
+                  {% endif %}
+                </strong>
+              </h4>
+            </div>
+            <!--Card content-->
+            <div>
+              <input type="checkbox" value="{{item.slug}}" name="DeleteProduct[]">
+            </div>
+          </div>
+        <!--Card-->
+      </div>
+      <!--Grid column-->
+    {% endfor %}
+
+  </div>
+    <button type="submit" >Delete</button>
+   </form>
+</div>
+{% endblock %}

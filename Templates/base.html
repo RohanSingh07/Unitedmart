@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+
+      <!-- Bootstrap CSS -->
+
+      <!-- Font Awesome -->
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+      <!-- Bootstrap core CSS -->
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <!-- Material Design Bootstrap -->
+      <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+      <!-- Your custom styles (optional) -->
+      <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+      
+      <link href="https://fonts.googleapis.com/css2?family=Henny+Penny&display=swap" rel="stylesheet">
+            
+
+      <!-- Javascript -->
+            <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+            <!-- Bootstrap tooltips -->
+            <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+            <!-- Bootstrap core JavaScript -->
+            <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+            <!-- MDB core JavaScript -->
+            <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+        <!-- Javascript -->
+
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+        <!-- .col- (extra small devices - screen width less than 576px)-->
+        <!--.col-sm- (small devices - screen width equal to or greater than 576px)-->
+        <!--.col-md- (medium devices - screen width equal to or greater than 768px)-->
+        <!--.col-lg- (large devices - screen width equal to or greater than 992px)-->
+        <!--.col-xl- (xlarge devices - screen width equal to or greater than 1200px)-->
+    {% block Navbar1 %}
+    {% endblock %}
+    {% block Navbar2 %}
+    {% endblock %}
+
+    {% if messages %}
+
+        {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible  text-white d-flex justify-content-center font-weight-bold"  style="position:fixed;top:89px;z-index:2;width:100%;opacity:0.7;background-color:#a31818;">
+                  {{ message }}
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+        {% endfor %}
+
+
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+    {% block Footer %}
+    {% endblock %}
+  </body>
+</html>

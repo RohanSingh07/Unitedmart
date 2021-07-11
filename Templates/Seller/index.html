@@ -1,0 +1,373 @@
+<!-- Pending
+1. How will seller add the product with some color variation which is already uploaded on any product.
+2. Allow the sellers to choose a unique name for themselves.
+-->
+{% load static %}
+<html>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- base:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/typicons/typicons.css' %}">
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/css/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+
+
+</head>
+<body>
+    {% if messages %}
+
+        {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible  text-white d-flex justify-content-center font-weight-bold"  style="position:fixed;top:85px;z-index:3;width:100%;opacity:0.7;background-color:#a31818;">
+                  {{ message }}
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+        {% endfor %}
+
+
+    {% endif %}
+<i class="typcn typcn-delete-outline" id="bannerClose"></i>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row " >
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100"><!-- URl -->
+          <a href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
+          <!-- URL -->
+          <!-- Small Screen logo and url-->
+          <a class="navbar-brand brand-logo-mini" href="{% url 'Base:Homepage' %}"><img src="{% static 'Dashboard/images/logo-mini.svg' %}" alt="logo"/></a>
+          <!-- Small Screen logo -->
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" id="ToggleLogo">
+            <span class="typcn typcn-th-menu"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav mr-lg-2">
+          <li class="nav-item nav-profile dropdown">
+            <!-- Image and Name of owner-->
+            <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+              {% if profile.photo_of_owner %}
+              <img src="{{profile.photo_of_owner.url}}" />
+              {% else %}
+              <img src="{% static 'img/user.png' %}" />
+              {% endif %}
+              <span class="nav-profile-name">{{profile.name_of_owner}}</span>
+            </a>
+            <!-- Image and Name of owner-->
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item d-flex align-items-center nav-date dropdown">
+            <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
+              <h6 class="date mb-0">Today : {{today}}</h6>
+            </a>
+          </li>
+          <li class="nav-item d-flex justify-content-center align-items-center dropdown">
+            <a class="nav-link " id="messageDropdown" href="#" data-toggle="dropdown">
+              <i class="typcn typcn-cog-outline mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <!-- Edit Profile -->
+              <a class="dropdown-item" href="{% url 'Seller:profile-edit' %}">
+                <i class="typcn typcn-cog-outline text-primary"></i>
+                Settings
+              </a>
+              <!-- Logout -->
+              <a class="dropdown-item" href="{% url 'users:logout' %}">
+                <i class="typcn typcn-eject text-primary"></i>
+                Logout
+              </a>
+              <!-- Logout End -->
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="typcn typcn-th-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="container-fluid page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <!-- Dashboard -->
+           <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:dashboard' %}">
+              <i class="typcn typcn-device-desktop menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <!-- Dashboard -->
+          <!-- My orders -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:orders' %}" >
+              <i class="typcn typcn-gift menu-icon"></i>
+              <span class="menu-title" >My Orders</span>
+              <!-- Display Number of orders-->
+              <div class="badge badge-danger">{{orders.count}}</div>
+            </a>
+          </li>
+          <!-- My orders -->
+          <!-- Public Profile -->
+          <li class="nav-item">
+          <a class="nav-link" href="{{profile.get_abs_url}}">
+              <i class="typcn typcn-world-outline menu-icon"></i>
+              <span class="menu-title">Public Profile</span>
+              <div class="badge badge-danger">web</div>
+            </a>
+          </li>
+          <!-- Public Profile -->
+          <!-- My products -->
+          <!-- Make changes to the quantity -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:my-products' %}" aria-expanded="false">
+              <i class="typcn typcn-shopping-cart menu-icon"></i>
+              <span class="menu-title">My Products</span>
+              <div class="badge badge-danger">{{products.count}}</div>
+            </a>
+          </li>
+          <!-- My products -->
+          <!-- Add products -->
+          <!-- Only enter when Adhaar and bank details has been provided -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:add-product' %}"  aria-expanded="false" aria-controls="ui-basic">
+              <i class="typcn typcn-plus-outline menu-icon"></i>
+              <span class="menu-title">Add Products</span>
+            </a>
+          </li>
+          <!-- Add products -->
+          <!-- Delete products -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:delete-product' %}" aria-expanded="false" aria-controls="form-elements">
+              <i class="typcn typcn-trash menu-icon"></i>
+              <span class="menu-title">Remove Products</span>
+            </a>
+          </li>
+          <!-- Delete products -->
+          <!-- Order History -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:order-history' %}" aria-expanded="false" aria-controls="tables">
+              <i class="typcn typcn-stopwatch menu-icon"></i>
+              <span class="menu-title">Order History</span>
+            </a>
+          </li>
+          <!-- Order History -->
+          <!-- Refund Requests -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:refund-requests' %}" aria-expanded="false" aria-controls="icons">
+              <i class="typcn typcn-arrow-sync-outline menu-icon"></i>
+              <span class="menu-title">Refund Requests</span>
+              <div class="badge badge-danger">0</div>
+            </a>
+          </li>
+          <!-- Refund Requests -->
+          <!-- Returns -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:returns' %}" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-arrow-sync menu-icon"></i>
+              <span class="menu-title">Returns</span>
+            </a>
+          </li>
+          <!-- Returns -->
+          <!-- Mall -->
+          <li class="nav-item">
+            <a class="nav-link"  href="" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/mall1.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Mall</span>
+            </a>
+          </li>
+          <!-- Mall -->
+          <!-- Market -->
+          <li class="nav-item">
+            <a class="nav-link" href="" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/market.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Market</span>
+            </a>
+          </li>
+          <!-- Market -->
+          <!-- Bank Details -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:bank-details' %}" aria-expanded="false" aria-controls="auth">
+              <i class="fas fa-university menu-icon"></i>
+              <span class="menu-title">Bank Details</span>
+              {% if not profile.bank_account_number %}
+              <i class="fas fa-exclamation menu-icon text-danger pl-2"></i>
+              {% endif %}
+            </a>
+          </li>
+          <!-- Bank Details End-->
+           <!-- Settings -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:profile-edit' %}" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-cog-outline menu-icon"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+          <!-- Settings End-->
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <h6 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">Sales Made</h6>
+                <h3 style="margin-top:20px;margin-left:30px;font-weight:bold;">0</h3>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card">
+                <h6 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">Total Earnings</h6>
+                <h3 style="margin-top:20px;margin-left:30px;font-weight:bold;">0</h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <h6 style="text-decoration:underline;margin-top:20px;font-weight:bold;color:#785730;">New Orders</h6>
+              <div class="card">
+
+                <div class="table-responsive pt-3">
+                  <table class="table table-striped project-orders-table">
+                    <thead>
+                      <tr>
+                        <th class="ml-5">ID</th>
+                        <th>Product Name</th>
+                        <th>Customer</th>
+                        <th>Date of Order</th>
+                        <th>Payouts</th>
+                        <th>Package Sent</th>
+                      </tr>
+                    </thead>
+                    {% for items in orders %}
+                    <tbody>
+                      <tr>
+                        <td>#D1</td>
+                        <td>Consectetur adipisicing elit </td>
+                        <td>Beulah Cummings</td>
+                        <td>03 Jan 2019</td>
+                        <td>$ 5235</td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
+                              Edit
+                              <i class="typcn typcn-edit btn-icon-append"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm btn-icon-text">
+                              Delete
+                              <i class="typcn typcn-delete-outline btn-icon-append"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                     </tbody>
+                  </table>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- Footer End -->
+    <div class="container-fluid " style="margin-top:10px;background-color:#162691;">
+      <div class="row pt-4 pb-5">
+        <div class="col-md-3 col-12">
+            <!-- Logo -->
+              <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+            <!-- Logo -->
+
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+            <!-- Social Sites -->
+              <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+            <!-- Social Sites -->
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">About</h5>
+          <h6 style="color:#c0c3cf">Contact Us</h6>
+          <h6 style="color:#c0c3cf">Careers</h6>
+          <h6 style="color:#c0c3cf">About Us</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Help</h5>
+          <h6 style="color:#c0c3cf">Payments</h6>
+          <h6 style="color:#c0c3cf">Shipping</h6>
+          <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+          <h6 style="color:#c0c3cf">FAQ</h6>
+          <h6 style="color:#c0c3cf">Report Infringement</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Policy</h5>
+          <h6 style="color:#c0c3cf">Return Policy</h6>
+          <h6 style="color:#c0c3cf">Terms of Use</h6>
+          <h6 style="color:#c0c3cf">Security</h6>
+          <h6 style="color:#c0c3cf">Privacy</h6>
+          <h6 style="color:#c0c3cf">Terms of Service</h6>
+        </div>
+      </div>
+    </div>
+  <!-- Footer End -->
+  <!-- base:js -->
+  <script src="{% static 'Dashboard/vendors/js/vendor.bundle.base.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static 'Dashboard/vendors/chart.js/Chart.min.js' %}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'Dashboard/js/off-canvas.js' %}"></script>
+  <script src="{% static 'Dashboard/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'Dashboard/js/template.js' %}"></script>
+  <script src="{% static 'Dashboard/js/settings.js' %}"></script>
+  <script src="{% static 'Dashboard/js/todolist.js' %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static 'Dashboard/js/dashboard.js' %}"></script>
+  <!-- End custom js for this page-->
+  <script>
+    $('#ToggleLogo').on('click',function(){
+    $('#Logo').toggle();
+    })
+
+  </script>
+</body>
+
+</html>
+

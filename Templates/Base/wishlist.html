@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block Navbar1 %}
+	{% include 'Base/Navbar1.html' %}
+{% endblock %}
+{% block content %}
+<style type="text/css">
+
+	.Place1{
+		color: white;
+		font-weight: normal;
+	}
+	.itemName{
+		color:black;
+		}
+	.itemName:hover{
+		color:#2b7af0;
+		}
+</style>
+<body class="bg-light mt-5 pt-2">
+
+	<div class="container  mt-2 ">
+		<div class="row">
+
+			<!-- Content desciption Column -->
+
+			<div class="col-9 mt-3 bg-white border border-dark">
+				<div class="row ml-2 mt-2">
+					<h5 class="text-dark">Wishlist(
+						{% if Wishlist %}
+						{{Wishlist.items.count}}
+						{% else %}
+						0
+						{% endif %})</h5>
+				</div>
+
+
+				{% for item in Wishlist.items.all %}
+				<div class="row border">
+					<!-- Image column -->
+
+					<div class="col-3 p-4">
+						<!-- Image of the product -->
+						<div class="row">
+							<a href="{{item.get_abs_url}}">
+								<img src="{{item.image.url}}" height="150px" width="150px">
+							</a>
+						</div>
+						<!-- Image of the product -->
+
+					</div>
+
+					<!-- Image column -->
+
+					<!-- Product details column -->
+					<div class="col pl-3 pt-4 pb-4">
+						<div class="row">
+							<a href="{{item.get_abs_url}}">
+								<h6 class="itemName">{{item.Name}}</h6>
+							</a>
+						</div>
+						<div class="row pt-1 pb-1">
+							<small class="text-muted">Seller:{{item.Brand}}</small>
+						</div>
+
+						{% if item.discount_price %}
+
+					    	<div class="row">
+						    		<small class="text-success">Special Price</small>
+						    </div>
+						    <div class="row d-flex align-items-center">
+						    		<h2>₹{{item.discount_price}}</h2> <h6><span class="discount text-muted pl-2">₹{{item.price}}</span> </h6>
+						    </div>
+
+
+					    {% else %}
+							<div class="row">
+
+					    			<h2>₹{{item.price}} </h2>
+					    	</div>
+				    	{% endif %}
+							<div class="row d-flex align-items-center">
+						    		<a href="{{item.get_remove_from_wishlist_url}}"  >
+										<h6 class="font-weight-normal" onmouseover="this.style.color='red'" onmouseout="this.style.color='#11a7ed'">REMOVE</h6></a>
+						    </div>
+					</div>
+					<!-- Product details column -->
+
+				</div>
+				<!-- Check if the Cart is empty or not -->
+				{% empty %}
+					<div class="row border">
+						<h4>Your wishlist is Empty</h4>
+					</div>
+				<!-- Check if the Cart is empty or not -->
+
+				{% endfor %}
+
+
+
+
+			</div>
+			<!-- Content desciption Column -->
+		</div>
+
+
+
+	</div>
+</body>
+
+
+
+
+<!--   # {% for order_items in order.items.all %}-->
+
+<!--    -->
+
+<!--    #{% endfor %} &ndash;&gt;-->
+{% endblock %}

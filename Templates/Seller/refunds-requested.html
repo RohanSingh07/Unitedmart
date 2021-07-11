@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if requested_orders %}
+        {% for order_item in requested_orders %}
+            <div class="row border">
+					<!-- Image column -->
+
+					<div class="col-3 p-4 ">
+						<!-- Image of the product -->
+						<div class="row  d-flex justify-content-center">
+							<a href="{{order_item.items.get_abs_url}}">
+								<img src="{{order_item.items.image.url}}" height="160px" width="160px">
+							</a>
+						</div>
+						<!-- Image of the product -->
+						<!-- + - and quantity -->
+						<div class="row pt-2 pb-2 d-flex justify-content-start">
+							<div class="col-12 d-flex justify-content-center align-items-center">
+
+								<b class="pl-3 pr-3  border border-dark">{{order_item.quantity}}</b>
+
+							</div>
+						</div>
+						<!-- + - and quantity -->
+					</div>
+
+					<!-- Image column -->
+
+					<!-- Product details column -->
+					<div class="col pl-3 pt-4 pb-4">
+						<div class="row ">
+							<a href="{{order_item.items.get_abs_url}}">
+								<h6 class="itemName">{{order_item.items.Name}}</h6>
+							</a>
+						</div>
+						<div class="row pt-1 pb-1">
+							<small class="text-muted">Seller:{{order_item.items.Brand}}</small>
+						</div>
+
+						{% if order_item.items.discount_price %}
+
+					    	<div class="row">
+						    		<small class="text-success">Special Price</small>
+						    </div>
+						    <div class="row d-flex align-items-center">
+						    		<h4 class="font-weight-normal">₹{{order_item.get_total_discount_item_price}}</h4> <h6 style="text-decoration:line-through;"><span class="discount text-muted pl-2">₹{{order_item.get_total_item_price}}</span> </h6>
+						    </div>
+
+					    {% else %}
+							<div class="row d-flex align-items-center">
+
+					    			<h4 class="font-weight-normal">₹{{order_item.get_total_item_price}} </h4>
+					    	</div>
+				    	{% endif %}
+
+					</div>
+					<!-- Product details column -->
+
+
+
+				</div>
+				<!-- Check if the Cart is empty or not -->
+				{% empty %}
+					<div class="row border">
+						<h4 class="pl-2">No Orders</h4>
+					</div>
+				<!-- Check if the Cart is empty or not -->
+        {% endfor %}
+    {% endif %}
+{% endblock %}

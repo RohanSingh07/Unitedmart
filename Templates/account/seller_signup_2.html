@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block Navbar1 %}
+    {% include "Base/Navbar1.html" %}
+{% endblock %}
+{% block content %}
+<style>
+        input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+</style>
+<body style="background-color:#ebedf5;">
+<div class="container-fluid d-flex justify-content-center" style="margin-top:100px;">
+  <div style="position:absolute;top:25%;height:50%;width:600px;background-color:white;" class="d-flex align-items-center justify-content-center ">
+
+        <form  method="post" action="{% url 'users:seller-signup-3' %}">
+               {% csrf_token %}
+                <h6 style="text-decoration:underline;margin-bottom:20px;font-weight:bold;color:#785730;" >SELLER REGISTRATION</h6>
+                <h6 style="color:#2a313b;">Pincode of the location from where our agents will collect products from you</h6><br>
+                <div class="row d-flex align-items-center " style="position:relative;">
+                    <input style="left:12px;width:300px;position:absolute;height:45px;border-radius:0;" class="form-control" type="number" name="pincode" placeholder="Enter your pick up pincode" required>
+                    <input type="number" name="mobile" value="{{mobile}}" hidden>
+                   <button style="position:absolute;left:312px;height:45px;" class="btn btn-primary" type="submit">VERIFY</button>
+                </div>
+        </form>
+  </div>
+</div>
+</body>
+{% endblock %}
+

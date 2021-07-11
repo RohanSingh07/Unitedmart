@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block Navbar1 %}
+	{% include 'Base/Navbar1.html' %}
+{% endblock %}
+{% block content %}
+<style>
+
+	    input[type=number]::-webkit-inner-spin-button,
+		input[type=number]::-webkit-outer-spin-button {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			margin: 0;
+		}
+		.inputs{
+		position:absolute;
+		top:10px;
+		border-radius:10px;
+		font-size:13px;
+		}
+		.labels{
+		 position:absolute;
+		 top:0px;
+		 left:20px;
+		 z-index:1;
+		}
+		body{
+		overflow-x:hidden;
+		}
+
+</style>
+<body>
+	<div class="container " style="margin-top:100px;">
+		<h3 style="text-decoration:underline;">CHECKOUT</h3>
+		<form method="post" >
+		<div class="row d-flex justify-content-between" >
+	              {% csrf_token %}
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="NameLabel"  class="bg-white text-primary font-weight-bold labels">Full Name</small>
+						<input class="form-control w-100 inputs"  type="text"  name="Name" id="Name"><br>
+					</div>
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="MobileLabel"  class="bg-white text-primary font-weight-bold labels">Enter your Mobile Number</small>
+						<input class="form-control w-100 inputs"  type="number"  name="Mobile" id="Mobile"><br>
+					</div>
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="ZipLabel"  class="bg-white text-primary font-weight-bold labels">Pin Code</small>
+						<input class="form-control w-100 inputs" type="number"  name="Zip" id="Zip"><br>
+					</div>
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="AddressLabel"  class="bg-white text-primary font-weight-bold labels">Address</small>
+						<input class="w-100 form-control inputs"  type="text"  name="Address" id="Address"><br>
+					</div>
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="LocalityLabel" class="bg-white text-primary font-weight-bold labels">Locality</small>
+						<input class="w-100 form-control inputs"  type="text"  name="Locality" id="Locality"><br>
+					</div>
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="DistrictLabel"  class="bg-white text-primary font-weight-bold labels">District</small>
+						<input class="w-100 form-control inputs"  type="text"  name="District" id="District"><br>
+					</div>
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="StateLabel"  class="bg-white text-primary font-weight-bold labels">State</small>
+						<input class="w-100 form-control inputs"  type="text" name="State" id="State"><br>
+					</div>
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="LandmarkLabel"  class="bg-white text-primary font-weight-bold labels">Landmark</small>
+						<input class="w-100 form-control inputs"  type="text"  name="Landmark" id="Landmark"><br>
+					</div>
+
+					<div class="col-md-5 col-11 mt-5 " style="position:relative;">
+						<small  id="AlternateLabel"  class="bg-white text-primary font-weight-bold labels">Alternate Mobile Number</small>
+						<input class="w-100 form-control inputs" type="number"  name="Alternate" id="Alternate">
+					</div>
+					<div class="col-12" style="position:relative;margin-top:70px;">
+						<button style="background-color:#f09e2b;height:40px;color:white;border-radius:10px;" class="form-control w-100">PLACE ORDER</button>
+					</div>
+	    </div>
+
+		</form>
+	</div>
+</body>
+<script>
+
+</script>
+{% endblock %}

@@ -1,0 +1,4104 @@
+from django.db import models
+from django.shortcuts import reverse
+from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
+import uuid # for unique identification
+
+States=(
+    ('Andaman and Nicobar','Andaman and Nicobar'),
+    ('Andhra Pradesh','Andhra Pradesh'),
+    ('Arunachal Pradesh','Arunachal Pradesh'),
+    ('Assam','Assam'),
+    ('Bihar','Bihar'),
+    ('Chhattisgarh','Chhattisgarh'),
+    ('Chandigarh','Chandigarh'),
+    ('Daman and Diu','Daman and Diu'),
+    ('Delhi','Delhi'),
+    ('Dadra & Nagar Haveli','Dadra & Nagar Haveli'),
+    ('Goa','Goa'),
+    ('Gujarat','Gujarat'),
+    ('Haryana','Haryana'),
+    ('Himachal Pradesh','Himachal Pradesh'),
+    ('Jharkhand','Jharkhand'),
+    ('Jammu & Kashmir','Jammu & Kashmir'),
+    ('Karnataka','Karnataka'),
+    ('Kerala','Kerala'),
+    ('Ladakh','Ladakh'),
+    ('Lakshadweep','Lakshadweep'),
+    ('Madhya Pradesh','Madhya Pradesh'),
+    ('Maharashtra','Maharashtra'),
+    ('Manipur','Manipur'),
+    ('Meghalaya','Meghalaya'),
+    ('Mizoram','Mizoram	'),
+    ('Nagaland','Nagaland'),
+    ('Odisha','Odisha'),
+    ('Puducherry','Puducherry'),
+    ('Punjab','Punjab'),
+    ('Rajasthan','Rajasthan'),
+    ('Sikkim','Sikkim'),
+    ('Tamil Nadu','Tamil Nadu'),
+    ('Telangana','Telangana'),
+    ('Tripura','Tripura'),
+    ('Uttar Pradesh','Uttar Pradesh'),
+    ('Uttarakhand','Uttarakhand'),
+    ('West Bengal','West Bengal'),
+
+)
+
+# category for product
+main_category_choices=(
+    ('Electronics','Electronics'),
+    ('Men','Men'),
+    ('Women','Women'),
+    ('Kids & Baby','Kids & Baby'),
+    ('Home','Home'),
+    ('Sports & Health','Sports & Health'),
+    ('Others','Others'),
+
+)
+
+#Sub categories
+sub_category_choices=(
+    #Electronics
+    ('Home & Kitchen','Home & Kitchen'),
+    ('Computers','Computers'),
+    ('Mobiles & Accessories','Mobiles & Accessories'),
+    ('Health & Personal-Care','Health & Personal-Care'),
+    ('Home Entertainment','Home Entertainment'),
+    ('Audio & Video','Audio & Video'),
+    ('Building Materials & Supplies','Building Materials & Supplies'),
+    ('Cameras & Accessories','Cameras & Accessories'),
+    ('Automotive Accessories','Automotive Accessories'),
+    ('Musical Instruments','Musical Instruments'),
+    ('Gaming','Gaming'),
+    ('Home Lighting','Home Lighting'),
+    ('Home Cleaning & Bathroom Accessories','Home Cleaning & Bathroom Accessories'),
+    ('Automation & Robotics','Automation & Robotics'),
+    ('Smart Gadgets','Smart Gadgets'),
+
+    # Others
+    ('Office Products','Office Products'),
+    ('Industrial & Scientific','Industrial & Scientific'),
+    ('Health & Medical Care','Health & Medical Care'),
+    ('Eyewear & Sunglasses','Eyewear & Sunglasses'),
+    ('Pet Supplies','Pet Supplies'),
+    ('Home Improvement', 'Home Improvement'),
+
+    ('Topwear','Topwear'),
+    ('Bottomwear','Bottomwear'),
+    ('Footwear','Footwear'),
+    ('Winterwear','Winterwear'),
+    ('Ethnicwear','Ethnicwear'),
+    ('Mens-grooming','Mens-grooming'),
+    ('Raincoats','Raincoats'),
+    ('Clothing-accessories','Clothing-accessories'),
+    ('Fabrics','Fabrics'),
+    ('Windcheaters','Windcheaters'),
+    ('Sleepwear','Sleepwear'),
+    ('Innerwear & Swimwear','Innerwear & Swimwear'),
+    ('Tracksuits','Tracksuits'),
+    ('Blazers,Waistcoats and Suits','Blazers,Waistcoats and Suits'),
+    ('Watches','Watches'),
+    ('Accessories','Accessories'),
+    ('Wearable Smart Devices','Wearable Smart Devices'),
+
+    ('Jewellery','Jewellery'),
+
+    #Sub categories specifically for women
+    ('Dresses and Gowns','Dresses and Gowns'),
+    ('Jumpsuits and Dangeries','Jumpsuits and Dangeries'),
+    ('Kurtas,Ethnic sets and bottoms','Kurtas , Ethnic sets and bottoms'),
+    ('Sarees and Essentials','Sarees and Essentials'),
+    ('Lehenga Cholis','Lehenga Cholis'),
+    ('Sandals','Sandals'),
+
+    #kids
+    ('kids combos and costumes','kids combos and costumes'),
+    ('Infants footwear','Infants footwear'),
+    ('Boys Footwear','Boys Footwear'),
+    ('Girls Footwear','Girls Footwear'),
+    ('Toys','Toys'),
+    ('School Supplies','School Supplies'),
+    ('Baby Care','Baby Care'),
+
+    # Home and Living
+    ('Home Furnishings','Home Furnishings'),
+    ('Flooring','Flooring'),
+    ('Bath','Bath'),
+    ('Lamps & Lightings','Lamps & Lightings'),
+    ('Home Decor','Home Decor'),
+    ('Kitchen & Table','Kitchen & Table'),
+    ('Storage','Storage'),
+
+    # sports & Health
+    ('Fitness Accessores','Fitness Accessores'),
+    ('Fitness Equipment','Fitness Equipment'),
+    ('Yoga','Yoga'),
+    ('Pilates','Pilates'),
+    ('Mobility Aids and Equipments','Mobility Aids and Equipments'),
+
+    ('Archery','Archery'),
+    ('Badminton','Badminton'),
+    ('Cricket','Cricket'),
+    ('Bowling','Bowling'),
+    ('Boxing','Boxing'),
+    ('Tennis','Tennis'),
+    ('Skating','Skating'),
+    ('Hockey','Hockey'),
+    ('Karate','Karate'),
+    ('Volleyball','Volleyball'),
+    ('Weightlifting','Weightlifting'),
+    ('Basketball','Basketball'),
+    ('Baseball','Baseball'),
+    ('Rugby','Rugby'),
+    ('Cycling','Cycling'),
+    ('Table tennis','Table tennis'),
+    ('Fishing','Fishing'),
+    ('Climbing','Climbing'),
+    ('Golf','Golf'),
+    ('Football','Football'),
+
+
+)
+sub_sub_category_choices=(
+    # Electronics
+    #Home & Kitchen
+    ('Home Appliances','Home Appliances'),
+    ('Kitchen Appliances','Kitchen Appliances'),
+
+    #Computers
+    ('Laptops','Laptops'),
+    ('Laptop Accessories','Laptop Accessories'),
+    ('Network Components','Network Components'),
+    ('Computer Peripherals','Computer Peripherals'),
+    ('Software','Software'),
+    ('Computer Components','Computer Components'),
+    ('Printers & Inks','Printers & Inks'),
+    ('Tablet Accessories','Tablet Accessories'),
+    ('Desktop PCs','Desktop PCs'),
+    ('Routers','Routers'),
+    ('Data Cards','Data Cards'),
+    ('Supplies','Supplies'),
+    ('Monitors','Monitors'),
+    ('Storage','Storage'),
+    ('Audio Players','Audio Players'),
+    ('Video Players','Video Players'),
+    ('TV & Accessories','TV & Accessories'),
+
+    # Home Entertainment
+    ('Video Players & Accessories','Video Players & Accessories'),
+    ('MP3 players/Ipods Accessories','MP3 players/Ipods Accessories'),
+    ('Audio Players','Audio Players'),
+    ('Home Audio','Home Audio'),
+    ('DTH','DTH'),
+    ('Televisions','Televisions'),
+
+    # Mobiles & Accessories
+    ('Mobiles','Mobiles'),
+    ('Tablets','Tablets'),
+    ('Mobile Accessories','Mobile Accessories'),
+    ('Tablet Accessories','Tablet Accessories'),
+
+    # Audio & Video
+    ('Video Accessories','Video Accessories'),
+    ('Speakers','Speakers'),
+    ('Audio Players & Recorders','Audio Players & Recorders'),
+    ('Audio Accessories','Audio Accessories'),
+    ('Home Theatres','Home Theatres'),
+    ('Headphones','Headphones'),
+    ('Professional Audio Systems','Professional Audio Systems'),
+    ('Video Players & Recorders','Video Players & Recorders'),
+
+    # Building Materials & Suplies
+    ('Construction Tools & Equipments','Construction Tools & Equipments'),
+    ('Wooden Supplies','Wooden Supplies'),
+    ('Building Raw Material','Building Raw Material'),
+    ('Furniture Parts','Furniture Parts'),
+    ('Door & Window Fitting','Door & Window Fitting'),
+    ('Building Supplies add-ons','Building Supplies add-ons'),
+    ('Platform Troleys','Platform Troleys'),
+    ('Bathroom & Kitchen Fittings','Bathroom & Kitchen Fittings'),
+    ('Plumbing Supplies','Plumbing Supplies'),
+    ('Solar & Alternate Energy','Solar & Alternate Energy'),
+    ('Electrical Hardware','Electrical Hardware'),
+    ('Paint Supplies & Equipment','Paint Supplies & Equipment'),
+
+    # Cameras & Accessories
+    ('Cameras','Cameras'),
+    ('Camera Accessories','Camera Accessories'),
+
+    # Automotive Accessories
+    ('Vehicle Mats','Vehicle Mats'),
+    ('Tyre & Wheel','Tyre & Wheel'),
+    ('Vehicle Safety,Security & Guards','Vehicle Safety,Security & Guards'),
+    ('Car Dashboard Accessories','Car Dashboard Accessories'),
+    ('Car Air Purifiers & Air Fresheners','Car Air Purifiers & Air Fresheners'),
+    ('Vehicle Cleaners','Vehicle Cleaners'),
+    ('Vehicle Styling','Vehicle Styling'),
+    ('Vehicle Stereo & Music Systems','Vehicle Stereo & Music Systems'),
+    ('Vehicle Door,Windshield,Windows & Mirrors','Vehicle Door,Windshield,Windows & Mirrors'),
+    ('Vehicle Utility & Accessories','Vehicle Utility & Accessories'),
+    ('Vehicle Body Covers','Vehicle Body Covers'),
+    ('Vehicle Seat & Accessories','Vehicle Seat & Accessories'),
+    ('Oils & Lubricants','Oils & Lubricants'),
+    ('Spares,Tools & Maintenance Service Parts','Spares,Tools & Maintenance Service Parts'),
+    ('Vehicle Storage & Organizers','Vehicle Storage & Organizers'),
+    ('Helmets & Riding Gear','Helmets & Riding Gear'),
+    ('Vehicle Lights','Vehicle Lights'),
+    ('Automotive Combos','Automotive Combos'),
+    ('Vehicle Repair','Vehicle Repair'),
+
+    # Musical Instruments
+    ('String Instruments','String Instruments'),
+    ('Wind Instruments','Wind Instruments'),
+    ('Keys & Synthesizers','Keys & Synthesizers'),
+    ('Studio/Stage Equipments','Studio/Stage Equipments'),
+    ('Electronic Instruments','Electronic Instruments'),
+    ('Drums & Percussion','Drums & Percussion'),
+    ('Accessories','Accessories'),
+
+    # Home Improvement
+    ('Lawn & Gardening','Lawn & Gardening'),
+    ('Tools & Measuring Equipments','Tools & Measuring Equipments'),
+    ('Home Utilities & Organizers','Home Utilities & Organizers'),
+    ('Home Safety','Home Safety'),
+
+    # Gaming
+    ('Gaming Consoles','Gaming Consoles'),
+    ('Games','Games'),
+    ('Gaming Accessories','Gaming Accessories'),
+    ('Gaming Components','Gaming Components'),
+
+    # Home Lighting
+    ('Utility Lighting','Utility Lighting'),
+    ('Decor Lighting & Accessories','Decor Lighting & Accessories'),
+
+    # Home Cleaning & Bathroom Accessories
+    ('Cleaning Supplies','Cleaning Supplies'),
+    ('HouseHold Supplies','HouseHold Supplies'),
+    ('Bathroom Accessories','Bathroom Accessories'),
+
+    # Automation & Robotics
+    ('Smart Lighting','Smart Lighting'),
+    ('Smart Assistants','Smart Assistants'),
+    ('Smart Pens','Smart Pens'),
+    ('Multipurpose Controllers','Multipurpose Controllers'),
+    ('Smart Switches','Smart Switches'),
+    ('Sensors & Alarms','Sensors & Alarms'),
+    ('Surveillance Devices','Surveillance Devices'),
+    ('Smart Door Locks','Smart Door Locks'),
+
+    # Industrial & Scientific
+    ('Sound Meters','Sound Meters'),
+    ('LCR Meters','LCR Meters'),
+    ('Ohmmeters','Ohmmeters'),
+    ('Tachometers','Tachometers'),
+    ('Light Meters','Light Meters'),
+    ('Test Indicator','Test Indicator'),
+    ('Dial Indicator','Dial Indicator'),
+    ('Ring Gauge','Ring Gauge'),
+    ('Height Gauge','Height Gauge'),
+    ('Hole Gauge','Hole Gauge'),
+    ('Pin Gauge','Pin Gauge'),
+    ('Radius Gauge','Radius Gauge'),
+    ('Snap Gauge','Snap Gauge'),
+    ('Bore Gauge','Bore Gauge'),
+    ('Air Quality Meters','Air Quality Meters'),
+    ('Inside Macrometers','Inside Macrometers'),
+    ('Frequency Meters','Frequency Meters'),
+    ('Packaging & Shipping','Packaging & Shipping'),
+    ('Lab & Scientific Products','Lab & Scientific Products'),
+    ('Addictice Manufacturing Products','Addictice Manufacturing Products'),
+    ('Industrial Testing Devices','Industrial Testing Devices'),
+    ('Safety Products','Safety Products'),
+
+    # Health & Medical Care
+    ('Professional Medical Supplies','Professional Medical Supplies'),
+    ('Home Medical Supplies','Home Medical Supplies'),
+    ('Home Medicines','Home Medicines'),
+    ('Health Supplements','Health Supplements'),
+
+
+    # Eyewear & Sunglasses
+    ('Frames','Frames'),
+    ('Sunglasses','Sunglasses'),
+
+    # Office Products
+    ('Pens','Pens'),
+    ('Calculators','Calculators'),
+    ('Diaries & Notebooks','Diaries & Notebooks'),
+    ('Art Supplies','Art Supplies'),
+    ('Office Equipments','Office Equipments'),
+    ('Office Supplies','Office Supplies'),
+    ('College Supplies','College Supplies'),
+
+    # Pet Supplies
+    ('Dogs','Dogs'),
+    ('Cats','Cats'),
+    ('Birds','Birds'),
+    ('Fish & Aquatic','Fish & Aquatic'),
+    ('Horse','Horse'),
+    ('Large Animals','Large Animals'),
+    ('Small Animals','Small Animals'),
+    ('Grooming & Hygiene','Grooming & Hygiene'),
+    ('Health & Safety','Health & Safety'),
+
+    #Topwear
+    ('T-Shirt','T-Shirt'),
+    ('Shirts','Shirts'),
+    ('Tops','Tops'),
+    #Bottomwear
+    ('Shorts','Shorts'),
+    ('Harem Pants','Harem Pants'),
+    ('Three Fourths','Three Fourths'),
+    ('Jeans','Jeans'),
+    ('Tights','Tights'),
+    ('Track Pants','Track Pants'),
+    ('Cargos','Cargos'),
+    ('Trousers','Trousers'),
+    #Footwear
+    ('Casual Shoes','Casual Shoes'),
+    ('Sports Shoes','Sports Shoes'),
+    ('Formal Shoes','Formal Shoes'),
+    ('Boots','Boots'),
+    ('Ballerinas','Ballerinas'),
+    ('Sandals & Floaters','Sandals & Floaters'),
+    ('Slippers & Flip Flops','Slippers & Flip Flops'),
+    ('Ethnic Shoes','Ethnic Shoes'),
+    ('Sports Sandals','Sports Sandals'),
+    ('Flats', 'Flats'),
+    ('Heels', 'Heels'),
+    ('Wedges', 'Wedges'),
+    ('Shoe Care','Shoe Care'),
+        # Infants footwear
+    ('Sandals and Shoes', 'Sandals and Shoes'),
+    ('Baby Girl Shoes', 'Baby Girl Shoes'),
+    ('Booties', 'Booties'),
+        # Boys Footwear
+    ('Clogs', 'Clogs'),
+    ('School Shoes', 'School Shoes'),
+
+    #winterwear
+    ('Shrugs','Shrugs'),
+    ('Gloves','Gloves'),
+    ('Sweatshirts','Sweatshirts'),
+    ('Shawls','Shawls'),
+    ('Sweaters and Cardigans','Sweaters and Cardigans'),
+    ('Mufflers','Mufflers'),
+    ('Scarves','Scarves'),
+    ('Leg Warmers','Leg Warmers'),
+    ('Jackets','Jackets'),
+    ('Thermals','Thermals'),
+    ('Ponchos','Ponchos'),
+    ('Arm Warmers','Arm Warmers'),
+
+    #Ethnic wear
+    ('Sherwanis','Sherwanis'),
+    ('Salwars and Patialas','Salwars and Patialas'),
+    ('Ethnic Sets','Ethnic Sets'),
+    ('Palazzos','Palazzos'),
+    ('Dhotis','Dhotis'),
+    ('Dhoti Pants','Dhoti Pants'),
+    ('Leggins and Churidars','Leggins and Churidars'),
+    ('Ethnic Pyjamas','Ethnic Pyjamas'),
+    ('Kurtas','Kurtas'),
+    ('Shararas','Shararas'),
+
+    #Mens-Grooming
+    ('Shaving & Beard Care','Shaving & Beard Care'),
+    ('Hair Care and Accessory','Hair Care and Accessory'),
+    ('Makeup','Makeup'),
+    ('Bath & Shower','Bath & Shower'),
+    ('Body & Face Skin Care','Body & Face Skin Care'),
+    ('Fragrances','Fragrances'),
+    ('Sexual Wellness','Sexual Wellness'),
+    ('Womens Personal Hygiene','Womens Personal Hygiene'),
+    ('Oral Care','Oral Care'),
+
+    # Raincoats
+
+    #Clothing Accessories
+    ('Collar Stays','Collar Stays'),
+    ('Mittens','Mittens'),
+    ('Applique Patch','Applique Patch'),
+    ('Abayas and Burqas','Abayas and Burqas'),
+    ('Thawbs','Thawbs'),
+    ('Stockings','Stockings'),
+    ('Turbans','Turbans'),
+    ('Suspenders','Suspenders'),
+    ('Garters','Garters'),
+    ('Stoles','Stoles'),
+    ('Caps','Caps'),
+    ('Bandanas','Bandanas'),
+    ('Hankerchiefs','Hankerchiefs'),
+    ('Hats','Hats'),
+    ('Wristbands','Wristbands'),
+    ('Ties and Cufflinks','Ties and Cufflinks'),
+    ('Dupattas','Dupattas'),
+    ('Socks','Socks'),
+    ('Sarong','Sarong'),
+    ('Sauna Suits','Sauna Suits'),
+
+    #Fabrics
+    ('Shirt and Trouser Fabrics','Shirt and Trouser Fabrics'),
+    ('Formal Suit Fabrics','Formal Suit Fabrics'),
+    ('Ethnic Dress','Ethnic Dress'),
+    ('Blouse Material','Blouse Material'),
+
+    # Wincheaters
+    # Sleepwear
+    ('Night Suits','Night Suits'),
+    ('Pyjamas and Loungepants','Pyjamas and Loungepants'),
+    ('Night Dresses and Nighties','Night Dresses and Nighties'),
+
+    #Innerwear & Swimwear
+    ('Briefs and Trunks','Briefs and Trunks'),
+    ('Swimsuits','Swimsuits'),
+    ('Vests','Vests'),
+    ('Boxers','Boxers'),
+    ('Babydolls','Babydolls'),
+    ('Camisoles and Slips', 'Camisoles and Slips'),
+    ('Shapewears', 'Shapewears'),
+    ('Panties', 'Panties'),
+    ('Lingerie Sets & Accessories','Lingerie Sets & Accessories'),
+    ('Bloomers', 'Bloomers'),
+    ('Bras', 'Bras'),
+
+    #Tracksuits
+    #Blazers,Waistcoats and Suits
+    ('Coats','Coats'),
+    ('Suits','Suits'),
+    ('Blazers','Blazers'),
+    ('Waistcoats','Waistcoats'),
+
+    # Watches
+    ('Wrist Watches','Wrist Watches'),
+    ('Watch Accessories','Watch Accessories'),
+
+
+    # Accessories
+    ('Bags & Bagpacks','Bags & Bagpacks'),
+    ('Luggage & Travel','Luggage & Travel'),
+    ('Wallets & Clutches','Wallets & Clutches'),
+    ('Handbags & Clutches','Handbags & Clutches'),
+    ('Garment Covers','Garment Covers'),
+    ('Key Chains','Key Chains'),
+    ('Accessories Combo','Accessories Combo'),
+    ('Belts & Buckels','Belts & Buckels'),
+
+    # Wearable Smart devices
+    ('Smart Watches','Smart Watches'),
+    ('Smart Bands','Smart Bands'),
+    ('Bluetooth Hats','Bluetooth Hats'),
+    ('Smart Gloves','Smart Gloves'),
+    ('Smart Glasses','Smart Glasses'),
+    ('Smart Headphones','Smart Headphones'),
+    ('Smart Pendants','Smart Pendants'),
+    ('Wearable Accessories','Wearable Accessories'),
+    ('Smart Trackers','Smart Trackers'),
+    ('Smart Footwears','Smart Footwears'),
+    ('Bluetooth Item Finders','Bluetooth Item Finders'),
+    ('Smart Helmets','Smart Helmets'),
+
+    # Health & Personal-Care
+    ('Personal Care Appliances','Personal Care Appliances'),
+    ('Health Care','Health Care'),
+
+    #Jewellery
+    ('Gemstones','Gemstones'),
+    ('Artificial Jewellery','Artificial Jewellery'),
+    ('Silver Jewellery','Silver Jewellery'),
+
+    # Dresses and Gowns
+    ('Gowns','Gowns'),
+    ('Dresses','Dresses'),
+
+    #Jumpsuits and Dangeries
+    ('Jumpsuits','Jumpsuits'),
+    ('Dangeries','Dangeries'),
+
+    #Sarees and Essentials
+    ('Blouses','Blouses'),
+    ('Sarees','Sarees'),
+    ('Petticoats','Petticoats'),
+    ('Saree Falls','Saree Falls'),
+
+    #Lehenga Cholis
+
+
+    #kids combos and costumes
+    ('kids Apparel Combos','kids Apparel Combos'),
+    ('Kids Costume Wear','Kids Costume Wear'),
+
+
+
+    #Toys
+    ('Remote Control Toys','Remote Control Toys'),
+    ('Learning and Educational Toys','Learning and Educational Toys'),
+    ('Soft Toys','Soft Toys'),
+    ('Puzzles','Puzzles'),
+    ('Art & Craft Toys','Art & Craft Toys'),
+    ('Outdoor Toys','Outdoor Toys'),
+    ('Action Figures','Action Figures'),
+    ('Musical Instruments & Toys','Musical Instruments & Toys'),
+    ('Baby Toys','Baby Toys'),
+    ('Board Games','Board Games'),
+    ('Card Games','Card Games'),
+    ('Toy Cars,Trains and Bikes','Toy Cars,Trains and Bikes'),
+    ('Dolls and Doll Houses','Dolls and Doll Houses'),
+    ('Wind Spinner Toys','Wind Spinner Toys'),
+    ('Gag Toys','Gag Toys'),
+    ('Magic Springs','Magic Springs'),
+    ('Toy Sport','Toy Sport'),
+    ('Hobby Kits','Hobby Kits'),
+    ('Slime & Putty Toys','Slime & Putty Toys'),
+    ('Puppets','Puppets'),
+    ('Party Supplies','Party Supplies'),
+    ('Ride Ons','Ride Ons'),
+    ('Tricycles','Tricycles'),
+    ('Magic Kits','Magic Kits'),
+    ('Yoyo','Yoyo'),
+    ('Sports','Sports'),
+    ('Toy Guns & Others','Toy Guns & Others'),
+    ('Marbles','Marbles'),
+    ('Mikado Sticks','Mikado Sticks'),
+    ('Blocks & Building Sets','Blocks & Building Sets'),
+
+    # School Supplies
+    ('Umbrellas','Umbrellas'),
+    ('Geometry & Pencil Boxes','Geometry & Pencil Boxes'),
+    ('Pens & Stationery','Pens & Stationery'),
+    ('Lunch Boxes','Lunch Boxes'),
+    ('Water Bottles','Water Bottles'),
+    ('School Bags','School Bags'),
+    ('Examinations Pads','Examinations Pads'),
+    ('School Accessories','School Accessories'),
+    ('Coin Banks','Coin Banks'),
+    ('School Sets','School Sets'),
+    ('Uniform','Uniform'),
+    ('Lunch Bags','Lunch Bags'),
+
+    # Baby Care
+    ('Diaper & Potty Training','Diaper & Potty Training'),
+    ('Baby Bath,Hair and Skin','Baby Bath,Hair and Skin'),
+    ('Baby Food','Baby Food'),
+    ('Baby Feeding Bottles and Accessories','Baby Feeding Bottles and Accessories'),
+    ('Baby Feeding Utensils and Accessories','Baby Feeding Utensils and Accessories'),
+    ('Baby Grooming','Baby Grooming'),
+    ('Baby Oral Care','Baby Oral Care'),
+    ('Baby Bedding','Baby Bedding'),
+    ('Baby Gear','Baby Gear'),
+    ('Baby Medical and Health Care','Baby Medical & Health Care'),
+    ('Baby Proofing & Safety','Baby Proofing & Safety'),
+    ('Baby Cleaners and Detergent','Baby Cleaners and Detergent'),
+    ('Maternity Care','Maternity Care'),
+    ('Baby Bathing and Accessories','Baby Bathing and Accessories'),
+    ('Nursing and Breast Feeding','Nursing and Breast Feeding'),
+    ('Baby Gift Sets & Combo','Baby Gift Sets & Combo'),
+
+    # Home & Living
+    ('Artificial Flowers and Plants','Artificial Flowers and Plants'),
+    ('Plant Saplings','Plant Saplings'),
+    ('Grow Bags','Grow Bags'),
+    ('Potting Mixtures','Potting Mixtures'),
+    ('Plant Seeds','Plant Seeds'),
+
+    ('Aroma Oil Diffusers','Aroma Oil Diffusers'),
+    ('Aroma Oils','Aroma Oils'),
+    ('Aprons','Aprons'),
+    ('Bedsheets','Bedsheets'),
+    ('Blankets Quilts and Dohars','Blankets Quilts and Dohars'),
+    ('Bath Towels','Bath Towels'),
+    ('Bath Rugs','Bath Rugs'),
+    ('Bar and Drinkware','Bar and Drinkware'),
+    ('Bathroom Accessories','Bathroom Accessories'),
+    ('Bed Covers','Bed Covers'),
+    ('Bedding Set','Bedding Set'),
+    ('Bath Robe','Bath Robe'),
+    ('Bolster Covers','Bolster Covers'),
+    ('Bins','Bins'),
+    ('Bakeware','Bakeware'),
+    ('Bolsters','Bolsters'),
+    ('Bath Sets','Bath Sets'),
+    ('Curtains and Sheers','Curtains and Sheers'),
+    ('Cushion Covers','Cushion Covers'),
+    ('Clocks','Clocks'),
+    ('Carpets','Carpets'),
+    ('Cups and Mugs','Cups and Mugs'),
+    ('Cushions','Cushions'),
+    ('Candle Holders','Candle Holders'),
+    ('Candles','Candles'),
+    ('Coasters','Coasters'),
+    ('Cookware','Cookware'),
+    ('Chair Pads','Chair Pads'),
+    ('Curtain Rods and Brackets','Curtain Rods and Brackets'),
+    ('Curtain Tie and Hold Backs','Curtain Tie and Hold Backs'),
+    ('Decals and Stickers','Decals and Stickers'),
+    ('Dinnerware','Dinnerware'),
+    ('Doormats','Doormats'),
+    ('Duvet Cover','Duvet Cover'),
+    ('Diwan Set','Diwan Set'),
+    ('Decorative Magnets','Decorative Magnets'),
+    ('Decorative Bowls','Decorative Bowls'),
+    ('Floor Mats & Dhurries','Floor Mats & Dhurries'),
+    ('Fountains','Fountains'),
+    ('Face Towels','Face Towels'),
+    ('Garden Accessories','Garden Accessories'),
+    ('Hand Towels','Hand Towels'),
+    ('Hooks and Holders','Hooks and Holders'),
+    ('Home Gift Sets','Home Gift Sets'),
+    ('Home Fragrances','Home Fragrances'),
+    ('Hanger','Hanger'),
+    ('Home Fragrance Set','Home Fragrance Set'),
+    ('Handheld Air Fresheners','Handheld Air Fresheners'),
+    ('Key Holders','Key Holders'),
+    ('Kitchen Linen Sets','Kitchen Linen Sets'),
+    ('Kitchen Towels','Kitchen Towels'),
+    ('Lamps,Lanterns and Lamp Shades','Lamps,Lanterns and Lamp Shades'),
+    ('Laundry Bag','Laundry Bag'),
+    ('Laptop Table','Laptop Table'),
+    ('Mattress Protector','Mattress Protector'),
+    ('Mosquito Nets','Mosquito Nets'),
+    ('Napkin Set','Napkin Set'),
+    ('Natural Plants','Natural Plants'),
+    ('Organisers','Organisers'),
+    ('Oven Glove','Oven Glove'),
+    ('Photo Frames','Photo Frames'),
+    ('Planters','Planters'),
+    ('Pillows','Pillows'),
+    ('Pillow Covers','Pillow Covers'),
+    ('Runners','Runners'),
+    ('Showpieces','Showpieces'),
+    ('Serveware','Serveware'),
+    ('Shower Curtains','Shower Curtains'),
+    ('Sofa Covers','Sofa Covers'),
+    ('Table Placemats','Table Placemats'),
+    ('Towel Set','Towel Set'),
+    ('Tableware','Tableware'),
+    ('Trays','Trays'),
+    ('Table Covers','Table Covers'),
+    ('Table Mat','Table Mat'),
+    ('Throws','Throws'),
+    ('Table Linen Sets','Table Linen Sets'),
+    ('Table Napkins','Table Napkins'),
+    ('Table Cloth','Table Cloth'),
+    ('Vases','Vases'),
+    ('Wall Art','Wall Art'),
+    ('Wall Shelves','Wall Shelves'),
+    ('Water Bottle','Water Bottle'),
+    ('Wall Decor','Wall Decor'),
+    ('Windchimes','Windchimes'),
+    ('Yoga Mats','Yoga Mats'),
+    # Kitchen & Tables
+    ('Spray Bottle','Spray Bottle'),
+    ('Kitchen Storage & Containers','Kitchen Storage & Containers'),
+    ('Kitchen Tools','Kitchen Tools'),
+    ('Tea Strainers','Tea Strainers'),
+    ('Ladles','Ladles'),
+    ('Spatulas','Spatulas'),
+    ('Whisks','Whisks'),
+    ('Tongs','Tongs'),
+    ('Kitchen Presses','Kitchen Presses'),
+    ('Dumpling Presses','Dumpling Presses'),
+    ('Strainers & Colanders','Strainers & Colanders'),
+    ('Rolling Pins & Boards','Rolling Pins & Boards'),
+    ('Kitchen Scoops','Kitchen Scoops'),
+    ('Funnels','Funnels'),
+    ('Sushi Makers','Sushi Makers'),
+    ('Egg Separators','Egg Separators'),
+    ('Meat Tenderizers','Meat Tenderizers'),
+    ('Foil Holders','Foil Holders'),
+    ('Egg Poachers','Egg Poachers'),
+    ('Knife Sharpeners','Knife Sharpeners'),
+    ('Pancake Batter Dispensers','Pancake Batter Dispensers'),
+    ('Cookware','Cookware'),
+    ('Gas Stove & Accessories','Gas Stove & Accessories'),
+    ('Bakeware','Bakeware'),
+    ('Knives Choppers & Cutters','Knives Choppers & Cutters'),
+    ('Hand Juicers & Grinders','Hand Juicers & Grinders'),
+    ('Lunch Boxes,Bottles & Flasks','Lunch Boxes,Bottles & Flasks'),
+    ('Barware','Barware'),
+    ('Disposable Supplies','Disposable Supplies'),
+
+    # Table
+    ('Side Tables','Side Tables'),
+    ('Outdoor Tables','Outdoor Tables'),
+    ('Office Study Table','Office Study Table'),
+    ('Coffee Tables','Coffee Tables'),
+
+    # Fitness Accessories
+    ('Shakers & Sippers','Shakers & Sippers'),
+    ('Supports','Supports'),
+    ('Gym Gloves','Gym Gloves'),
+    ('Dumbbells','Dumbbells'),
+    ('Exercise Bikes','Exercise Bikes'),
+    ('Mini Exerciser Cycles','Mini Exerciser Cycles'),
+    ('Ab Exerciser Cycles','Ab Exerciser Cycles'),
+    ('Skipping Ropes','Skipping Ropes'),
+    ('Bars','Bars'),
+    ('Fitness Bands','Fitness Bands'),
+    ('Weights','Weights'),
+    ('Gym Balls','Gym Balls'),
+    ('Gymnastic Sticks','Gymnastic Sticks'),
+    ('Hand Grips','Hand Grips'),
+    ('Hula Hoops','Hula Hoops'),
+    ('Mats','Mats'),
+    ('Resistance Tubes','Resistance Tubes'),
+    ('Walking Sticks','Walking Sticks'),
+
+    #Fitness Equipment
+    ('Abs Exercise','Abs Exercise'),
+    ('Fitness Kits','Fitness Kits'),
+
+    #Yoga
+    ('Yoga Mats','Yoga Mats'),
+    ('Yoga Blocks','Yoga Blocks'),
+
+    #Pilates
+    ('Pilates Rings','Pilates Rings'),
+
+    # Mobility Aids and Equipments
+    ('Walking Sticks','Walking Sticks'),
+
+    # Archery
+    ('Archery Arrow Pullers','Archery Arrow Pullers'),
+    ('Archery Bow Strings','Archery Bow Strings'),
+    ('Archery Arrow Rests','Archery Arrow Rests'),
+    ('Archery Quivers','Archery Quivers'),
+    ('Archery Bow Strings Wax','Archery Bow Strings Wax'),
+    ('Archery Arrows','Archery Arrows'),
+    ('Laser Range Finders','Laser Range Finders'),
+    ('Archery Bows','Archery Bows'),
+    ('Archery Hand Tabs','Archery Hand Tabs'),
+    ('Archery Boards','Archery Boards'),
+
+    # Badminton
+    ('Badminton Racquet','Badminton Racquet'),
+    ('Shuttles','Shuttles'),
+    ('Badminton Kits','Badminton Kits'),
+    ('Badminton Bag','Badminton Bag'),
+    ('Badminton Grip','Badminton Grip'),
+    ('Badminton Net','Badminton Net'),
+    ('Badminton Racquet String','Badminton Racquet String'),
+    ('Stringing Clamp','Stringing Clamp'),
+    ('Badminton Cover','Badminton Cover'),
+
+    # Cricket
+    ('Cricket Bat','Cricket Bat'),
+    ('Cricket Ball','Cricket Ball'),
+    ('Cricket Kits','Cricket Kits'),
+    ('Cricket Gaurds','Cricket Gaurds'),
+    ('Cricket Bags','Cricket Bags'),
+    ('Bat Tapes','Bat Tapes'),
+    ('Cricket Nets','Cricket Nets'),
+    ('Training Ball','Training Ball'),
+    ('Cricket Gloves','Cricket Gloves'),
+    ('Cricket Grips','Cricket Grips'),
+    ('Goggles','Goggles'),
+    ('Helmets','Helmets'),
+    ('Cricket Pads','Cricket Pads'),
+    ('Wickets','Wickets'),
+    ('Sidearm Ball Thrower','Sidearm Ball Thrower'),
+    ('Tape','Tape'),
+    ('Tennis Balls','Tennis Balls'),
+    ('Umpire Counters','Umpire Counters'),
+
+    #Bowling
+    ('Bowling Sandisk Disc','Bowling Sandisk Disc'),
+    ('Bowling Targets','Bowling Targets'),
+    ('Bowling Sets','Bowling Sets'),
+
+    #Boxing
+    ('Boxing Punching Bag','Boxing Punching Bag'),
+    ('Boxing Gloves','Boxing Gloves'),
+    ('Boxing Focus Pad','Boxing Focus Pad'),
+    ('Boxing Gaurd','Boxing Gaurd'),
+    ('Boxing Hand Grip','Boxing Hand Grip'),
+    ('Boxing Kit','Boxing Kit'),
+    ('Boxing Sand','Boxing Sand'),
+
+    #Tennis
+    ('Tennis Racquet','Tennis Racquet'),
+    ('Tennis Balls','Tennis Balls'),
+    ('Tennis Kits','Tennis Kits'),
+    ('Tennis Bags','Tennis Bags'),
+    ('Ball Collector','Ball Collector'),
+
+    #Hockey
+    ('Hockey Sticks','Hockey Sticks'),
+
+    #Skating
+    ('Skateboard Stickers','Skateboard Stickers'),
+    ('Skates','Skates'),
+    ('Skateboards','Skateboards'),
+    ('Skating Kits','Skating Kits'),
+    ('Skating Gaurds','Skating Gaurds'),
+    ('Skating Helmets','Skating Helmets'),
+    ('Skateboard Grip Tapes','Skateboard Grip Tapes'),
+    ('Skate Wheel','Skate Wheel'),
+    ('Motorized Skateboard','Motorized Skateboard'),
+
+    # Yoga
+    ('Yoga Mats','Yoga Mats'),
+    ('Yoga Blocks','Yoga Blocks'),
+    ('Yoga Straps','Yoga Straps'),
+    ('Yoga Bags','Yoga Bags'),
+
+    #Karate
+    ('Karate Kit','Karate Kit'),
+
+    # Volleyball
+    ('Volleyballs','Volleyballs'),
+
+    # Basketball
+    ('Basketballs','Basketballs'),
+
+    # Baseball
+    ('Baseball Bat','Baseball Bat'),
+    ('Baseballs','Baseballs'),
+
+    # Rugby
+    ('Rugby Scrum Caps','Rugby Scrum Caps'),
+    ('Rugby Gaurds','Rugby Gaurds'),
+    ('Rugby Balls','Rugby Balls'),
+
+    # Cycling
+    ('Cycles','Cycles'),
+
+    # Table Tennis
+    ('Table Tennis Racquets','Table Tennis Racquets'),
+    ('Table Tennis Balls','Table Tennis Balls'),
+    ('Table Tennis Kit','Table Tennis Kit'),
+    ('Table Tennis Nets','Table Tennis Nets'),
+    ('Table Tennis Bags','Table Tennis Bags'),
+    ('Table Tennis Covers','Table Tennis Covers'),
+    ('Table Tennis Tables','Table Tennis Tables'),
+    ('Table Tennis Rubbers','Table Tennis Rubbers'),
+    ('Table Tennis Glue','Table Tennis Glue'),
+    ('Table Tennis Blade','Table Tennis Blade'),
+
+    # Fishing
+    ('Fishing Rods','Fishing Rods'),
+    ('Fishing Reels','Fishing Reels'),
+    ('Fishing Lines','Fishing Lines'),
+    ('Fish Bait Scents','Fish Bait Scents'),
+    ('Fishing Hooks','Fishing Hooks'),
+    ('Fish Hook Extractors','Fish Hook Extractors'),
+    ('Fishing Swivels','Fishing Swivels'),
+    ('Fishing Line Boards','Fishing Line Boards'),
+    ('Fishing Lures','Fishing Lures'),
+    ('Fishing Sinker Weight','Fishing Sinker Weight'),
+    ('Fish Mouth Openers','Fish Mouth Openers'),
+    ('Fishing Nets','Fishing Nets'),
+    ('Fishing Bags','Fishing Bags'),
+
+    #Climbing
+    ('Climbing Ropes','Climbing Ropes'),
+    ('Climbing Chalk','Climbing Chalk'),
+    ('Climbing Holds','Climbing Holds'),
+    ('Climbing Harness','Climbing Harness'),
+    ('Climbing Quickdraws','Climbing Quickdraws'),
+    ('Climbing Helmets','Climbing Helmets'),
+    ('Belaying Devices','Belaying Devices'),
+    ('Climbing Pulleys','Climbing Pulleys'),
+    ('Camping Tents','Camping Tents'),
+
+    #Golf
+    ('Golf Gloves','Golf Gloves'),
+    ('Golf Balls','Golf Balls'),
+    ('Golf Tees','Golf Tees'),
+    ('Golf Kits','Golf Kits'),
+    ('Grips','Grips'),
+    ('Golf Divot Tools','Golf Divot Tools'),
+    ('Golf Brushes','Golf Brushes'),
+    ('Golf Nets','Golf Nets'),
+    ('Golf Club Cleaner Brush','Golf Club Cleaner Brush'),
+    ('Golf Bags','Golf Bags'),
+    ('Golf Hitting Mats','Golf Hitting Mats'),
+    ('Golf Trolleys','Golf Trolleys'),
+    ('Golf Alignment Sticks','Golf Alignment Sticks'),
+    ('Golf Ball Makers','Golf Ball Makers'),
+    ('Golf Covers','Golf Covers'),
+    ('Golf Club','Golf Club'),
+
+    #Footballs
+    ('Footballs','Footballs'),
+    ('Football Gloves','Football Gloves'),
+    ('Football Guards','Football Guards'),
+    ('Pop Up Goals & Targets','Pop Up Goals & Targets'),
+    ('Bibs','Bibs'),
+    ('Football Net','Football Net'),
+    ('Football Kit','Football Kit'),
+    ('Football Foul Card','Football Foul Card'),
+    ('Pump','Pump'),
+    ('Foosballs','Foosballs'),
+
+)
+sub_sub_sub_category_choices=(
+
+    # Electronics
+    #Home Appliances
+    ('Room Heaters','Room Heaters'),
+    ('Sewing Machine','Sewing Machine'),
+    ('Vacuum Cleaners','Vacuum Cleaners'),
+    ('Dimmers','Dimmers'),
+    ('Irons','Irons'),
+    ('Refrigerators','Refrigerators'),
+    ('Water Purifiers','Water Purifiers'),
+    ('Water Geysers','Water Geysers'),
+    ('Air Purifiers','Air Purifiers'),
+    ('Immersion Rods','Immersion Rods'),
+    ('Fans','Fans'),
+    ('Air Coolers','Air Coolers'),
+    ('Air Conditioners','Air Conditioners'),
+    ('Inverters & Accessories','Inverters & Accessories'),
+    ('Voltage Stabilizers','Voltage Stabilizers'),
+    ('Landline Phones','Landline Phones'),
+    ('Appliance Parts & Accessories','Appliance Parts & Accessories'),
+    ('Spike Gaurds & Surge Protectors','Spike Gaurds & Surge Protectors'),
+    ('Sensor Security System','Sensor Security System'),
+    ('Dryers','Dryers'),
+    ('Compact Refrigerators','Compact Refrigerators'),
+    ('Washing Machines','Washing Machines'),
+    ('Freezer Chests','Freezer Chests'),
+
+    #Kitchen Appliances
+    ('Mixer Juicer Grinder','Mixer Juicer Grinder'),
+    ('Microwave Ovens','Microwave Ovens'),
+    ('Induction Cooktops','Induction Cooktops'),
+    ('Oven Toaster Grills','Oven Toaster Grills'),
+    ('Food Makers','Food Makers'),
+    ('Air Fryers','Air Fryers'),
+    ('Sandwich Makers','Sandwich Makers'),
+    ('Cake Maker','Cake Maker'),
+    ('Toasters','Toasters'),
+    ('Electric Tandoor','Electric Tandoor'),
+    ('Electric Deep Fryer','Electric Deep Fryer'),
+    ('Popcorn Maker','Popcorn Maker'),
+    ('Pizza Maker','Pizza Maker'),
+    ('Electric Jug/Travel Kettles','Electric Jug/Travel Kettles'),
+    ('Chimney','Chimney'),
+    ('Roti Makers','Roti Makers'),
+    ('Weighing Scales','Weighing Scales'),
+    ('Butter Churn Makers','Butter Churn Makers'),
+    ('Potato Twister Machines','Potato Twister Machines'),
+    ('Hand Blenders','Hand Blenders'),
+    ('Chimney','Chimney'),
+    ('Electric Cooker','Electric Cooker'),
+    ('Ice Cream Maker','Ice Cream Maker'),
+    ('Digital Measuring Spoons','Digital Measuring Spoons'),
+    ('Appliance Parts & Accessories','Appliance Parts & Accessories'),
+    ('Coffee Makers','Coffee Makers'),
+    ('Dish Washers','Dish Washers'),
+    ('Egg Cookers','Egg Cookers'),
+    ('Wet Grinder','Wet Grinder'),
+    ('Food Processors','Food Processors'),
+    ('Dough Presses','Dough Presses'),
+    ('Waffle Makers','Waffle Makers'),
+    ('Electric Cooking Heater','Electric Cooking Heater'),
+    ('Indian Coffee Filters','Indian Coffee Filters'),
+    ('Cotton Candy Maker','Cotton Candy Maker'),
+    ('Bread Makers','Bread Makers'),
+    ('Noodels & Spaghetti Makers','Noodels & Spaghetti Makers'),
+    ('Vada Makers','Vada Makers'),
+    ('Flourmills','Flourmills'),
+    ('Soup Makers','Soup Makers'),
+
+    # Mobiles
+    # Tablets
+    ('Tablets with Call Facility','Tablets with Call Facility'),
+    ('Tablets without Call Facility','Tablets without Call Facility'),
+
+    # Mobile Accessories
+    ('Mobile Camera Lens Protectors','Mobile Camera Lens Protectors'),
+    ('Cases & Covers','Cases & Covers'),
+    ('Power Banks','Power Banks'),
+    ('Smart Keys','Smart Keys'),
+    ('Mobile Holders','Mobile Holders'),
+    ('Mobile SIM & SD Card Trays','Mobile SIM & SD Card Trays'),
+    ('Mobile Flashes','Mobile Flashes'),
+    ('Mods','Mods'),
+    ('Mobile Body Panels','Mobile Body Panels'),
+    ('Mobile Batteries','Mobile Batteries'),
+    ('Screen Expanders For Phones','Screen Expanders For Phones'),
+    ('Mobile Pouches','Mobile Pouches'),
+    ('Mobile Spare Parts','Mobile Spare Parts'),
+    ('Earphone Cable Organizers','Earphone Cable Organizers'),
+    ('Mobile Cables','Mobile Cables'),
+    ('Mobile Enhancements','Mobile Enhancements'),
+    ('Anti Radiation Stickers & Chips','Anti Radiation Stickers & Chips'),
+    ('Charging Pads','Charging Pads'),
+    ('Styling & Maintenance','Styling & Maintenance'),
+    ('Selfie Sticks','Selfie Sticks'),
+    ('SIM Adapters','SIM Adapters'),
+    ('Headphone Amplifiers','Headphone Amplifiers'),
+    ('Sim Cutters','Sim Cutters'),
+    ('Headphone Splitters','Headphone Splitters'),
+    ('Batteries','Batteries'),
+    ('Screen Gaurds','Screen Gaurds'),
+    ('Mobile Displays','Mobile Displays'),
+    ('Headphone Pouches & Cases','Headphone Pouches & Cases'),
+    ('Mobile Phone Lens','Mobile Phone Lens'),
+    ('Bluetooth Hats','Bluetooth Hats'),
+    ('Charging Pad Receivers','Charging Pad Receivers'),
+    ('Headphone Stands','Headphone Stands'),
+    ('Headphone Cushions & Earbuds','Headphone Cushions & Earbuds'),
+    ('Cable Drop Clips','Cable Drop Clips'),
+    ('Mobile Chargers','Mobile Chargers'),
+    ('OTG Adapters','OTG Adapters'),
+
+    # Laptop Accessories
+    ('Replacement Screens','Replacement Screens'),
+    ('Memory Card Reader','Memory Card Reader'),
+    ('Anti Dust Plugs','Anti Dust Plugs'),
+    ('Power Banks','Power Banks'),
+    ('Mouse','Mouse'),
+    ('Number Pads','Number Pads'),
+    ('Printer Covers','Printer Covers'),
+    ('UPS','UPS'),
+    ('Keyboard Replacement Keys','Keyboard Replacement Keys'),
+    ('Monitor & TV Covers','Monitor & TV Covers'),
+    ('Laptop Bag Covers','Laptop Bag Covers'),
+    ('Stands','Stands'),
+    ('Projector Screens','Projector Screens'),
+    ('Laptop Skins & Decals','Laptop Skins & Decals'),
+    ('Laptop Adaptors','Laptop Adaptors'),
+    ('Batteries','Batteries'),
+    ('Cooling Pads/Cooling Stands','Cooling Pads/Cooling Stands'),
+    ('Laptop Bags','Laptop Bags'),
+    ('Keyboards','Keyboards'),
+    ('Hard Drive Enclosures','Hard Drive Enclosures'),
+    ('Presentation Remotes','Presentation Remotes'),
+    ('Screen Gaurds','Screen Gaurds'),
+    ('USB Gadgets','USB Gadgets'),
+    ('Hard Disk Cases','Hard Disk Cases'),
+    ('Laser Pointers','Laser Pointers'),
+    ('Touchpads','Touchpads'),
+    ('Docking Stations','Docking Stations'),
+    ('Keyboard Skins','Keyboard Skins'),
+    ('Webcams','Webcams'),
+    ('Mouse Pads','Mouse Pads'),
+    ('Blank Media','Blank Media'),
+    ('Security Locks','Security Locks'),
+    ('Trackballs','Trackballs'),
+    ('Cleaning Kits','Cleaning Kits'),
+    ('Wrist Rests','Wrist Rests'),
+    ('External DVD Writers','External DVD Writers'),
+    ('Computer Accessories Combo','Computer Accessories Combo'),
+
+    # Network Components
+    ('Access Points','Access Points'),
+    ('Internal Modems','Internal Modems'),
+    ('LAN Adapters','LAN Adapters'),
+    ('Network Interface Cards','Network Interface Cards'),
+    ('Router UPS','Router UPS'),
+    ('Antenna Amplifiers','Antenna Amplifiers'),
+    ('Router Antennas & Boosters','Router Antennas & Boosters'),
+    ('Switches','Switches'),
+    ('Data Cards','Data Cards'),
+    ('Network Servers','Network Servers'),
+    ('Wireless USB Adaptors','Wireless USB Adaptors'),
+    ('Cables','Cables'),
+    ('Routers','Routers'),
+    ('VOIP Adaptors','VOIP Adaptors'),
+
+    # Computer Peripherals
+    ('Portable Projectors','Portable Projectors'),
+    ('Portable Scanners','Portable Scanners'),
+    ('Printers','Printers'),
+    ('Printer Ink Bottles','Printer Ink Bottles'),
+    ('Pocket Printers','Pocket Printers'),
+    ('Printer Toners','Printer Toners'),
+    ('Print Servers','Print Servers'),
+    ('Receipt Printers','Receipt Printers'),
+    ('Printer Ink Cartridges','Printer Ink Cartridges'),
+    ('Projectors','Projectors'),
+    ('Scanners','Scanners'),
+
+    # Software
+    ('Physical Utilities','Physical Utilities'),
+    ('Digital Utilities','Digital Utilities'),
+    ('Learn Software','Learn Software'),
+    ('Bussiness Productivity','Bussiness Productivity'),
+    ('Hobbies','Hobbies'),
+    ('Video Editing','Video Editing'),
+    ('Digital Multimedia','Digital Multimedia'),
+    ('Physical Multimedia','Physical Multimedia'),
+    ('Office Tools','Office Tools'),
+    ('Learn Programming','Learn Programming'),
+    ('Operating System','Operating System'),
+    ('Educational Media','Educational Media'),
+    ('Security Software','Security Software'),
+
+    # Computer Components
+    ('Monitors','Monitors'),
+    ('Coolers','Coolers'),
+    ('Thermal Pastes','Thermal Pastes'),
+    ('Internal Hard Drives','Internal Hard Drives'),
+    ('Power Supply Units','Power Supply Units'),
+    ('Graphic Cards','Graphic Cards'),
+    ('Internal Sound Cards','Internal Sound Cards'),
+    ('Processors','Processors'),
+    ('RAMs','RAMs'),
+    ('Motherboards','Motherboards'),
+    ('Internal Optical Drivers','Internal Optical Drivers'),
+    ('Combo Motherboards','Combo Motherboards'),
+
+    # Printers & Inks
+    ('Ink Bottles','Ink Bottles'),
+    ('Ink Cartridges','Ink Cartridges'),
+    ('Printers','Printers'),
+    ('Toners','Toners'),
+    ('Receipt Printers','Receipt Printers'),
+    ('Pocket Printers','Pocket Printers'),
+
+    # Tablet Accessories
+
+    # Desktop PCs
+    ('All in One PCs','All in One PCs'),
+    ('Mini PCs','Mini PCs'),
+    ('Tower PCs','Tower PCs'),
+
+    # Supplies
+    ('Toners','Toners'),
+
+    # Storage
+    ('External Hard Drives','External Hard Drives'),
+    ('Memory Cards','Memory Cards'),
+    ('Pen Drives','Pen Drives'),
+    ('Internal Hard Drives','Internal Hard Drives'),
+
+    # Audio Players
+    ('Microphones & Accessories','Microphones & Accessories'),
+    ('MP4/Video MP3 Players','MP4/Video MP3 Players'),
+    ('MP3 Players','MP3 Players'),
+    ('iPods','iPods'),
+    ('Boom Box','Boom Box'),
+    ('FM Radio','FM Radio'),
+    ('Sound Mixer','Sound Mixer'),
+    ('Voice Recorders','Voice Recorders'),
+    ('Mikes','Mikes'),
+    ('Home Audio','Home Audio'),
+
+    # Video Players & Accessories
+    ('3D Video Glasses','3D Video Glasses'),
+    ('Selector and Smart Box','Selector and Smart Box'),
+    ('Remote Controllers','Remote Controllers'),
+    ('Media Players','Media Players'),
+    ('DTH','DTH'),
+    ('Home Theatres & Speakers','Home Theatres & Speakers'),
+    ('Antenna Rotators','Antenna Rotators'),
+
+    # Home Audio
+    ('Hi-Fi Systems','Hi-Fi Systems'),
+    ('Boom Box','Boom Box'),
+    ('FM Radio','FM Radio'),
+    ('Sound Mixer','Sound Mixer'),
+    ('Voice Recorders','Voice Recorders'),
+
+    # Professional Audio Systems
+    ('Sound Mixers','Sound Mixers'),
+    ('Public Address Systems','Public Address Systems'),
+
+    # ('Vehicle Mats', 'Vehicle Mats'),
+    ('Bike Mats','Bike Mats'),
+    ('Car Mats','Car Mats'),
+
+    # ('Tyre & Wheel', 'Tyre & Wheel'),
+    ('Tyres','Tyres'),
+    ('Tyre & WHeel Spares','Tyre & WHeel Spares'),
+    ('Tyre Tubes','Tyre Tubes'),
+    ('Rims & Wheels','Rims & Wheels'),
+
+    # ('Vehicle Safety,Security & Guards', 'Vehicle Safety,Security & Guards'),
+    ('Bike Crash Guards','Bike Crash Guards'),
+    ('Bike Radiator Guards','Bike Radiator Guards'),
+    ('Bike Engine Guards','Bike Engine Guards'),
+    ('Bike Engine Guards','Bike Engine Guards'),
+    ('Bike Saree Guards','Bike Saree Guards'),
+    ('Handlebar Hand Guards','Handlebar Hand Guards'),
+    ('Driver Monitor Systems','Driver Monitor Systems'),
+    ('Car Security Alarms','Car Security Alarms'),
+    ('Bike Locks','Bike Locks'),
+    ('Car Security Cameras','Car Security Cameras'),
+    ('Bike Alarm Kits','Bike Alarm Kits'),
+    ('Car Wheel Locks','Car Wheel Locks'),
+    ('Parking Sensors','Parking Sensors'),
+    ('GPS Navigation Devices','GPS Navigation Devices'),
+    ('First Aid Kits','First Aid Kits'),
+    ('Vehicle Safety Hammers','Vehicle Safety Hammers'),
+    ('Wheel Chocks','Wheel Chocks'),
+    ('Bike Storage Stands','Bike Storage Stands'),
+
+    # ('Car Dashboard Accessories', 'Car Dashboard Accessories'),
+    ('Car Dash Switch Panels','Car Dash Switch Panels'),
+    ('Car Dashboard Trims','Car Dashboard Trims'),
+    ('Car Dashboard Indicators Lamps','Car Dashboard Indicators Lamps'),
+    ('Speedometers','Speedometers'),
+    ('Car Dashboard Covers','Car Dashboard Covers'),
+    ('Car Tissue Dispensers','Car Tissue Dispensers'),
+    ('Vehicle Clock','Vehicle Clock'),
+
+    # ('Car Air Purifiers & Air Fresheners', 'Car Air Purifiers & Air Fresheners'),
+    ('Car Air Purifiers','Car Air Purifiers'),
+    ('Car Air Humidifiers & Ionizers','Car Air Humidifiers & Ionizers'),
+    ('Car Air Fresheners & Refills','Car Air Fresheners & Refills'),
+
+    # ('Vehicle Cleaners', 'Vehicle Cleaners'),
+    ('Vehicle Cleaning Clay Bars','Vehicle Cleaning Clay Bars'),
+    ('Vehicle Cleaning Dusters','Vehicle Cleaning Dusters'),
+    ('Vehicle Cleaning Sponges','Vehicle Cleaning Sponges'),
+    ('Vehicle Cleaning Brushes','Vehicle Cleaning Brushes'),
+    ('Vehicle Cleaning Cloths','Vehicle Cleaning Cloths'),
+    ('Vehicle Cleaning Scrape Cleaners','Vehicle Cleaning Scrape Cleaners'),
+    ('Vehicle Cleaning Hand Gloves','Vehicle Cleaning Hand Gloves'),
+    ('Headlight Brighteners','Headlight Brighteners'),
+    ('Vehicle Pressure Washers','Vehicle Pressure Washers'),
+    ('Brake Cleaners','Brake Cleaners'),
+    ('Car Polishes','Car Polishes'),
+    ('Tyre Cleaners','Tyre Cleaners'),
+    ('Car Interior Cleaners','Car Interior Cleaners'),
+    ('Vehicle Washing Liquid','Vehicle Washing Liquid'),
+    ('Vehicle Dryers','Vehicle Dryers'),
+    ('Radiator Cleaners','Radiator Cleaners'),
+    ('Fuel Injector Cleaners','Fuel Injector Cleaners'),
+    ('Fuel Tank Cleaners','Fuel Tank Cleaners'),
+    ('Vehicle Engine Cleaners','Vehicle Engine Cleaners'),
+    ('Vehicle Light Cleaners','Vehicle Light Cleaners'),
+    ('Headlight Restorer Kits','Headlight Restorer Kits'),
+    ('Chain Cleaner Degreasers','Chain Cleaner Degreasers'),
+    ('Headlight Cleaning Kits','Headlight Cleaning Kits'),
+
+    # ('Vehicle Styling', 'Vehicle Styling'),
+    ('Car Grill Covers','Car Grill Covers'),
+    ('Bike Windshields','Bike Windshields'),
+    ('Window Louvers','Window Louvers'),
+    ('Reflective Tapes','Reflective Tapes'),
+    ('Bike Swing Arm Caps','Bike Swing Arm Caps'),
+    ('Bike Fork Covers','Bike Fork Covers'),
+    ('Bike Headlight Visors','Bike Headlight Visors'),
+    ('Bike Headlight Mounts','Bike Headlight Mounts'),
+    ('Scoops','Scoops'),
+    ('Spoilers','Spoilers'),
+    ('Car Speaker Grills','Car Speaker Grills'),
+    ('Bike Tank Pads','Bike Tank Pads'),
+    ('Car Lamp Frames','Car Lamp Frames'),
+    ('Bike Swing Arm Spools','Bike Swing Arm Spools'),
+    ('Bike Tank Covers','Bike Tank Covers'),
+    ('Bike Fairing Kits','Bike Fairing Kits'),
+    ('Car Side Bearings','Car Side Bearings'),
+    ('Bike Crash Guard Ropes','Bike Crash Guard Ropes'),
+    ('Vehicle Emblems','Vehicle Emblems'),
+    ('Fastags','Fastags'),
+    ('Vehicle Stickers','Vehicle Stickers'),
+    ('Helmet Mohawks','Helmet Mohawks'),
+    ('Vehicle Decor Wraps','Vehicle Decor Wraps'),
+    ('Headlight Venyl Films','Headlight Venyl Films'),
+    ('Vehicle Key Covers','Vehicle Key Covers'),
+    ('Car Hanging Ornaments','Car Hanging Ornaments'),
+    ('Interior Sun Visor Trims','Interior Sun Visor Trims'),
+    ('Vehicle Sill Plates','Vehicle Sill Plates'),
+
+    # ('Vehicle Stereo & Music Systems', 'Vehicle Stereo & Music Systems'),
+    ('Bike Stereo System','Bike Stereo System'),
+    ('Car Media Players','Car Media Players'),
+    ('Vehicle Antennas','Vehicle Antennas'),
+    ('Car Video Monitors','Car Video Monitors'),
+    ('Car Speakers','Car Speakers'),
+    ('Car Amplifiers','Car Amplifiers'),
+    ('Car Subwoofers','Car Subwoofers'),
+
+    # ('Vehicle Door,Windshield,Windows & Mirrors', 'Vehicle Door,Windshield,Windows & Mirrors'),
+    ('Car Door Pull Straps','Car Door Pull Straps'),
+    ('Car Door Handle Trims','Car Door Handle Trims'),
+    ('Vehicle Mirror Covers','Vehicle Mirror Covers'),
+    ('Vehicle Mirrors','Vehicle Mirrors'),
+    ('Rearview Radar Mirrors','Rearview Radar Mirrors'),
+    ('Car Window Visors','Car Window Visors'),
+    ('Car Sun Shades','Car Sun Shades'),
+    ('Car Curtains','Car Curtains'),
+    ('Car Door Bumper Guards','Car Door Bumper Guards'),
+    ('Bike Mirror Adapters','Bike Mirror Adapters'),
+    ('Car Mirror Rain Blockers','Car Mirror Rain Blockers'),
+
+    # ('Vehicle Utility & Accessories', 'Vehicle Utility & Accessories'),
+    ('Car Interior Fans','Car Interior Fans'),
+    ('Car Mobile Chargers','Car Mobile Chargers'),
+    ('Car Bluetooth Devices','Car Bluetooth Devices'),
+    ('Car Mobile Holders','Car Mobile Holders'),
+    ('Car Multipurpose Chargers','Car Multipurpose Chargers'),
+    ('Bike Mobile Chargers','Bike Mobile Chargers'),
+    ('Bike Mobile Holders','Bike Mobile Holders'),
+    ('Car Cigarette Lighters','Car Cigarette Lighters'),
+    ('Car Laptop Chargers','Car Laptop Chargers'),
+    ('Car Inverters','Car Inverters'),
+    ('Compact Refrigerators','Compact Refrigerators'),
+
+    # ('Vehicle Body Covers', 'Vehicle Body Covers'),
+    ('Bike Body Covers','Bike Body Covers'),
+    ('Bike Umbrellas','Bike Umbrellas'),
+    ('Car Body Covers','Car Body Covers'),
+
+    # ('Vehicle Seat & Accessories', 'Vehicle Seat & Accessories'),
+    ('Vehicle Seating Pads','Vehicle Seating Pads'),
+    ('Car Seatbelt Covers','Car Seatbelt Covers'),
+    ('Bike Spring Seats','Bike Spring Seats'),
+    ('Car Armrest Covers','Car Armrest Covers'),
+    ('Car Inflatable Beds','Car Inflatable Beds'),
+    ('Car Seat Belts','Car Seat Belts'),
+    ('Seat Belt Buckle & Extenders','Seat Belt Buckle & Extenders'),
+    ('Car Pillows & Cushions','Car Pillows & Cushions'),
+    ('Bike Seat Covers','Bike Seat Covers'),
+    ('Vehicle Seat Mount Kits','Vehicle Seat Mount Kits'),
+    ('Car Armrests','Car Armrests'),
+    ('Car Seat Covers','Car Seat Covers'),
+    ('Car Armrest Pad Cushions','Car Armrest Pad Cushions'),
+
+    # ('Oils & Lubricants', 'Oils & Lubricants'),
+    ('Vehicle Oil Pump Kits','Vehicle Oil Pump Kits'),
+    ('Engine Oil','Engine Oil'),
+    ('Filter Oil','Filter Oil'),
+    ('Brake Oil','Brake Oil'),
+    ('Power Steering Fluids','Power Steering Fluids'),
+    ('Gear Oil','Gear Oil'),
+    ('Fork Oil','Fork Oil'),
+    ('Engine Oil Additives','Engine Oil Additives'),
+    ('Chain Oil','Chain Oil'),
+    # ('Spares,Tools & Maintenance Service Parts', 'Spares,Tools & Maintenance Service Parts'),
+    ('Bike Tappet Covers','Bike Tappet Covers'),
+    ('Bike Choke Knob','Bike Choke Knob'),
+    ('Car Head Gaskets','Car Head Gaskets'),
+    ('Car Engine Valves','Car Engine Valves'),
+    ('Car Engine Mounts','Car Engine Mounts'),
+    ('Vehicle Camshaft Seals','Vehicle Camshaft Seals'),
+    ('Two Wheeler Piston Kits','Two Wheeler Piston Kits'),
+    ('Bike Chain Breakers','Bike Chain Breakers'),
+    ('Bike Chain Sprockets','Bike Chain Sprockets'),
+    ('Bike Cassettes','Bike Cassettes'),
+    ('Clutch Centre Bearings','Clutch Centre Bearings'),
+    ('Clutch Bearings','Clutch Bearings'),
+    ('Car Wheel Bearings','Car Wheel Bearings'),
+    ('Bearing Connecting Rods','Bearing Connecting Rods'),
+    ('Radiator','Radiator'),
+    ('Two Wheeler Brake Shoe','Two Wheeler Brake Shoe'),
+    ('Clutch Plates','Clutch Plates'),
+    ('Brake & Clutch Levers','Brake & Clutch Levers'),
+    ('Vehicle Disc Pads','Vehicle Disc Pads'),
+    ('Handbrake Shoe Kits','Handbrake Shoe Kits'),
+    ('Brake Vacuum Pumps','Brake Vacuum Pumps'),
+    ('Brake Calipers','Brake Calipers'),
+    ('Bike Clutch Covers','Bike Clutch Covers'),
+    ('Abs Hydraulics Units','Abs Hydraulics Units'),
+    ('Vehicle Brake Discs','Vehicle Brake Discs'),
+    ('Car Axle Shafts','Car Axle Shafts'),
+    ('Car Stabilizer Links','Car Stabilizer Links'),
+    ('Control Arm Bushings','Control Arm Bushings'),
+    ('Two Wheeler Axles','Two Wheeler Axles'),
+    ('Car Steering Covers','Car Steering Covers'),
+    ('Vehicle Steering Wheels','Vehicle Steering Wheels'),
+    ('Car Steering Knobs','Car Steering Knobs'),
+    ('Vehicle Gauges','Vehicle Gauges'),
+    ('Foot Rests','Foot Rests'),
+    ('Bike Stand Pads','Bike Stand Pads'),
+    ('Bike Side & Centre Stands','Bike Side & Centre Stands'),
+    ('Bike Fork Spring Kits','Bike Fork Spring Kits'),
+    ('Coil Spring Compressors','Coil Spring Compressors'),
+    ('Vehicle Suspension Struts','Vehicle Suspension Struts'),
+    ('Vehicle Shock Absorbers','Vehicle Shock Absorbers'),
+    ('Bike Suspension Kits','Bike Suspension Kits'),
+    ('Ground Clearance kits','Ground Clearance kits'),
+    # ('Starter,Ignition & Fuel Injectors','Starter,Ignition & Fuel Injectors')
+    ('Bike Cylinder Kits','Bike Cylinder Kits'),
+    ('Oil Filer Caps','Oil Filer Caps'),
+    ('Spark Plug Wire Sets','Spark Plug Wire Sets'),
+    ('Spark Plug Cleaners','Spark Plug Cleaners'),
+    ('Vehicle Starter Motors','Vehicle Starter Motors'),
+    ('Fuel Injection Throttles','Fuel Injection Throttles'),
+    ('Ignition Coil Brackets','Ignition Coil Brackets'),
+    ('Spark Plugs','Spark Plugs'),
+    ('Turbo Charger Assemblies','Turbo Charger Assemblies'),
+
+    # ('Vehicle Exhaust','Vehicle Exhaust'),
+    ('Car Silencers','Car Silencers'),
+    ('Exhaust Muffler Tips','Exhaust Muffler Tips'),
+    ('Bike Exhaust Systems','Bike Exhaust Systems'),
+    ('Bike Silencer Rubbers','Bike Silencer Rubbers'),
+    ('Bike Exhaust Heat Shields','Bike Exhaust Heat Shields'),
+    # ('Vehicle Fuse','Vehicle Fuse'),
+    ('Vehicle Fuses','Vehicle Fuses'),
+    ('Vehicle Fuse Boxes','Vehicle Fuse Boxes'),
+    ('Vehicle Fuse Pullers','Vehicle Fuse Pullers'),
+
+    # ('Bike Handlebar','Bike Handlebar'),
+    ('Handlebar Grips','Handlebar Grips'),
+    ('Handlebar Grip Donuts','Handlebar Grip Donuts'),
+    ('Handlebars','Handlebars'),
+    ('Handlebar Riser Kits','Handlebar Riser Kits'),
+    ('Handlebar Riser Kits','Handlebar Riser Kits'),
+
+    # ('Pedals','Pedals'),
+    ('Car Pedal Assembly','Car Pedal Assembly'),
+    ('Kick Start Levers','Kick Start Levers'),
+    ('Car Pedals','Car Pedals'),
+
+    ('Sensors & Control Unit','Sensors & Control Unit'),
+    # ('Filters','Filters'),
+    ('Vehicle Air Filters','Vehicle Air Filters'),
+    ('Vehicle Oil Filters','Vehicle Oil Filters'),
+    ('Car Cabin Filters','Car Cabin Filters'),
+    ('Vehicle Fuel Filters','Vehicle Fuel Filters'),
+    ('Bike Air Filter Covers','Bike Air Filter Covers'),
+
+    ('Handbrake','Handbrake'),
+    ('Coolant','Coolant'),
+    # ('Automotive Tools','Automotive Tools'),
+    ('Engine Circlip Tools','Engine Circlip Tools'),
+    ('Fasteners','Fasteners'),
+    ('Vehicle Tool Kits','Vehicle Tool Kits'),
+    ('Car Audio Panel Remover','Car Audio Panel Remover'),
+    ('Vehicle Tool Rolls','Vehicle Tool Rolls'),
+    ('Din Removal Kits','Din Removal Kits'),
+
+    # ('Vehicle Cables','Vehicle Cables'),
+    ('Accelerator Cable','Accelerator Cable'),
+    ('Brake Cable','Brake Cable'),
+    ('Clutch Cable','Clutch Cable'),
+    ('Bonnet Release Cables','Bonnet Release Cables'),
+    ('Ignition Cable','Ignition Cable'),
+    ('Car Gear Cable','Car Gear Cable'),
+    ('Car Antenna Cable','Car Antenna Cable'),
+
+
+    # ('Vehicle Battery & Jumper','Vehicle Battery & Jumper'),
+    ('Battery Terminal Clamps','Battery Terminal Clamps'),
+    ('Battery Vent Tubes','Battery Vent Tubes'),
+    ('Vehicle Battery Covers','Vehicle Battery Covers'),
+    ('Bike Electric Regulators','Bike Electric Regulators'),
+    ('Battery Jumper Cables','Battery Jumper Cables'),
+    ('Car Battery Trays','Car Battery Trays'),
+    ('Vehicle Batteries','Vehicle Batteries'),
+    ('Vehicle Jump Starters','Vehicle Jump Starters'),
+    # ('Bonnet & Bumper','Bonnet & Bumper'),
+    ('Mud Guards','Mud Guards'),
+    ('Vehicle Number Plates','Vehicle Number Plates'),
+    ('Bumper Caps','Bumper Caps'),
+
+    # ('Vehicle Gear','Vehicle Gear'),
+    ('Car Gear Levers','Car Gear Levers'),
+    ('Gear Locks','Gear Locks'),
+    ('Gear Knobs','Gear Knobs'),
+    ('Gear Knob Covers','Gear Knob Covers'),
+    ('Automatic Gear Panels','Automatic Gear Panels'),
+    ('Input Gear Assembly','Input Gear Assembly'),
+    ('Gear Shift Collars','Gear Shift Collars'),
+
+    # ('Vehicle Storage & Organizers', 'Vehicle Storage & Organizers'),
+    ('Car Dash Panel Trays','Car Dash Panel Trays'),
+    ('Car Flashlight Mounts','Car Flashlight Mounts'),
+    ('Car Tray Tables','Car Tray Tables'),
+    ('Bike Luggage Bag & Box','Bike Luggage Bag & Box'),
+    ('Bike Luggage Carriers','Bike Luggage Carriers'),
+    ('Car Underseat Storages','Car Underseat Storages'),
+    ('Car Visor Pouches','Car Visor Pouches'),
+    ('Car Laptop Mounts','Car Laptop Mounts'),
+    ('Car Trunk Organizers','Car Trunk Organizers'),
+    ('Car Coat Hangers','Car Coat Hangers'),
+    ('Car Hanging Organizers','Car Hanging Organizers'),
+    ('Vehicle Cargo Nets','Vehicle Cargo Nets'),
+    ('Car Trash Bins & Bags','Car Trash Bins & Bags'),
+    ('Ash Trays','Ash Trays'),
+    ('Car Cup/Bottle Holders','Car Cup/Bottle Holders'),
+    ('Car Roll Bar Storages','Car Roll Bar Storages'),
+    ('Car Sunglass Holders','Car Sunglass Holders'),
+
+    # ('Helmets & Riding Gear', 'Helmets & Riding Gear'),
+    ('Rider Hydration Packs','Rider Hydration Packs'),
+    ('Helmet Buckle Clips','Helmet Buckle Clips'),
+    ('Helmet Cheek Pads','Helmet Cheek Pads'),
+    ('Helmet Mounts','Helmet Mounts'),
+    ('Biker Helmets','Biker Helmets'),
+    ('Helmet Breadth Guards','Helmet Breadth Guards'),
+    ('Helmet Locks','Helmet Locks'),
+    ('Helmet Visors','Helmet Visors'),
+    ('Helmet Visor Bags','Helmet Visor Bags'),
+    ('Arm Sleeves','Arm Sleeves'),
+    ('Rider Neck Braces','Rider Neck Braces'),
+    ('Riding Shoe Covers','Riding Shoe Covers'),
+    ('Riding Gloves','Riding Gloves'),
+    ('Rider Face Masks','Rider Face Masks'),
+    ('Rider Protective Vests','Rider Protective Vests'),
+    ('Knee & Elbow Guards','Knee & Elbow Guards'),
+    ('Riding Chest Pad Inserts','Riding Chest Pad Inserts'),
+    ('Rider Protective Vests','Rider Protective Vests'),
+    ('Rider Protective Jackets','Rider Protective Jackets'),
+    ('Wrist Protectors','Wrist Protectors'),
+    ('Knee Sliders','Knee Sliders'),
+
+    # ('Vehicle Lights', 'Vehicle Lights'),
+    ('Vehicle Mirror Lights','Vehicle Mirror Lights'),
+    ('Bike Handlebar Lights','Bike Handlebar Lights'),
+    ('Projector Lens','Projector Lens'),
+    ('Indicator Lights','Indicator Lights'),
+    ('Vehicle Light Bulbs','Vehicle Light Bulbs'),
+    ('Light Grills','Light Grills'),
+    ('Daytime Running Lights','Daytime Running Lights'),
+    ('Headlight & Taillight Assemblies','Headlight & Taillight Assemblies'),
+    ('Headlight & Fog Lamps','Headlight & Fog Lamps'),
+
+    # ('Automotive Combos', 'Automotive Combos'),
+    # ('Vehicle Repair', 'Vehicle Repair'),
+    ('Vehicle Mobility Repair','Vehicle Mobility Repair'),
+    ('Vehicle Body Repair','Vehicle Body Repair'),
+
+
+    # Construction Tools & Equipments
+    ('Drywall Panels','Drywall Panels'),
+    ('Drywall & Masonry Carts','Drywall & Masonry Carts'),
+    ('Drywall Sanders','Drywall Sanders'),
+    ('Dewatering Bags','Dewatering Bags'),
+    ('Masonry Trowels','Masonry Trowels'),
+
+    # Wooden Supplies
+    ('Laminates','Laminates'),
+    ('Door Frames','Door Frames'),
+    ('Lumber','Lumber'),
+    ('Veneers','Veneers'),
+    ('Plywood','Plywood'),
+
+    # Building Raw Material
+    ('Eave and Rake Starter Strips','Eave and Rake Starter Strips'),
+    ('Rebar','Rebar'),
+    ('Contact Cement','Contact Cement'),
+    ('Welding Rods','Welding Rods'),
+    ('Concrete Pump Clamp','Concrete Pump Clamp'),
+    ('Crack Filler','Crack Filler'),
+    ('Welding Waste','Welding Waste'),
+
+    # Furniture Parts
+    ('Draft Stoppers','Draft Stoppers'),
+    ('Drawer Slides','Drawer Slides'),
+    ('Door Stoppers','Door Stoppers'),
+    ('Door Closers','Door Closers'),
+    ('Patch Fitting','Patch Fitting'),
+    ('Window Films','Window Films'),
+    ('Sliding Tracks','Sliding Tracks'),
+    ('Door Sealers','Door Sealers'),
+    ('Door Brush','Door Brush'),
+    ('Door & Window Screen','Door & Window Screen'),
+    ('Viewers','Viewers'),
+    ('Sliding Gate Rollers','Sliding Gate Rollers'),
+    ('Kick Plates','Kick Plates'),
+    ('Doors','Doors'),
+    ('Knobs & Handles','Knobs & Handles'),
+    ('Door Knockers','Door Knockers'),
+    ('Latches & Bolts','Latches & Bolts'),
+    ('Hinges','Hinges'),
+    # Door & Window Fitting
+    # Building Supplies add-ons
+    ('Fence Posts','Fence Posts'),
+    ('Ceiling Panels','Ceiling Panels'),
+    ('Baluster Shoes','Baluster Shoes'),
+    ('Fence Caps','Fence Caps'),
+    ('Water Tanks','Water Tanks'),
+    ('Millwork Corbels','Millwork Corbels'),
+    ('Roof Gutters','Roof Gutters'),
+    ('Roof Shingles & Shakes','Roof Shingles & Shakes'),
+    ('Floor Coating','Floor Coating'),
+    ('Plate Glass','Plate Glass'),
+    ('Handrail Brackets','Handrail Brackets'),
+
+    # Platform Troleys
+    # Bathroom & Kitchen Fittings
+    ('Kitchen Sinks','Kitchen Sinks'),
+    ('Toilet Paper Holders','Toilet Paper Holders'),
+    ('Bidet Nozzles','Bidet Nozzles'),
+    ('Drain Strainers','Drain Strainers'),
+    ('Shower Heads','Shower Heads'),
+    ('Flush Tank Levers','Flush Tank Levers'),
+    ('Bathroom Mirrors','Bathroom Mirrors'),
+    ('Tap Mount Water Filters','Tap Mount Water Filters'),
+    ('Toilet Seat Lid Locks','Toilet Seat Lid Locks'),
+    ('Toilet Safety Frames','Toilet Safety Frames'),
+    ('Bath Tubs','Bath Tubs'),
+    ('Septic Tanks','Septic Tanks'),
+    ('Wash Basins','Wash Basins'),
+    ('Faucets','Faucets'),
+    ('Shelf Brackets','Shelf Brackets'),
+    ('Bath Caddies','Bath Caddies'),
+    ('Towel Bars & Rings','Towel Bars & Rings'),
+    ('Sink Tub Plugs','Sink Tub Plugs'),
+    ('Bidets','Bidets'),
+    ('Faucet Extension','Faucet Extension'),
+    ('Shower Grab Bars','Shower Grab Bars'),
+    ('Hair Wash Basins','Hair Wash Basins'),
+    ('Bathtub Safety Rails','Bathtub Safety Rails'),
+    ('Towel Rack Holders','Towel Rack Holders'),
+    ('Shower Rock Hooks','Shower Rock Hooks'),
+    ('Commodes','Commodes'),
+    ('Flanges','Flanges'),
+    ('Seat Covers','Seat Covers'),
+    ('Shower Systems','Shower Systems'),
+    ('Bathtub Feets','Bathtub Feets'),
+    ('Bucket Organizers','Bucket Organizers'),
+    ('Flush Tanks','Flush Tanks'),
+    ('Urinals','Urinals'),
+    ('Foot Pedal Flushes','Foot Pedal Flushes'),
+    ('Bathroom Racks','Bathroom Racks'),
+
+    # Plumbing Supplies
+    ('Plumbing Valves','Plumbing Valves'),
+    ('Water Pump Boards','Water Pump Boards'),
+    ('Gasket Sealers','Gasket Sealers'),
+    ('Hardware Washers','Hardware Washers'),
+    ('Pipe Joints','Pipe Joints'),
+    ('Pluming Pipes','Pluming Pipes'),
+    ('Boat Cleats','Boat Cleats'),
+    ('Plumbing Tapes','Plumbing Tapes'),
+    ('Pump Accessories','Pump Accessories'),
+    ('Cable Straps','Cable Straps'),
+    # Solar & Alternate Energy
+    ('Solar Charge Control','Solar Charge Control'),
+    ('Solar Mounting Frames','Solar Mounting Frames'),
+    ('Solar Pump','Solar Pump'),
+    ('Solar Panels','Solar Panels'),
+    ('Solar Batteries','Solar Batteries'),
+    ('Solar Light Sets','Solar Light Sets'),
+    ('Solar Fan Sets','Solar Fan Sets'),
+
+    # Electrical Hardware
+    ('Wires & Cables', 'Wires & Cables'),
+    ('Keystone Inserts','Keystone Inserts'),
+    ('Exhaust Fans','Exhaust Fans'),
+    ('Copper Wire','Copper Wire'),
+    ('Electrical Tapes','Electrical Tapes'),
+    ('Electrical Wall Plates','Electrical Wall Plates'),
+    ('Inline Fans','Inline Fans'),
+    ('Spike Guard & Surge Protectors', 'Spike Guard & Surge Protectors'),
+    ('Electrical Plugs', 'Electrical Plugs'),
+    ('Sockets', 'Sockets'),
+    ('Door Bells', 'Door Bells'),
+    ('Hardware Tapes', 'Hardware Tapes'),
+    ('Cable Sleeves', 'Cable Sleeves'),
+    ('Dimmers', 'Dimmers'),
+    ('Light Sockets', 'Light Sockets'),
+    ('Fan Regulators', 'Fan Regulators'),
+    ('Electrical Tapes', 'Electrical Tapes'),
+    ('Electrical Switches', 'Electrical Switches'),
+    ('Electrical Fuses','Electrical Fuses'),
+    ('Pumps', 'Pumps'),
+    ('Electrical Fuses', 'Electrical Fuses'),
+    ('Electronic Timer Switches', 'Electronic Timer Switches'),
+    ('Electrical Distribution Boards', 'Electrical Distribution Boards'),
+    ('Wire Connectors', 'Wire Connectors'),
+    ('Led Drivers', 'Led Drivers'),
+    ('RCCB', 'RCCB'),
+    ('Plug Pins','Plug Pins'),
+
+    # Paint Supplies & Equipment
+    ('Paint Binders', 'Paint Binders'),
+    ('Paint Sprays', 'Paint Sprayers'),
+    ('Varnish','Varnish'),
+    ('Paint Gloves','Paint Gloves'),
+    ('Primer','Primer'),
+    ('Sandpaper','Sandpaper'),
+    ('Wood Stain','Wood Stain'),
+    ('Paint Brushes','Paint Brushes'),
+    ('Wall Paints','Wall Paints'),
+    ('Spray Paints','Spray Paints'),
+    ('Paint Rollers','Paint Rollers'),
+    ('Paint Removers','Paint Removers'),
+    ('Paint Coveralls','Paint Coveralls'),
+    ('Putty Knives','Putty Knives'),
+    ('Thinners','Thinners'),
+    ('Hand Pads','Hand Pads'),
+    # Cameras
+    ('Drones', 'Drones'),
+    ('Point & Shoot', 'Point & Shoot'),
+    ('IP Cameras', 'IP Cameras'),
+    ('Sports & Action', 'Sports & Action'),
+    ('Instant Cameras', 'Instant Cameras'),
+    ('DSLR & Mirrorless', 'DSLR & Mirrorless'),
+    ('Camcorders', 'Camcorders'),
+
+    # Camera Accessories
+    ('Selfie Sticks & Monopods', 'Selfie Sticks & Monopods'),
+    ('Camera Battery Grips', 'Camera Battery Grips'),
+    ('Camera Bags', 'Camera Bags'),
+    ('Camera Lenses', 'Camera Lenses'),
+    ('Camera Filters', 'Camera Filters'),
+    ('Binoculars & Optics', 'Binoculars & Optics'),
+    ('Lens Cleaners', 'Lens Cleaners'),
+    ('Camera Remote Controls', 'Camera Remote Controls'),
+    ('Photo Printer', 'Photo Printer'),
+    ('Lens Hoods', 'Lens Hoods'),
+    ('Photo Papers', 'Photo Papers'),
+    ('Camera Housings', 'Camera Housings'),
+    ('Camera Microphones', 'Camera Microphones'),
+    ('Mattle Box', 'Mattle Box'),
+    ('Camera Battery', 'Camera Battery'),
+    ('Gimbals', 'Gimbals'),
+    ('Collapsible Reflectors', 'Collapsible Reflectors'),
+    ('LED Lights', 'LED Lights'),
+    ('Flash Shoe Adaptors', 'Flash Shoe Adaptors'),
+    ('Selfie Flash', 'Selfie Flash'),
+    ('Eyecups', 'Eyecups'),
+    ('Reflector Umbrellas', 'Reflector Umbrellas'),
+    ('Lens Caps', 'Lens Caps'),
+    ('Flashes', 'Flashes'),
+    ('Telescopes', 'Telescopes'),
+    ('Straps', 'Straps'),
+    ('Levelers', 'Levelers'),
+    ('Tripods', 'Tripods'),
+    ('Pistol Grips', 'Pistol Grips'),
+    ('Soft Lens Case', 'Soft Lens Case'),
+    ('Photographer Vests', 'Photographer Vests'),
+    ('Camera Mounts', 'Camera Mounts'),
+    ('Stepping Rings', 'Stepping Rings'),
+    ('Extension Tubes', 'Extension Tubes'),
+    ('Camera Flash Brackets', 'Camera Flash Brackets'),
+    ('Diffusers', 'Diffusers'),
+    ('Quick Release Plates', 'Quick Release Plates'),
+    ('Battery Charges', 'Battery Charges'),
+    ('Grey Cards', 'Grey Cards'),
+    ('Camera Rigs', 'Camera Rigs'),
+    ('Lens Adaptors', 'Lens Adaptors'),
+    ('Tripod Bags', 'Tripod Bags'),
+    ('Tripod Ball Head', 'Tripod Ball Head'),
+    ('Camera Film Rolls', 'Camera Film Rolls'),
+    ('Reflectors', 'Reflectors'),
+    ('Snoots', 'Snoots'),
+    ('Batteries', 'Batteries'),
+    ('Teleconverters', 'Teleconverters'),
+    ('LCD Screen Protectors', 'LCD Screen Protectors'),
+    ('Wireless Screen Controllers', 'Wireless Screen Controllers'),
+    ('Digital Photo Frames', 'Digital Photo Frames'),
+
+    # Musical Instruments
+    # String Instruments
+    ('Violins','Violins'),
+    ('Electric Guards','Electric Guards'),
+    ('Mandolins','Mandolins'),
+    ('Ukuleles','Ukuleles'),
+    ('Acoustic Guitars','Acoustic Guitars'),
+    ('Accessories','Accessories'),
+    ('Bass Guitars','Bass Guitars'),
+
+    # Wind Instruments
+    ('Trumpets','Trumpets'),
+    ('Alto Horns','Alto Horns'),
+    ('Tubas','Tubas'),
+    ('Clarinets','Clarinets'),
+    ('Bagpipes','Bagpipes'),
+    ('Euphoniums','Euphoniums'),
+    ('Accessories','Accessories'),
+    ('Flugelhorns','Flugelhorns'),
+    ('Trombones','Trombones'),
+    ('Conches','Conches'),
+    ('Cornets','Cornets'),
+    ('Flutes','Flutes'),
+    ('Saxophones','Saxophones'),
+    ('Shehanais','Shehanais'),
+    ('Bugles','Bugles'),
+    ('Pungis','Pungis'),
+    ('Recorders','Recorders'),
+    ('Harmonicas','Harmonicas'),
+
+    # Keys & Synthesizers
+    ('Musical Keyboards', 'Musical Keyboards'),
+    ('Shruti Boxes', 'Shruti Boxes'),
+    ('Harmoniums','Harmoniums'),
+    ('Accessories', 'Accessories'),
+
+    # Studio/Stage Equipments
+    ('Audio Compressors','Audio Compressors'),
+    ('DJ Controllers','DJ Controllers'),
+    ('Amplifier Receiver','Amplifier Receiver'),
+    ('Microphone','Microphone'),
+
+    # Electronic Instruments
+    # Drums & Percussion
+    ('Bongos','Bongos'),
+    ('Triangles','Triangles'),
+    ('Dholaks','Dholaks'),
+    ('Ghungroos','Ghungroos'),
+    ('Cajons','Cajons'),
+    ('Cowbells','Cowbells'),
+    ('Conga Drums','Conga Drums'),
+    ('Sapp','Sapp'),
+    ('Kartal','Kartal'),
+    ('Tablas','Tablas'),
+    ('Accessories','Accessories'),
+    ('Shakers','Shakers'),
+    ('Morsing','Morsing'),
+    ('Tambourines','Tambourines'),
+    ('Chimta','Chimta'),
+    ('Xylophones','Xylophones'),
+    ('Djembes','Djembes'),
+    ('Percussion Pads','Percussion Pads'),
+    ('Cajons','Cajons'),
+
+    # Accessories
+    ('Guitar Strings','Guitar Strings'),
+    ('Guitar Picks','Guitar Picks'),
+    ('Guitar Patch Cables','Guitar Patch Cables'),
+    ('Guitar Capos','Guitar Capos'),
+    ('Guitar Stands','Guitar Stands'),
+    ('Guitar Tuners','Guitar Tuners'),
+    ('Guitar Straps','Guitar Straps'),
+    ('Keys & Synthesizers','Keys & Synthesizers'),
+    ('Musical Stands','Musical Stands'),
+    ('Drums & Percussions','Drums & Percussions'),
+    ('Wind Instruments','Wind Instruments'),
+    ('Cases & Covers','Cases & Covers'),
+    ('Studio/Stage Equipments','Studio/Stage Equipments'),
+
+    #  Home Improvement
+    # Lawn & Gardening
+    ('Watering Equipments','Watering Equipments'),
+    ('Gardening Tools','Gardening Tools'),
+    ('Plants & Planters','Plants & Planters'),
+    ('Garden Decor','Garden Decor'),
+
+    # Tools & Measuring Equipments
+    ('Hand Tool Kits','Hand Tool Kits'),
+    ('Wrench Sets','Wrench Sets'),
+    ('Cable Cutters','Cable Cutters'),
+    ('Socket Sets','Socket Sets'),
+    ('Crimpers','Crimpers'),
+    ('Pliers','Pliers'),
+    ('Screwdrivers','Screwdrivers'),
+    ('Cutters','Cutters'),
+    ('Hammers','Hammers'),
+    ('Multimeters','Multimeters'),
+    ('Calipers','Calipers'),
+    ('Measuring Wheels','Measuring Wheels'),
+    ('Levels','Levels'),
+    ('Measuring Tapes','Measuring Tapes'),
+    ('Angle Grinders','Angle Grinders'),
+    ('Glue Guns','Glue Guns'),
+    ('Sanders','Sanders'),
+    ('Power & Hand Tool Kits','Power & Hand Tool Kits'),
+    ('Screw Guns','Screw Guns'),
+    ('Power Drills','Power Drills'),
+    ('Chainsaws','Chainsaws'),
+    ('Heat Guns','Heat Guns'),
+    ('Blowers','Blowers'),
+    ('Polishers','Polishers'),
+    ('Hammer Drills','Hammer Drills'),
+    ('Rotary Tools','Rotary Tools'),
+    ('Soldering Irons','Soldering Irons'),
+    ('Tile Cutters','Tile Cutters'),
+    ('Tool Boxes & Trays','Tool Boxes & Trays'),
+    ('Drill Bit Sets','Drill Bit Sets'),
+    ('Screwdriver Bit Sets','Screwdriver Bit Sets'),
+    ('Electrical Cleaning Sprays','Electrical Cleaning Sprays'),
+    ('Voltage Testers','Voltage Testers'),
+    ('Battery Testers','Battery Testers'),
+
+    ## Office Products
+    # Pens
+    ('Fountain Pens','Fountain Pens'),
+    ('Ball Pens','Ball Pens'),
+    ('Roller Ball Pens','Roller Ball Pens'),
+    ('Fineliners','Fineliners'),
+    ('Digital Pens','Digital Pens'),
+    ('Pen Sets','Pen Sets'),
+    ('Refills','Refills'),
+    ('Gel Pens','Gel Pens'),
+    ('Mechanical Pencils','Mechanical Pencils'),
+    ('Inks','Inks'),
+    ('Multifunction Pens','Multifunction Pens'),
+    ('Clutch Pencils','Clutch Pencils'),
+
+    #Calculator
+    ('Basic','Basic'),
+    ('Printing','Printing'),
+    ('Scientific','Scientific'),
+    ('Graphic','Graphic'),
+    ('Financial & Bussiness','Financial & Bussiness'),
+
+    # Diaries & Notebooks
+    ('Notepads','Notepads'),
+    ('Memo Pads','Memo Pads'),
+    ('Planners & Organizers','Planners & Organizers'),
+    ('Calendars','Calendars'),
+    ('Diaries','Diaries'),
+    ('Utility Pads','Utility Pads'),
+    ('Scrapbooks','Scrapbooks'),
+    ('Journals','Journals'),
+    ('Notebooks','Notebooks'),
+    ('Record Keeping Books','Record Keeping Books'),
+
+    # Art Supplies
+    ('Accessories','Accessories'),
+    ('Candle Gel Wax','Candle Gel Wax'),
+    ('Jewellery Design Templates','Jewellery Design Templates'),
+    ('Silhouette Papers','Silhouette Papers'),
+    ('Stencils','Stencils'),
+    ('Aida Clothes','Aida Clothes'),
+    ('Paints','Paints'),
+    ('Cutting Mats','Cutting Mats'),
+    ('Spatula Knives & Tools','Spatula Knives & Tools'),
+    ('Unpainted Dolls & Figures','Unpainted Dolls & Figures'),
+    ('Canvases','Canvases'),
+    ('Engraving Sets','Engraving Sets'),
+    ('Printing Blocks','Printing Blocks'),
+    ('Decoupage Mediums','Decoupage Mediums'),
+    ('Mediums & Vanishes','Mediums & Vanishes'),
+    ('Gessos & Grounds','Gessos & Grounds'),
+    ('Palettes','Palettes'),
+    ('Airbrushes','Airbrushes'),
+    ('Drawing Papers','Drawing Papers'),
+    ('Sketch Pens','Sketch Pens'),
+    ('Paint Brushes','Paint Brushes'),
+    ('Art Sets','Art Sets'),
+    ('Sketch Pads','Sketch Pads'),
+    ('Charcoal & Graphite','Charcoal & Graphite'),
+    ('Parchment Craft Kits','Parchment Craft Kits'),
+    ('Storage & Bags','Storage & Bags'),
+    ('Calligraphy','Calligraphy'),
+    ('Embossers','Embossers'),
+    ('Sketch & Paint Markers','Sketch & Paint Markers'),
+    ('Pastels & Crayons','Pastels & Crayons'),
+    ('Embossing Powders','Embossing Powders'),
+    ('Felt Sheets','Felt Sheets'),
+    ('Acrylic Sheets','Acrylic Sheets'),
+    ('Easel','Easel'),
+    ('Lead Accessory','Lead Accessory'),
+    ('Color Pencils','Color Pencils'),
+    ('Art Clay','Art Clay'),
+    ('Painting Sponges','Painting Sponges'),
+
+    #Office Equipments
+    ('Metal Detectors','Metal Detectors'),
+    ('Photocopier Machines','Photocopier Machines'),
+    ('Label Printers','Label Printers'),
+    ('Lamination Machines','Lamination Machines'),
+    ('Vending Machines','Vending Machines'),
+    ('Tagging Guns','Tagging Guns'),
+    ('Barcode Scanners','Barcode Scanners'),
+    ('Paper Shredders','Paper Shredders'),
+    ('VOIP Adapters','VOIP Adapters'),
+    ('Currency Detectors','Currency Detectors'),
+    ('Paper Trimmers','Paper Trimmers'),
+    ('Floor Cleaning Machines','Floor Cleaning Machines'),
+    ('Spiral Binders','Spiral Binders'),
+    ('Cash Registers','Cash Registers'),
+    ('Biometric Devices','Biometric Devices'),
+    ('Note Counting Machines','Note Counting Machines'),
+    ('Public Address Systems','Public Address Systems'),
+
+    # Office Supplies
+    ('Files & Folders','Files & Folders'),
+    ('Desk Organizers','Desk Organizers'),
+    ('Office Supplies Accessories','Office Supplies Accessories'),
+    ('Printing Solutions','Printing Solutions'),
+    ('Card Holders','Card Holders'),
+    ('Papers','Papers'),
+    ('Sketch & Paint Markers','Sketch & Paint Markers'),
+    ('Labeling & Stamping Machines','Labeling & Stamping Machines'),
+    ('Drafting & Drawing','Drafting & Drawing'),
+    ('Garbage Bags','Garbage Bags'),
+    ('Laminating Sheets','Laminating Sheets'),
+    ('Stretch Films','Stretch Films'),
+    ('Magnifiers','Magnifiers'),
+    ('Window Films','Window Films'),
+    ('3D Printed Pens','3D Printed Pens'),
+    ('Paper Labels','Paper Labels'),
+    ('Cash Register Paper','Cash Register Paper'),
+    ('Scissors','Scissors'),
+    ('Key Chains','Key Chains'),
+    ('ID Card Holders','ID Card Holders'),
+    ('Bubble Wraps','Bubble Wraps'),
+    ('Calenders','Calenders'),
+    ('Photo Die Cutters','Photo Die Cutters'),
+    ('Lanyards','Lanyards'),
+    ('Lead Pointers','Lead Pointers'),
+    ('Letter Openers','Letter Openers'),
+    ('Document Tubes','Document Tubes'),
+    ('Hand Dryer Machines','Hand Dryer Machines'),
+    ('Drafting Tapes','Drafting Tapes'),
+    ('Cello Tapes & Tape Dispensers','Cello Tapes & Tape Dispensers'),
+    ('Punches & Punching Machines','Punches & Punching Machines'),
+    ('Boards & Dusters','Boards & Dusters'),
+    ('Staplers,Pins & Removers','Staplers,Pins & Removers'),
+    ('Journals','Journals'),
+    ('Memo Pads','Memo Pads'),
+    ('Diaries','Diaries'),
+    ('Paper Cutters','Paper Cutters'),
+    ('BookMarks','BookMarks'),
+    ('Digital Pens','Digital Pens'),
+
+    # College Supplies
+    ('Graduation Tassels','Graduation Tassels'),
+    ('Globes','Globes'),
+    ('Graduation Gowns','Graduation Gowns'),
+    ('Canvases','Canvases'),
+    ('Graduation Stoles','Graduation Stoles'),
+
+
+    # Home Utilities & Organizers
+    ('Water Filter Cartridges','Water Filter Cartridges'),
+    ('Storage Organizers','Storage Organizers'),
+    ('Hanging Organizers','Hanging Organizers'),
+
+    # Home Safety
+    ('Door Locks','Door Locks'),
+    ('Safe Locks','Safe Locks'),
+    ('Locks','Locks'),
+    ('Smoke & Fire Alarms','Smoke & Fire Alarms'),
+    ('Moisture Meters','Moisture Meters'),
+    ('Gas Detectors','Gas Detectors'),
+
+
+    # Gaming
+    # Gaming Consoles
+    ('PS4','PS4'),
+    ('PS3','PS3'),
+    ('Xbox One','Xbox One'),
+    ('Xbox 360','Xbox 360'),
+    ('PS Vista','PS Vista'),
+    ('Handheld Consoles','Handheld Consoles'),
+    ('PS2','PS2'),
+    ('PSP','PSP'),
+
+    # Games
+    ('PC Games','PC Games'),
+    ('Xbox 360 Games','Xbox 360 Games'),
+    ('PC Vista Games','PC Vista Games'),
+    ('3DS Games','3DS Games'),
+    ('Xbox One Games','Xbox One Games'),
+    ('PS2 Games','PS2 Games'),
+    ('PS4 Games','PS4 Games'),
+    ('PS3 Games','PS3 Games'),
+
+    # Gaming Accessories
+    ('Cables & Adaptors','Cables & Adaptors'),
+    ('Controllers','Controllers'),
+    ('Processor','Processor'),
+    ('Cases & Covers','Cases & Covers'),
+    ('Accessory Kits','Accessory Kits'),
+    ('Mouse','Mouse'),
+    ('Mousepads','Mousepads'),
+    ('TV-Out Cable','TV-Out Cable'),
+    ('Batteries & Chargers','Batteries & Chargers'),
+    ('Gaming Accessories Combo','Gaming Accessories Combo'),
+    ('Keyboards','Keyboards'),
+
+    # Gaming Components
+    ('Cabinets','Cabinets'),
+    ('Fans & Heatsinks','Fans & Heatsinks'),
+    ('Graphic Cards','Graphic Cards'),
+    ('Power Supply Units','Power Supply Units'),
+
+    # Home Lighting
+    # Utility Lighting
+    ('Bulbs','Bulbs'),
+    ('Emergency Lights','Emergency Lights'),
+    ('Tube Lights','Tube Lights'),
+    ('Study Lamps','Study Lamps'),
+
+    # Decor Lighting & Accessories
+    ('Table Lamps','Table Lamps'),
+    ('Wall Lamps','Wall Lamps'),
+    ('Ceiling Lamps','Ceiling Lamps'),
+    ('Floor Lamps','Floor Lamps'),
+    ('Outdoor Lamps','Outdoor Lamps'),
+    ('Rice Lights','Rice Lights'),
+    ('Night Lamps','Night Lamps'),
+    ('Lanterns','Lanterns'),
+    ('Disco Lamps','Disco Lamps'),
+    ('Lanterns','Lanterns'),
+    ('Lamp Shades','Lamp Shades'),
+
+    # Home Cleaning & Bathroom Accessories
+    # Cleaning Supplies
+    ('Mops','Mops'),
+    ('Dustbins','Dustbins'),
+    ('Brooms','Brooms'),
+    ('Brushes','Brushes'),
+    ('Broom Holders','Broom Holders'),
+    ('Home Cleaning Sets','Home Cleaning Sets'),
+    ('Dustpans','Dustpans'),
+    ('Trash Compactors','Trash Compactors'),
+    ('Scrub Pads','Scrub Pads'),
+    ('Toilet Brushes','Toilet Brushes'),
+    ('Home Cleaning Sets','Home Cleaning Sets'),
+    ('Cleaning Gloves','Cleaning Gloves'),
+    ('Dusters','Dusters'),
+    ('Cleaning Clothes','Cleaning Clothes'),
+    ('Cleaning Wipes','Cleaning Wipes'),
+
+    # HouseHold Supplies
+
+    ('Disinfectant Surface Wipes','Disinfectant Surface Wipes'),
+    ('All Purpose Cleaners','All Purpose Cleaners'),
+    ('Insect Repellants','Insect Repellants'),
+    ('Air Fresheners','Air Fresheners'),
+    ('Dish Cleaning Gels','Dish Cleaning Gels'),
+    ('Dish Washing Bars','Dish Washing Bars'),
+    ('Fabric Sniffers','Fabric Sniffers'),
+    ('Naphthalene Balls','Naphthalene Balls'),
+    ('Upholstery Cleaners','Upholstery Cleaners'),
+    ('Stain Removers','Stain Removers'),
+    ('Dish Washing Detergents','Dish Washing Detergents'),
+    ('Glass Cleaners','Glass Cleaners'),
+    ('Mosquito Vaporizers','Mosquito Vaporizers'),
+    ('Kitchen Surface Cleaners','Kitchen Surface Cleaners'),
+    ('Mosquito Coils','Mosquito Coils'),
+    ('Mosquito Vaporizer Refills','Mosquito Vaporizer Refills'),
+    ('Rodent Repellent Devices','Rodent Repellent Devices'),
+    ('Mosquito Killers','Mosquito Killers'),
+    ('Moisture Absorbers','Moisture Absorbers'),
+    ('Fabric Softeners','Fabric Softeners'),
+    ('Drain Openers','Drain Openers'),
+    ('Liquid Detergents','Liquid Detergents'),
+    ('Toilet Paper Rolls','Toilet Paper Rolls'),
+    ('Toilet Cleaners','Toilet Cleaners'),
+    ('Fabric Whiteners','Fabric Whiteners'),
+    ('Fabric Deodrizers','Fabric Deodrizers'),
+    ('Washing Powders','Washing Powders'),
+    ('Degreasing Sprays','Degreasing Sprays'),
+    ('Bathroom Floor Cleaners','Bathroom Floor Cleaners'),
+    ('Tanning Bed Cleaners','Tanning Bed Cleaners'),
+    ('Detergent Pods','Detergent Pods'),
+
+    #Bathroom Accessories
+    ('Toothbrush Holders','Toothbrush Holders'),
+    ('Bathroom Sets','Bathroom Sets'),
+    ('Soap Dishes','Soap Dishes'),
+    ('Buckets','Buckets'),
+    ('Bath Tumblers','Bath Tumblers'),
+    ('Tube Squeezers','Tube Squeezers'),
+    ('Liquid Dispensers','Liquid Dispensers'),
+    ('Hooks','Hooks'),
+    ('Bathroom Stoles','Bathroom Stoles'),
+    ('Toilet Seat Warmers','Toilet Seat Warmers'),
+
+    # Automation & Robotics
+    # Sensors & Alarms
+    ('Garage Parking Sensors','Garage Parking Sensors'),
+    # Surveillance Devices
+    ('Security Cameras','Security Cameras'),
+
+    # Packaging & Shipping
+    ('Corrugated Boxes','Corrugated Boxes'),
+    ('Pallets & Crates','Pallets & Crates'),
+
+    # Lab & Scientific Products
+    ('Wave Motion Apparatus','Wave Motion Apparatus'),
+    ('Reflection Sound System','Reflection Sound System'),
+    ('Microscope Slide Box','Microscope Slide Box'),
+    ('Colorimeter','Colorimeter'),
+    ('Weight Box','Weight Box'),
+    ('Desiccator Plate','Desiccator Plate'),
+    ('Ultraviolet Lamp','Ultraviolet Lamp'),
+    ('Lab Slide','Lab Slide'),
+    ('Slide Printer','Slide Printer'),
+    ('Electronic Displays','Electronic Displays'),
+    ('Barometer','Barometer'),
+    ('Hydrometer','Hydrometer'),
+    ('Litmus Paper','Litmus Paper'),
+    ('Analytical Scale','Analytical Scale'),
+    ('Petri Dish','Petri Dish'),
+    ('Capacitors','Capacitors'),
+    ('Sensors','Sensors'),
+    ('Electronic Modules','Electronic Modules'),
+    ('Spectroscope','Spectroscope'),
+    ('Electronic Interconnects','Electronic Interconnects'),
+    ('Electrophoresis Apparatus','Electrophoresis Apparatus'),
+    ('Printed Circuit Board','Printed Circuit Board'),
+    ('Ammeters','Ammeters'),
+    ('Vacuum Chambers','Vacuum Chambers'),
+    ('Inclined Plane Apparatus','Inclined Plane Apparatus'),
+    ('Filter Papers','Filter Papers'),
+    ('Cathode Ray Tube','Cathode Ray Tube'),
+    ('Spectrophotometer','Spectrophotometer'),
+    ('Voltmeter','Voltmeter'),
+    ('Resistor','Resistor'),
+    ('Analytical Scale', 'Analytical Scale'),
+    ('Petri Dish', 'Petri Dish'),
+    ('Laboratory Tripod Stand', 'Laboratory Tripod Stand'),
+    ('Ultraviolet Lamp', 'Ultraviolet Lamp'),
+    ('Beaker', 'Beaker'),
+    ('Laboratory Bunsen Burner','Laboratory Bunsen Burner'),
+    ('Kinetic Energy Apparatus','Kinetic Energy Apparatus'),
+    ('Lab Vacuum Dryer','Lab Vacuum Dryer'),
+    ('Microtome','Microtome'),
+    ('Boyles Law Apparatus','Boyles Law Apparatus'),
+    ('Cover Slip','Cover Slip'),
+    ('Prism','Prism'),
+    ('Laboratory Pipette', 'Laboratory Pipette'),
+    ('Test Tube Clamp','Test Tube Clamp'),
+    ('Laboratory Cylinder Dryer','Laboratory Cylinder Dryer'),
+    ('Graduated Cylinder','Graduated Cylinder'),
+    ('Lab Hot Plate','Lab Hot Plate'),
+    ('Homogenizer','Homogenizer'),
+    ('Demonstration Bell','Demonstration Bell'),
+    ('Viscometer','Viscometer'),
+    ('Laboratory Incubator', 'Laboratory Incubator'),
+    ('Laboratory Evaporating Dish','Laboratory Evaporating Dish'),
+    ('Tissue Floating Bath','Tissue Floating Bath'),
+    ('Lab Vial','Lab Vial'),
+    ('Laboratory Oven','Laboratory Oven'),
+    ('Indicator Stands','Indicator Stands'),
+    ('Newton Cradle','Newton Cradle'),
+    ('Balance Scale','Balance Scale'),
+    ('Digital Conductivity Meter','Digital Conductivity Meter'),
+    ('Ring Ball Apparatus','Ring Ball Apparatus'),
+    ('Desiccator','Desiccator'),
+    ('Rheostat','Rheostat'),
+    ('Laboratory Spot Plate','Laboratory Spot Plate'),
+    ('Crucible','Crucible'),
+    ('Styrofoam Cutter','Styrofoam Cutter'),
+    ('Test Tube Rack', 'Test Tube Rack'),
+    ('Laboratory Buret','Laboratory Buret'),
+    ('TDS Meter', 'TDS Meter'),
+    ('Electronic Motors','Electronic Motors'),
+    ('Laboratory Dropper Bottle','Laboratory Dropper Bottle'),
+    ('Pulse Generators','Pulse Generators'),
+    ('Laboratory Brush','Laboratory Brush'),
+    ('Lab Coat','Lab Coat'),
+    ('Slide Warmimg Table','Slide Warmimg Table'),
+    ('Thermal Imagers','Thermal Imagers'),
+    ('Laboratory Flask','Laboratory Flask'),
+    ('Transistor','Transistor'),
+    ('Test Tube', 'Test Tube'),
+    ('Bug Viewer','Bug Viewer'),
+    ('Diodes','Diodes'),
+    ('Solution Basin','Solution Basin'),
+    ('Inductor','Inductor'),
+    ('Oscilloscope','Oscilloscope'),
+    ('Laboratory Watch Glass','Laboratory Watch Glass'),
+    ('Laboratory Resistance Box','Laboratory Resistance Box'),
+    ('Refractometer','Refractometer'),
+
+    # Industrial Testing Devices
+    ('PH Meters','PH Meters'),
+    ('Test Probes','Test Probes'),
+    ('EMF Meters','EMF Meters'),
+    ('Spectrum Analyzers','Spectrum Analyzers'),
+
+    # Safety Products
+    ('Safety Glasses','Safety Glasses'),
+    ('PPE Kits','PPE Kits'),
+    ('Safety Signs','Safety Signs'),
+    ('Safety Caps','Safety Caps'),
+    ('Safety Helmets','Safety Helmets'),
+    ('Safety Shoes','Safety Shoes'),
+    ('Safety Gloves','Safety Gloves'),
+    ('Safety Ear Plugs','Safety Ear Plugs'),
+    ('Safety Suits','Safety Suits'),
+    ('Safety Masks & Respirators','Safety Masks & Respirators'),
+    ('Safety Shoe Covers','Safety Shoe Covers'),
+
+    #  Health & Medical Care
+    #  Professional Medical Supplies
+    ('Retinoscopes','Retinoscopes'),
+    ('Eyelid Speculums','Eyelid Speculums'),
+    ('Lensometers','Lensometers'),
+    ('Vision Test Charts','Vision Test Charts'),
+    ('Phoropter Vision Tester','Phoropter Vision Tester'),
+    ('Keratometers','Keratometers'),
+    ('Maddox Wings','Maddox Wings'),
+    ('Trail Frames','Trail Frames'),
+    ('Tonometers','Tonometers'),
+    ('Spuds Needles','Spuds Needles'),
+    ('Slit Lamps','Slit Lamps'),
+    ('Artificial Eyes','Artificial Eyes'),
+    ('Lens Loops','Lens Loops'),
+    ('Dental Elevators','Dental Elevators'),
+    ('Dental Implants','Dental Implants'),
+    ('Dental Pliers','Dental Pliers'),
+    ('Surgical Gloves','Surgical Gloves'),
+    ('Pharmaceutical Masks','Pharmaceutical Masks'),
+    ('Hospital Scrubs','Hospital Scrubs'),
+    ('Spit Guards','Spit Guards'),
+    ('Glove Box Holders','Glove Box Holders'),
+    ('Surgical Head Caps','Surgical Head Caps'),
+    ('Nasal Pliers','Nasal Pliers'),
+    ('Tuning Fork','Tuning Fork'),
+    ('X-Ray Viewers','X-Ray Viewers'),
+    ('PH Test Strips','PH Test Strips'),
+    ('Stethoscope Accessory','Stethoscope Accessory'),
+    ('Ultrasound Machines','Ultrasound Machines'),
+    ('Knee Hammers','Knee Hammers'),
+    ('Objectice Microscope Lens','Objectice Microscope Lens'),
+    ('Biopsy Punches','Biopsy Punches'),
+    ('Surgical Hooks','Surgical Hooks'),
+    ('Needle Knives','Needle Knives'),
+    ('Surgical Bone Cutters','Surgical Bone Cutters'),
+    ('Kidney Dishes','Kidney Dishes'),
+    ('Surgical Scissors','Surgical Scissors'),
+    ('Goniometers','Goniometers'),
+    ('Forceps Jars','Forceps Jars'),
+    ('Trocars','Trocars'),
+    ('Castroviejo Calipers','Castroviejo Calipers'),
+    ('Thermometer Covers','Thermometer Covers'),
+    ('Dissectors','Dissectors'),
+    ('Surgical Scalpels','Surgical Scalpels'),
+    ('Instrument Stringers','Instrument Stringers'),
+    ('Osteotomes','Osteotomes'),
+    ('Intravenous Cannulas','Intravenous Cannulas'),
+    ('Surgical Trephines','Surgical Trephines'),
+    ('Bone Distractors','Bone Distractors'),
+    ('Surgical Retractors','Surgical Retractors'),
+    ('Tip Protectors','Tip Protectors'),
+    ('Punctum Dilators','Punctum Dilators'),
+    ('Oxygen Masks','Oxygen Masks'),
+    ('Surgical Screws','Surgical Screws'),
+    ('Gynecological Aspiration Kit','Gynecological Aspiration Kit'),
+    ('Surgical Hammers','Surgical Hammers'),
+    ('Needle Burners','Needle Burners'),
+    ('Nasal Cannulas','Nasal Cannulas'),
+    ('Surgical Flap Masters','Surgical Flap Masters'),
+    ('Surgical Loupes','Surgical Loupes'),
+    ('Mucus Removal Devices','Mucus Removal Devices'),
+    ('Microtome Blades','Microtome Blades'),
+    ('Surgical Chisels','Surgical Chisels'),
+    ('Medical Trays','Medical Trays'),
+    ('Surgical Pliers','Surgical Pliers'),
+    ('Fixation Rings','Fixation Rings'),
+    ('Toric Makers','Toric Makers'),
+    ('Speculums','Speculums'),
+    ('Cryoprobes','Cryoprobes'),
+    ('Thermal Cautery','Thermal Cautery'),
+    ('Surgical Foreceps','Surgical Foreceps'),
+
+    #  Home Medical Supplies
+    ('Pill Boxes','Pill Boxes'),
+    ('Pill Cutters','Pill Cutters'),
+    ('Drug Test Kit','Drug Test Kit'),
+    ('Pollution Masks','Pollution Masks'),
+    ('Smoking Cessation','Smoking Cessation'),
+    ('Sauna Blankets','Sauna Blankets'),
+    ('Anti Snoring Devices','Anti Snoring Devices'),
+    ('Medical Needles','Medical Needles'),
+    ('Crepe Bandages','Crepe Bandages'),
+    ('Medical Dressings','Medical Dressings'),
+    ('Bandage Protectors','Bandage Protectors'),
+    ('Band Aids','Band Aids'),
+    ('Gauze Rolls','Gauze Rolls'),
+    ('First Aid Tapes','First Aid Tapes'),
+    ('Urine Pots','Urine Pots'),
+    ('Shower Chairs','Shower Chairs'),
+    ('Vomit Bags','Vomit Bags'),
+    ('Absorbent Sheets','Absorbent Sheets'),
+    ('Commode Chairs','Commode Chairs'),
+    ('Vomit Basins','Vomit Basins'),
+    ('Adult Diapers','Adult Diapers'),
+    ('Toilet Tissue Aid','Toilet Tissue Aid'),
+    ('Hot Bags','Hot Bags'),
+    ('Rice Therapy Bags','Rice Therapy Bags'),
+    ('Sitz Bath Tubes','Sitz Bath Tubes'),
+    ('Hot & Cold Pads','Hot & Cold Pads'),
+    ('Walker Baskets','Walker Baskets'),
+    ('Nose Shapers','Nose Shapers'),
+    ('Walker Hand Grips','Walker Hand Grips'),
+    ('Reachers & Grabbers','Reachers & Grabbers'),
+    ('Wheel Chairs','Wheel Chairs'),
+    ('Fracture Boots','Fracture Boots'),
+    ('Face Shaping Masks','Face Shaping Masks'),
+    ('Crutch Pads','Crutch Pads'),
+    ('Finger Splints','Finger Splints'),
+    ('Bone Ectropion Toes Outer','Bone Ectropion Toes Outer'),
+    ('Servical Traction Kits','Servical Traction Kits'),
+    ('Knee Scooters','Knee Scooters'),
+    ('Blind Canes','Blind Canes'),
+
+
+    # Home Medicines
+    ('Hearing Care','Hearing Care'),
+    ('Body Pain Relief','Body Pain Relief'),
+    ('General Wellness','General Wellness'),
+    ('Eye Drops','Eye Drops'),
+    ('Lens Solution','Lens Solution'),
+    ('Contact Lens','Contact Lens'),
+    ('Male Disorders','Male Disorders'),
+    ('Post Natal Care','Post Natal Care'),
+    ('Skin Care','Skin Care'),
+    ('Hearing Care','Hearing Care'),
+    ('Digestive Health','Digestive Health'),
+    ('Hair Care','Hair Care'),
+    ('Deficiencies','Deficiencies'),
+    ('Cardiac Care','Cardiac Care'),
+    ('Oral Care','Oral Care'),
+    ('Diabetes','Diabetes'),
+    ('Fever','Fever'),
+    ('Lifestyle Disorders','Lifestyle Disorders'),
+    ('Thyroid Care','Thyroid Care'),
+    ('Vision Care','Vision Care'),
+    ('Cough & Cold','Cough & Cold'),
+    ('Mental Wellness','Mental Wellness'),
+    ('Respiratory Care','Respiratory Care'),
+    ('Ayurvedic','Ayurvedic'),
+    ('Renal Care','Renal Care'),
+    ('Child Care','Child Care'),
+    ('Piles','Piles'),
+    ('Blood Purification','Blood Purification'),
+    ('De-Addiction','De-Addiction'),
+    ('Sexual Health','Sexual Health'),
+    ('Immunity Boosters','Immunity Boosters'),
+    ('Antiseptics','Antiseptics'),
+
+    # Health Supplements
+    ('Vitamin Supplements','Vitamin Supplements'),
+    ('Protein Supplements','Protein Supplements'),
+    ('Chyawanprash','Chyawanprash'),
+    ('Digestive Probiotic','Digestive Probiotic'),
+    ('Health Care Combo','Health Care Combo'),
+
+    # Lamps Lanterns &
+    #  Pet Supplies
+    #  Dogs
+    ('Dog Blankets','Dog Blankets'),
+    ('Dog Health Supplements','Dog Health Supplements'),
+    ('Dog Car Steps','Dog Car Steps'),
+    ('Dog Carriers','Dog Carriers'),
+    ('Dog Apparels','Dog Apparels'),
+    ('Dog Leashes','Dog Leashes'),
+    ('Dog Toys','Dog Toys'),
+    ('Dog Houses','Dog Houses'),
+    ('Dog Jump Cups','Dog Jump Cups'),
+    ('Dog Mats','Dog Mats'),
+    ('Dog Treat','Dog Treat'),
+    ('Dog Laser Toys','Dog Laser Toys'),
+    ('Dog Waste Pickup Bags','Dog Waste Pickup Bags'),
+    ('Dog Collar Charms','Dog Collar Charms'),
+    ('Dog Bowls','Dog Bowls'),
+    ('Dog Beds','Dog Beds'),
+    ('Dog Collars','Dog Collars'),
+    ('Dog Foods','Dog Foods'),
+    ('Dog Chews','Dog Chews'),
+    ('Dog Muzzles','Dog Muzzles'),
+
+    # Cats
+    ('Cat Scratching Posts','Cat Scratching Posts'),
+    ('Cat Leashes','Cat Leashes'),
+    ('Cat Food','Cat Food'),
+    ('Cat Health Supplements','Cat Health Supplements'),
+    ('Litter Scoops','Litter Scoops'),
+    ('Cat Toys','Cat Toys'),
+    ('Cat Litter Tray Refills','Cat Litter Tray Refills'),
+    ('Cat Laser Toys','Cat Laser Toys'),
+    ('Cat Bowls','Cat Bowls'),
+    ('Cat Collars','Cat Collars'),
+    ('Cat Beds','Cat Beds'),
+    ('Cat Collar Charms','Cat Collar Charms'),
+    ('Cat Apparels','Cat Apparels'),
+    ('Cat Treats','Cat Treats'),
+    ('Cat Muzzle','Cat Muzzle'),
+    ('Cat Carriers','Cat Carriers'),
+    ('Cat Chews','Cat Chews'),
+    ('Cat Trees','Cat Trees'),
+    ('Cat Blankets','Cat Blankets'),
+    ('Cat Houses','Cat Houses'),
+    ('Cat Mats','Cat Mats'),
+
+    # Birds
+    ('Bird Cage Cleaners','Bird Cage Cleaners'),
+    ('Bird Chews','Bird Chews'),
+    ('Bird Play Stands','Bird Play Stands'),
+    ('Cate Cuttlebone Holders','Cate Cuttlebone Holders'),
+    ('Bird Bath','Bird Bath'),
+    ('Cage Seed Catchers','Cage Seed Catchers'),
+    ('Bird Apparels','Bird Apparels'),
+    ('Bird Toys','Bird Toys'),
+    ('Bird Feeders','Bird Feeders'),
+    ('Bird Food','Bird Food'),
+    ('Bird Cages','Bird Cages'),
+    ('Bird Perch','Bird Perch'),
+    ('Bird Carrier','Bird Carrier'),
+    ('Bird Houses','Bird Houses'),
+
+    # Fish & Aquatic
+    ('Fish Food','Fish Food'),
+    ('Fish Aquarium','Fish Aquarium'),
+    ('Aquarium Filters','Aquarium Filters'),
+    ('Aquarium Air Stones','Aquarium Air Stones'),
+    ('Fish Feeders','Fish Feeders'),
+    ('Aquarium Pumps','Aquarium Pumps'),
+    ('Aquarium Substrates','Aquarium Substrates'),
+    ('Aquarium Tools','Aquarium Tools'),
+    ('Aquarium Water Test Kits','Aquarium Water Test Kits'),
+    ('Aquarium Chillers','Aquarium Chillers'),
+    ('Aquarium Cleaners','Aquarium Cleaners'),
+    ('Aquarium Heaters','Aquarium Heaters'),
+    ('Aquarium Filter Cartridges','Aquarium Filter Cartridges'),
+    ('Aquarium Reef Glues','Aquarium Reef Glues'),
+    ('Aquarium Lights','Aquarium Lights'),
+    ('Aquarium Plant Anchors','Aquarium Plant Anchors'),
+    ('Aquarium Thermometers','Aquarium Thermometers'),
+    ('Fish Bowls','Fish Bowls'),
+    ('Aquatic Plant Fertilizers','Aquatic Plant Fertilizers'),
+    ('Aquarium Sealants','Aquarium Sealants'),
+    ('Aquarium Fish Nets','Aquarium Fish Nets'),
+    ('Turtle Food','Turtle Food'),
+
+    # Horse
+    ('Horse Grooming Kits','Horse Grooming Kits'),
+    ('Horse Apparels','Horse Apparels'),
+    ('Horse Health Supplements','Horse Health Supplements'),
+    ('Horse Salt Block Licks','Horse Salt Block Licks'),
+
+    # Large Animals
+    ('Large Animals Food Supplies','Large Animals Food Supplies'),
+    ('Large Animals Health Supplements','Large Animals Health Supplements'),
+    ('Water Trough','Water Trough'),
+    ('Bale Bags','Bale Bags'),
+    ('Large Animals Apparels','Large Animals Apparels'),
+
+    # Small Animals
+    ('Small Animal Chews','Small Animal Chews'),
+    ('Small Animal Toys','Small Animal Toys'),
+    ('Small Animal Carriers','Small Animal Carriers'),
+    ('Small Animal Apparels','Small Animal Apparels'),
+    ('Small Animal Food Supplements','Small Animal Food Supplements'),
+    ('Small Animal Crates','Small Animal Crates'),
+    ('Small Animal Treats','Small Animal Treats'),
+    ('Small Animal Health Supplements','Small Animal Health Supplements'),
+    ('Small Animal Bowls','Small Animal Bowls'),
+    ('Snake Catchers','Snake Catchers'),
+    ('Small Animal Mats','Small Animal Mats'),
+
+    # Grooming & Hygiene
+    ('Pet Shampoo','Pet Shampoo'),
+    ('Pet Nail Clippers','Pet Nail Clippers'),
+    ('Pet Spa Kits','Pet Spa Kits'),
+    ('Pet Combos','Pet Combos'),
+    ('Pet Hair Styling','Pet Hair Styling'),
+    ('Pet Dryers','Pet Dryers'),
+    ('Pet Hair Trimmers','Pet Hair Trimmers'),
+    ('Pet Sunscreens','Pet Sunscreens'),
+    ('Pet Mouth Freshner','Pet Mouth Freshner'),
+    ('Pet Diapers','Pet Diapers'),
+    ('Pet Apparel Hangers','Pet Apparel Hangers'),
+    ('Pet Bowl Mats','Pet Bowl Mats'),
+    ('Sweat Scrapper','Sweat Scrapper'),
+    ('Pet Bathtubs','Pet Bathtubs'),
+    ('Pet Cologne','Pet Cologne'),
+    ('Pet Conditioners','Pet Conditioners'),
+    ('Pet Ear & Eye Wipes','Pet Ear & Eye Wipes'),
+    ('Pet Toothpastes','Pet Toothpastes'),
+    ('Pet Nail Cap','Pet Nail Cap'),
+    ('Pet Deodorizer','Pet Deodorizer'),
+    ('Pet Nursing Kits','Pet Nursing Kits'),
+    ('Pet Cleaners','Pet Cleaners'),
+    ('Pet Grooming Glove','Pet Grooming Glove'),
+    ('Pet Toothbrush','Pet Toothbrush'),
+    ('Pet Pad Holders','Pet Pad Holders'),
+    ('Clipper Oils','Clipper Oils'),
+
+    # Health & Safety
+    ('Pet Bandage','Pet Bandage'),
+    ('Rain Sheet','Rain Sheet'),
+    ('Pet Glucose Monitor','Pet Glucose Monitor'),
+    ('Pet First Aid Kit','Pet First Aid Kit'),
+    ('Pet Dewormer','Pet Dewormer'),
+    ('Pet Oral Medication','Pet Oral Medication'),
+    ('Pet Gate','Pet Gate'),
+    ('Pet Seat Belt','Pet Seat Belt'),
+    ('Pet Fence','Pet Fence'),
+    ('Pet Stair Ramp','Pet Stair Ramp'),
+
+    #Shirts
+    ('Casual Shirts','Casual Shirts'),
+    ('Formal Shirts','Formal Shirts'),
+
+    #Casual Shoes
+    ('Sneakers','Sneakers'),
+    ('Loafers','Loafers'),
+    ('Moccasins','Moccasins'),
+    ('Canvas','Canvas'),
+
+    #Sports Shoes
+    ('Football','Football'),
+    ('Trekking & Outdoors','Trekking & Outdoors'),
+    ('Tennis','Tennis'),
+    ('Walking','Walking'),
+    ('Gym & Fitness','Gym & Fitness'),
+    ('Running','Running'),
+    ('Cricket','Cricket'),
+    ('Basketball','Basketball'),
+
+
+    # Shoe Care
+    ('Sprays','Sprays'),
+    ('Shoe Polishes & Creams','Shoe Polishes & Creams'),
+
+    #Shaving and beard care
+    ('Shaving Oil','Shaving Oil'),
+    ('Shaving Blades','Shaving Blades'),
+    ('Shaving Razors','Shaving Razors'),
+    ('Aftershave','Aftershave'),
+    ('Shaving Gel','Shaving Gel'),
+    ('Shaving Creams','Shaving Creams'),
+    ('Shaving Foam','Shaving Foam'),
+    ('Beard Oil','Beard Oil'),
+    ('Shaving Brushes','Shaving Brushes'),
+    ('Shaving Soap','Shaving Soap'),
+    ('Mens Grooming Kit','Mens Grooming Kit'),
+
+    #Hair Care and accessories
+    ('Hair Accessory Set','Hair Accessory Set'),
+    ('Hair Comb','Hair Comb'),
+    ('Bun','Bun'),
+    ('Bun Clip','Bun Clip'),
+    ('Back Pin','Back Pin'),
+    ('Braid Extension','Braid Extension'),
+    ('Tic Tac Clip','Tic Tac Clip'),
+    ('Hair Claw','Hair Claw'),
+    ('Hair Wig','Hair Wig'),
+    ('Hair Clip','Hair Clip'),
+    ('Hair Extension','Hair Extension'),
+    ('Hair Band','Hair Band'),
+    ('Hair Steamer','Hair Steamer'),
+    ('Rubber Band','Rubber Band'),
+    ('Hair Pin','Hair Pin'),
+    ('Head Band','Head Band'),
+    ('Hair Brush','Hair Brush'),
+    ('Hair Curlers','Hair Curlers'),
+    ('Hair Serum','Hair Serum'),
+    ('Hair Gel','Hair Gel'),
+    ('Hair Care Combo','Hair Care Combo'),
+    ('Shampoo','Shampoo'),
+    ('Hair Fragrance','Hair Fragrance'),
+    ('Hair Oil','Hair Oil'),
+    ('Hair Volumizer','Hair Volumizer'),
+    ('Hair Spray','Hair Spray'),
+    ('Henna','Henna'),
+    ('Hair Color','Hair Color'),
+    ('Conditioner','Conditioner'),
+    ('Hair Treatment','Hair Treatment'),
+    ('Hair wax','Hair wax'),
+    ('Hair Style','Hair Style'),
+
+    #Makeup
+    ('Bronzer','Bronzer'),
+    ('Face Makeup Combo','Face Makeup Combo'),
+    ('Primer','Primer'),
+    ('Foundation','Foundation'),
+    ('Compact','Compact'),
+    ('Highlighter','Highlighter'),
+    ('Makeup Remover','Makeup Remover'),
+    ('Lip Balm','Lip Balm'),
+    ('Lipstick','Lipstick'),
+    ('Lip Plumper','Lip Plumper'),
+    ('Lip Gloss','Lip Gloss'),
+    ('Lip Makeup Combo','Lip Makeup Combo'),
+    ('Eye Makeup Combo','Eye Makeup Combo'),
+    ('Eyeliner','Eyeliner'),
+    ('Kajal','Kajal'),
+    ('Mascara','Mascara'),
+    ('Eye Shadow','Eye Shadow'),
+    ('Eyebrow Pencil','Eyebrow Pencil'),
+    ('Eyebrow Enhancer','Eyebrow Enhancer'),
+
+    #Makeup Accessories
+    ('Tattoo Needle','Tattoo Needle'),
+    ('Tattoos Sticker','Tattoos Sticker'),
+    ('Nail Sanding Pad','Nail Sanding Pad'),
+    ('Nail Brush','Nail Brush'),
+    ('Sindoor','Sindoor'),
+    ('Makeup Headband','Makeup Headband'),
+    ('Makeup Accessory Combo','Makeup Accessory Combo'),
+    ('Cotton Bud','Cotton Bud'),
+    ('Facial Wipe','Facial Wipe'),
+    ('Cotton Pad','Cotton Pad'),
+    ('Vanity Box','Vanity Box'),
+    ('Makeup Pencil Sharpener','Makeup Pencil Sharpener'),
+    ('Soak Clip','Soak Clip'),
+    ('Sponge','Sponge'),
+    ('Mehendi','Mehendi'),
+    ('Makeup Brush Organizer','Makeup Brush Organizer'),
+    ('Hand Mirror','Hand Mirror'),
+    ('Eyebrow Stencil','Eyebrow Stencil'),
+    ('Nail Cutter','Nail Cutter'),
+    ('Tattoo Kit','Tattoo Kit'),
+    ('Eyebrow Thread','Eyebrow Thread'),
+    ('Cuticle Pusher','Cuticle Pusher'),
+    ('Artificial Nail','Artificial Nail'),
+    ('Nail Dust Cleaner','Nail Dust Cleaner'),
+    ('Makeup Apron','Makeup Apron'),
+    ('Tweezer','Tweezer'),
+    ('Eyelash Adhesive','Eyelash Adhesive'),
+    ('Bindi','Bindi'),
+    ('Makeup Brush','Makeup Brush'),
+    ('Artificial Eyelash','Artificial Eyelash'),
+    ('Eyelash Curler','Eyelash Curler'),
+    ('Cotton Ball','Cotton Ball'),
+    ('Nail Filer','Nail Filer'),
+
+    # Nail
+    ('Nail Polish Remover','Nail Polish Remover'),
+    ('Nail Polish','Nail Polish'),
+    ('Nail Polish Dryer','Nail Polish Dryer'),
+    ('Nail Art','Nail Art'),
+    ('Nail Makeup Combo','Nail Makeup Combo'),
+    ('Nail Crystal Powder','Nail Crystal Powder'),
+
+    # Bath & Shower
+    ('Bath Glove','Bath Glove'),
+    ('Bath Sponge','Bath Sponge'),
+    ('Shower Cap','Shower Cap'),
+
+    ('Bath Soap','Bath Soap'),
+    ('Bath Essential Oil','Bath Essential Oil'),
+    ('Body Wash','Body Wash'),
+    ('Bubble Bath','Bubble Bath'),
+    ('Bath Salt','Bath Salt'),
+    ('Bath Combos and Kit','Bath Combos and Kit'),
+
+    #Body and Face skin care
+    ('Blackhead Remover','Blackhead Remover'),
+    ('Toe Separator','Toe Separator'),
+    ('Oil & Wax Heater','Oil & Wax Heater'),
+    ('Hand Sanitizer','Hand Sanitizer'),
+    ('Foot Filers','Foot Filers'),
+    ('Hand Wash','Hand Wash'),
+    ('Manicure Kit','Manicure Kit'),
+    ('Combo Kit','Combo Kit'),
+    ('Pedicure Kit','Pedicure Kit'),
+    ('Hair Removal','Hair Removal'),
+    ('Anti Aging','Anti Aging'),
+    ('Face Wash','Face Wash'),
+    ('Talcum Powder','Talcum Powder'),
+    ('Moisturizer','Moisturizer'),
+    ('Cleanser','Cleanser'),
+    ('Face Pack','Face Pack'),
+    ('Toner','Toner'),
+    ('Scrub','Scrub'),
+    ('Skin Care Combo','Skin Care Combo'),
+    ('Sunscreen','Sunscreen'),
+    ('Facial Kit','Facial Kit'),
+    ('Skin Brightening Cream','Skin Brightening Cream'),
+    ('Skin Treatment','Skin Treatment'),
+    ('Eye Serum','Eye Serum'),
+    ('Eye Cream','Eye Cream'),
+    ('Eye Mask','Eye Mask'),
+    ('Eye Gel','Eye Gel'),
+
+    #Frangrances
+    ('Fragrance Combo','Fragrance Combo'),
+    ('Deodrants','Deodrants'),
+    ('Attar','Attar'),
+    ('Perfume','Perfume'),
+
+    # Womens Personal Hygiene
+    ('Intimate Care','Intimate Care'),
+    ('Sanitary Pad','Sanitary Pad'),
+    ('Women Hygiene Combo','Women Hygiene Combo'),
+
+    #Sexual Wellness
+    ('Pregnancy Kit','Pregnancy Kit'),
+    ('Lubricants','Lubricants'),
+    ('Fertility Kit','Fertility Kit'),
+    ('Vaginal Dilator','Vaginal Dilator'),
+    ('Condom','Condom'),
+
+    #Oral Care
+    ('Teeth Whitening','Teeth Whitening'),
+    ('Tooth Paste','Tooth Paste'),
+    ('Tooth Brush','Tooth Brush'),
+    ('Mouthwash','Mouthwash'),
+
+    # Lingerie Sets and Accessories
+    ('Lingerie Sets','Lingerie Sets'),
+    ('Lingerie Accessories','Lingerie Accessories'),
+
+    # Watch Accessories
+    ('Pocket Watch Chains','Pocket Watch Chains'),
+    ('Watch Boxes','Watch Boxes'),
+    ('Watch Repair Kits','Watch Repair Kits'),
+    ('Watch Winders','Watch Winders'),
+    ('Watch Straps','Watch Straps'),
+
+    # Bags & Bagpacks
+    ('Gym Bags','Gym Bags'),
+    ('Cross Body Bags','Cross Body Bags'),
+    ('Waist Bags','Waist Bags'),
+    ('Messenger Bags','Messenger Bags'),
+    ('Wallets','Wallets'),
+    ('Backpacks','Backpacks'),
+    ('Laptop Bags','Laptop Bags'),
+
+    # Luggage & Travel
+    ('Luggage Combo','Luggage Combo'),
+    ('Duffel Bags','Duffel Bags'),
+    ('Suitcases','Suitcases'),
+    ('Rucksacks','Rucksacks'),
+    ('Small Travel Bags','Small Travel Bags'),
+    ('Multi Utility Knives','Multi Utility Knives'),
+    ('Safety Locks & Straps','Safety Locks & Straps'),
+    ('Travel Toiletry Kits','Travel Toiletry Kits'),
+    ('Travel Pouches','Travel Pouches'),
+    ('Neck Pillows & Eyeshadows','Neck Pillows & Eyeshadows'),
+    ('Worldwide Adaptors','Worldwide Adaptors'),
+    ('Travel Organizers','Travel Organizers'),
+    ('Travel Bottles','Travel Bottles'),
+    ('Travel Shaving Kits','Travel Shaving Kits'),
+    ('Garment Covers','Garment Covers'),
+    ('Luggage Covers','Luggage Covers'),
+    ('Waist Bags','Waist Bags'),
+    ('Briefcases','Briefcases'),
+    ('Luggage Covers','Luggage Covers'),
+
+
+    # Wallets & Clutches
+    ('Wallets','Wallets'),
+    ('Clutches','Clutches'),
+    ('Travel Documents Holder','Travel Documents Holder'),
+    ('Wallet Emblems','Wallet Emblems'),
+
+    # Handbags & Clutches
+    ('Clutches and Wallets','Clutches and Wallets'),
+    ('Backpack Handbags','Backpack Handbags'),
+    ('Shoulder Bags','Shoulder Bags'),
+    ('Handbags','Handbags'),
+    ('Totes','Totes'),
+    ('Sling Bags','Sling Bags'),
+    ('Messenger Bags','Messenger Bags'),
+    ('Pouches','Pouches'),
+    ('Wristles','Wristles'),
+    ('Coin Purses','Coin Purses'),
+    ('Potlis','Potlis'),
+    ('Clutches','Clutches'),
+    ('Cosmetic Bags','Cosmetic Bags'),
+
+    #Belts and Buckles
+    ('Belt Strips','Belt Strips'),
+    ('Buckles','Buckles'),
+
+    # Wearable Accessories
+    ('Smart Watch Screenguards','Smart Watch Screenguards'),
+    ('Smart Band Straps','Smart Band Straps'),
+    ('Smart Watch Straps','Smart Watch Straps'),
+    ('Camera Mods','Camera Mods'),
+    ('Projector Mods','Projector Mods'),
+    ('Speaker Mods','Speaker Mods'),
+    ('Power Pack Mobile Mods','Power Pack Mobile Mods'),
+
+    # Personal Care Appliances
+    ('Trimmers','Trimmers'),
+    ('Shavers','Shavers'),
+    ('Hair Straighteners','Hair Straighteners'),
+    ('Grooming Kit','Grooming Kit'),
+    ('Tattoo Machines','Tattoo Machines'),
+    ('Tattoo Ink','Tattoo Ink'),
+    ('Hair Dryers','Hair Dryers'),
+    ('Electronic Facial Cleansers','Electronic Facial Cleansers'),
+    ('Epilators','Epilators'),
+    ('Hair Curlers','Hair Curlers'),
+    ('Hair Stylers','Hair Stylers'),
+
+
+    # Health Care
+    ('Blood Pressure Monitors','Blood Pressure Monitors'),
+    ('Massagers','Massagers'),
+    ('Pulse Oximeters','Pulse Oximeters'),
+    ('Weighing Scales','Weighing Scales'),
+    ('Nebulizers','Nebulizers'),
+    ('Glucometer Strips','Glucometer Strips'),
+    ('Slimming Machine','Slimming Machine'),
+    ('BP Monitor Bulbs','BP Monitor Bulbs'),
+    ('Glucometers','Glucometers'),
+    ('Glucometer Lancets','Glucometer Lancets'),
+    ('Digital Thermometers','Digital Thermometers'),
+    ('BP Monitor Adaptor','BP Monitor Adaptor'),
+    ('Pedometers','Pedometers'),
+    ('BP Monitor Cuffs','BP Monitor Cuffs'),
+    ('Vaporizers','Vaporizers'),
+    ('Pulse Oximeters','Pulse Oximeters'),
+    ('Electric Toothbrushes','Electric Toothbrushes'),
+    ('Body Fat Analyzers','Body Fat Analyzers'),
+
+    # Gemstones
+    ('Gemstones','Gemstones'),
+
+    #Jewellery
+    ('Jewellery Sets','Jewellery Sets'),
+    ('Bracelets','Bracelets'),
+    ('Armlets','Armlets'),
+    ('Rings','Rings'),
+    ('Earrings','Earrings'),
+    ('Necklaces','Necklaces'),
+    ('Chains','Chains'),
+    ('Pendants & Lockets','Pendants & Lockets'),
+    ('Mangalsutras','Mangalsutras'),
+    ('Tanmaniyas','Tanmaniyas'),
+    ('Anklets','Anklets'),
+    ('Brooches','Brooches'),
+    ('Maang Tikas','Maang Tikas'),
+    ('Nose Ring','Nose Ring'),
+    ('Nose Studs','Nose Studs'),
+    ('Bangles','Bangles'),
+
+
+    # Stationery
+    ('Fountain Pens','Fountain Pens'),
+    ('Ball Pens','Ball Pens'),
+    ('Roller Ball Pens','Roller Ball Pens'),
+    ('Fineliners','Fineliners'),
+    ('Pen Sets','Pen Sets'),
+    ('Refils','Refils'),
+    ('Gel Pens','Gel Pens'),
+    ('Inks','Inks'),
+    ('Multifunction Pens','Multifunction Pens'),
+    ('Clutch Pencils','Clutch Pencils'),
+    ('Basic Calculator','Basic Calculator'),
+    ('Engineering Calculator','Engineering Calculator'),
+    ('Finance & Bussiness Calculator','Finance & Bussiness Calculator'),
+    ('Notepads','Notepads'),
+    ('Memo Pads','Memo Pads'),
+    ('Planners & Organizers','Planners & Organizers'),
+    ('Calendars','Calendars'),
+    ('Diaries','Diaries'),
+    ('Journals','Journals'),
+    ('Notebooks','Notebooks'),
+    ('Drawing Inks','Drawing Inks'),
+    ('Hand Soap','Hand Soap'),
+    ('Brush Accessories','Brush Accessories'),
+    ('Color Tools','Color Tools'),
+    ('Stencils','Stencils'),
+    ('Paints','Paints'),
+    ('Spatula,Knives and Tools','Spatula,Knives and Tools'),
+    ('Palettes','Palettes'),
+    ('Drawing Papers','Drawing Papers'),
+    ('Sketch Pens','Sketch Pens'),
+    ('Paint Brushes','Paint Brushes'),
+    ('Art Sets','Art Sets'),
+    ('Charcoal & Graphite','Charcoal & Graphite'),
+    ('Calligraphy','Calligraphy'),
+    ('Color Pencils','Color Pencils'),
+    ('Art Clay','Art Clay'),
+    ('Files and Folders','Files and Folders'),
+    ('Scissors','Scissors'),
+    ('Tapes','Tapes'),
+    ('Paper Cutters','Paper Cutters'),
+
+    #Diaper and Potty Training
+    ('Baby Diapers','Baby Diapers'),
+    ('Baby Wipes','Baby Wipes'),
+    ('Nappy','Nappy'),
+    ('Diaper Disposable Bags','Diaper Disposable Bags'),
+    ('Nappy Pads','Nappy Pads'),
+    ('Potty Seats','Potty Seats'),
+    ('Wipe Warmers','Wipe Warmers'),
+    ('Diaper Changing Stations','Diaper Changing Stations'),
+    ('Baby Rash Creams','Baby Rash Creams'),
+    ('Diaper Bags','Diaper Bags'),
+    ('Diaper Bins','Diaper Bins'),
+    ('Potty Boxes','Potty Boxes'),
+    ('Wet Reminders','Wet Reminders'),
+
+    # Baby Bath,Hair and Skin
+    ('Baby Soaps','Baby Soaps'),
+    ('Baby Shampoo','Baby Shampoo'),
+    ('Baby Body Wash','Baby Body Wash'),
+    ('Baby Conditioner','Baby Conditioner'),
+    ('Baby Powders','Baby Powders'),
+    ('Baby Hair Oil','Baby Hair Oil'),
+    ('Baby Massage Oil','Baby Massage Oil'),
+    ('Baby Lotions & Creams','Baby Lotions & Creams'),
+    ('Baby Powder Puffs','Baby Powder Puffs'),
+    ('Baby Sunscreen','Baby Sunscreen'),
+
+    # Baby Food
+    ('Infant Formula','Infant Formula'),
+    ('Baby Cereal','Baby Cereal'),
+    ('Baby Snacks','Baby Snacks'),
+
+    # Baby Feeding Bottles and Accessories
+    ('Baby Feeding Bottles','Baby Feeding Bottles'),
+    ('Baby Bottle Cover','Baby Bottle Cover'),
+    ('Baby Bottle Cleaning Brushes','Baby Bottle Cleaning Brushes'),
+    ('Baby Bottle Tongs','Baby Bottle Tongs'),
+    ('Baby Bottle Nipples','Baby Bottle Nipples'),
+
+    # Baby Feeding Utensils and Accessories
+    ('Teethers','Teethers'),
+    ('Baby Bibs','Baby Bibs'),
+    ('Baby Hankies','Baby Hankies'),
+    ('Baby Food Maker','Baby Food Maker'),
+    ('Baby Utensil Combo','Baby Utensil Combo'),
+    ('Soothers','Soothers'),
+    ('Baby Sipper Cups','Baby Sipper Cups'),
+    ('Baby Food Feeder','Baby Food Feeder'),
+    ('Baby Cups','Baby Cups'),
+    ('Baby Plates','Baby Plates'),
+    ('Baby Spoons','Baby Spoons'),
+    ('Baby Forks','Baby Forks'),
+    ('Baby Bowls','Baby Bowls'),
+
+    # Baby Grooming
+    ('Baby Hair Brush & Combo','Baby Hair Brush & Combo'),
+    ('Baby Nail Clippers','Baby Nail Clippers'),
+    ('Baby Scissors','Baby Scissors'),
+
+    # Baby Oral Care
+    ('Baby Toothbrushes','Baby Toothbrushes'),
+    ('Baby Toothbrush Stands','Baby Toothbrush Stands'),
+    ('Baby Toothpastes','Baby Toothpastes'),
+    ('Baby Tongue Cleaner','Baby Tongue Cleaner'),
+
+    # Baby Bedding
+    ('Baby Mats','Baby Mats'),
+    ('Crib & Bassets','Crib & Bassets'),
+    ('Baby Bed Protector','Baby Bed Protector'),
+    ('Baby Cradles','Baby Cradles'),
+    ('Baby Blankets','Baby Blankets'),
+    ('Baby Mosquito Nets','Baby Mosquito Nets'),
+    ('Baby Pillows','Baby Pillows'),
+    ('Baby Sleeping Bags','Baby Sleeping Bags'),
+    ('Baby Bessheets','Baby Bessheets'),
+    ('Baby Mattresses','Baby Mattresses'),
+    ('Baby Bedding Sets','Baby Bedding Sets'),
+
+    # Baby Gear
+    ('Baby High Chairs','Baby High Chairs'),
+    ('Gear Accessories','Gear Accessories'),
+    ('Baby Swings','Baby Swings'),
+    ('Baby Carry Cot','Baby Carry Cot'),
+    ('Baby Car Seats','Baby Car Seats'),
+    ('Baby Booster Seats','Baby Booster Seats'),
+    ('Baby Walkers','Baby Walkers'),
+    ('Baby Bouncers & Rockers','Baby Bouncers & Rockers'),
+    ('Baby Strollers & Prams','Baby Strollers & Prams'),
+    ('Baby Carriers & Cudlers','Baby Carriers & Cudlers'),
+
+    # Baby Medical and Health Care
+    ('Nasal Aspirators','Nasal Aspirators'),
+    ('Cotton Buds','Cotton Buds'),
+    ('Baby Pain Reliefs','Baby Pain Reliefs'),
+    ('Baby Thermometer','Baby Thermometer'),
+    ('Fetal Dopplers','Fetal Dopplers'),
+    ('Sanitizers','Sanitizers'),
+    ('Baby Ear Syringes','Baby Ear Syringes'),
+    ('Baby Supplements','Baby Supplements'),
+    ('Bottle Sanitizers','Bottle Sanitizers'),
+    ('Cotton Balls','Cotton Balls'),
+    ('Baby Mosquito & Insect Repellant','Baby Mosquito & Insect Repellant'),
+    ('Gripe Water','Gripe Water'),
+    ('Bottle Warmers','Bottle Warmers'),
+    ('Handwash','Handwash'),
+
+    # Baby Proofing & Safety
+    ('Baby Proofing','Baby Proofing'),
+    ('Baby Safety Seeds','Baby Safety Seeds'),
+    ('Baby Head Protector','Baby Head Protector'),
+    ('Baby Monitors','Baby Monitors'),
+    ('Baby Knee Pads','Baby Knee Pads'),
+    ('Baby Safety Locks','Baby Safety Locks'),
+
+    # Baby Cleaners and Detergent
+    ('Baby Laundry Detergent','Baby Laundry Detergent'),
+    ('Baby Fabric Softeners','Baby Fabric Softeners'),
+    ('Baby Cleaners','Baby Cleaners'),
+
+    # Maternity Care
+
+    # Baby Bathing and Accessories
+    ('Baby Soap Cases','Baby Soap Cases'),
+    ('Baby Bath Towel','Baby Bath Towel'),
+    ('Baby Bath Robes','Baby Bath Robes'),
+    ('Baby Shower Caps','Baby Shower Caps'),
+    ('Baby Bath Tubs','Baby Bath Tubs'),
+    ('Baby Bath Toys','Baby Bath Toys'),
+    ('Baby Bath Sponges','Baby Bath Sponges'),
+    ('Baby Bath Seats','Baby Bath Seats'),
+    ('Baby Bath Bubbles','Baby Bath Bubbles'),
+
+    # Nursing and Breast Feeding
+    ('Breast Pumps','Breast Pumps'),
+    ('Nipple Pullers & Formers','Nipple Pullers & Formers'),
+    ('Breast Feeding Cloaks','Breast Feeding Cloaks'),
+    ('Pregnancy Pillow','Pregnancy Pillow'),
+    ('Breast Nipple Shield','Breast Nipple Shields'),
+    ('Breast Nipple Creams','Breast Nipple Creams'),
+    ('Brest Feeding Pillows','Brest Feeding Pillows'),
+    ('Breast Supple Cups','Breast Supple Cups'),
+    ('Breast Milk Storage Bags','Breast Milk Storage Bags'),
+    ('Breast Nipple Holders','Breast Nipple Holders'),
+    ('Breast Cushion Pillows','Breast Cushion Pillows'),
+    ('Nursing Breast Pads','Nursing Breast Pads'),
+    ('Breast Shells','Breast Shells'),
+
+    # Baby Gift Sets & Combo
+    ('Nappy & Bibs Combo','Nappy & Bibs Combo'),
+    ('Feeding Bottles & Accessories','Feeding Bottles & Accessories'),
+    ('Bathing Accessories Combo','Bathing Accessories Combo'),
+    ('Baby Bath,Hair & Skin Combo','Baby Bath,Hair & Skin Combo'),
+    ('Baby Grooming Kits','Baby Grooming Kits'),
+
+)
+
+# Product Filters
+# t shirt
+Fit_Categories=(
+    ('Boxy','Boxy'),
+    ('Compression','Compression'),
+    ('Loose','Loose'),
+    ('Slim','Slim'),
+    ('Regular','Regular'),
+    ('Relaxed','Relaxed'),
+)
+sleeve_type_cats = (
+    ('Layered Sleeve','Layered Sleeve'),
+    ('Cold Shoulder','Cold Shoulder'),
+    ('Roll-up Sleeve','Roll-up Sleeve'),
+    ('Puff Sleeve','Puff Sleeve'),
+    ('Cap Sleeve','Cap Sleeve'),
+    ('Raglan','Raglan'),
+    ('3/4 Sleeve','3/4 Sleeve'),
+    ('Full Sleeve','Full Sleeve'),
+    ('Half Sleeve','Half Sleeve'),
+    ('Short Sleeve','Short Sleeve'),
+    ('Sleeveless','Sleeveless'),
+
+)
+occasion_cats = (
+    ('Sports','Sports'),
+    ('Casual','Casual'),
+    ('Formal','Formal'),
+    ('Party','Party'),
+    ('Beach Wear','Beach Wear'),
+    ('Lounge Wear','Lounge Wear'),
+    ('Wedding','Wedding'),
+    ('Festive','Festive'),
+    ('Ethnic','Ethnic'),
+    ('Riding','Riding'),
+)
+size_choices = (
+    # Clothing size
+    ('0-3 Months','0-3 Months'),
+    ('3-6 Months','3-6 Months'),
+    ('6-9 Months','6-9 Months'),
+    ('9-12 Months','9-12 Months'),
+    ('1-2 Years','1-2 Years'),
+    ('2-3 Years','2-3 Years'),
+    ('2-3 Years','2-3 Years'),
+    ('3-4 Years','3-4 Years'),
+    ('4-5 Years','4-5 Years'),
+    ('5-6 Years','5-6 Years'),
+    ('6-7 Years','6-7 Years'),
+    ('7-8 Years','7-8 Years'),
+    ('8-9 Years','8-9 Years'),
+    ('9-10 Years','9-10 Years'),
+    ('10-11 Years','10-11 Years'),
+    ('11-12 Years','11-12 Years'),
+    ('12-13 Years','12-13 Years'),
+    ('13-14 Years','13-14 Years'),
+    ('14-15 Years','14-15 Years'),
+    ('15-16 Years','15-16 Years'),
+
+    ('XXXS','XXXS'),
+    ('XXS','XXS'),
+    ('XS','XS'),
+    ('S','S'),
+    ('M','M'),
+    ('L','L'),
+    ('XL','XL'),
+    ('XXL','XXL'),
+    ('XXXL','XXXL'),
+    ('XXXXL','XXXXL'),
+    ('5XL','5XL'),
+    ('6XL','6XL'),
+    ('7XL','7XL'),
+    ('Free','Free'),
+
+    #UK/US/EU
+    ('0','0'),
+    ('2','2'),
+    ('4','4'),
+    ('6','6'),
+    ('8','8'),
+    ('10','10'),
+    ('12','12'),
+    ('14','14'),
+    ('16','16'),
+    ('18','18'),
+    ('20','20'),
+    ('22','22'),
+    ('24','24'),
+    ('26','26'),
+    ('28','28'),
+    ('30','30'),
+    ('32','32'),
+    ('34','34'),
+    ('36','36'),
+    ('38','38'),
+    ('40','40'),
+    ('42','42'),
+    ('44','44'),
+    ('46','46'),
+    ('48','48'),
+    ('50','50'),
+    ('52','52'),
+    ('54','54'),
+    ('56','56'),
+    ('58','58'),
+    ('60','60'),
+    ('62','62'),
+    ('64','64'),
+    ('66','66'),
+    ('68','68'),
+    ('70','70'),
+
+    # Footwear size
+    ('1','1'),
+    ('1.5','1.5'),
+    ('2','2'),
+    ('2.5','2.5'),
+    ('3','3'),
+    ('3.5','3.5'),
+    ('4','4'),
+    ('4.5','4.5'),
+    ('5','5'),
+    ('5.5','5.5'),
+    ('6','6'),
+    ('6.5','6.5'),
+    ('7','7'),
+    ('7.5','7.5'),
+    ('8','8'),
+    ('8.5','8.5'),
+    ('9','9'),
+    ('9.5','9.5'),
+    ('10','10'),
+    ('10.5','10.5'),
+    ('11','11'),
+    ('11.5','11.5'),
+    ('12','12'),
+    ('12.5','12.5'),
+    ('13','13'),
+    ('13.5','13.5'),
+    ('14','14'),
+    ('14.5','14.5'),
+    ('15','15'),
+    ('15.5','15.5'),
+
+
+)
+Waist_rise_choices=(
+    ('High Rise','High Rise'),
+    ('Mid Rise','Mid Rise'),
+    ('Low Rise','Low Rise'),
+
+)
+
+Colors_choices = (
+('Amaranth', 'Amaranth'),
+('Amber', 'Amber'),
+('Amethyst','Amethyst'),
+('Apricot', 'Apricot'),
+('Aquamarine', 'Aquamarine'),
+('Azure', 'Azure'),
+('Baby blue', 'Baby blue'),
+('Beige', 'Beige'),
+('Brick red', 'Brick red'),
+('Black', 'Black'),
+('Blue', 'Blue'),
+('Blue-green', 'Blue-green'),
+('Blue-violet', 'Blue-violet'),
+('Blush', 'Blush'),
+('Bronze', 'Bronze'),
+('Brown', 'Brown'),
+('Burgundy', 'Burgundy'),
+('Byzantium', 'Byzantium'),
+('Carmine', 'Carmine'),
+('Cerise', 'Cerise'),
+('Cerulean', 'Cerulean'),
+('Champagne', 'Champagne'),
+('Chartreuse green', 'Chartreuse green'),
+('Chocolate', 'Chocolate'),
+('Cobalt blue', 'Cobalt blue'),
+('Coffee', 'Coffee'),
+('Copper', 'Copper'),
+('Coral', 'Coral'),
+('Crimson', 'Crimson'),
+('Cyan', 'Cyan'),
+('Desert sand', 'Desert sand'),
+('Electric blue' , 'Electric blue'),
+('Emerald', 'Emerald'),
+('Erin', 'Erin'),
+('Gold', 'Gold'),
+('Gray', 'Gray'),
+('Green', 'Green'),
+('Harlequin', 'Harlequin'),
+('Indigo', 'Indigo'),
+('Ivory', 'Ivory'),
+('Jade', 'Jade'),
+('Jungle green', 'Jungle green'),
+('Lavender', 'Lavender'),
+('Lemon', 'Lemon'),
+('Lilac', 'Lilac'),
+('Lime', 'Lime'),
+('Magenta', 'Magenta'),
+('Magenta rose', 'Magenta rose'),
+('Maroon', 'Maroon'),
+('Mauve', 'Mauve'),
+('Multicolor', 'Multicolor'),
+('Navy blue', 'Navy blue'),
+('Ochre', 'Ochre'),
+('Olive', 'Olive'),
+('Orange', 'Orange'),
+('Orange-red', 'Orange-red'),
+('Orchid', 'Orchid'),
+('Peach', 'Peach'),
+('Pear', 'Pear'),
+('Periwinkle', 'Periwinkle'),
+('Persian blue', 'Persian blue'),
+('Pink', 'Pink'),
+('Plum', 'Plum'),
+('Prussian blue', 'Prussian blue'),
+('Puce', 'Puce'),
+('Purple', 'Purple'),
+('Raspberry', 'Raspberry'),
+('Red', 'Red'),
+('Red-violet', 'Red-violet'),
+('Rose', 'Rose'),
+('Ruby', 'Ruby'),
+('Salmon', 'Salmon'),
+('Sangria', 'Sangria'),
+('Sapphire', 'Sapphire'),
+('Scarlet', 'Scarlet'),
+('Silver', 'Silver'),
+('Slate gray', 'Slate gray'),
+('Spring bud', 'Spring bud'),
+('Spring green', 'Spring green'),
+('Tan', 'Tan'),
+('Taupe', 'Taupe'),
+('Teal', 'Teal'),
+('Turquoise', 'Turquoise'),
+('Ultramarine', 'Ultramarine'),
+('Violet', 'Violet'),
+('Viridian', 'Viridian'),
+('White', 'White'),
+('Yellow', 'Yellow'),
+)
+
+from Seller.models import SellerProfile
+class Product(models.Model):
+
+        Name = models.CharField(max_length=100)
+        price = models.FloatField()
+        #Discount
+        discount_price = models.FloatField()
+        #Category
+        main_category=models.CharField(choices=main_category_choices,max_length=80,null=True,blank=True)
+        sub_category = models.CharField(choices=sub_category_choices, max_length=80,null=True,blank=True)
+        sub_sub_category = models.CharField(choices=sub_sub_category_choices, max_length=80,null=True,blank=True)
+        sub_sub_sub_category=models.CharField(choices=sub_sub_sub_category_choices,max_length=80,null=True,blank=True)
+        #Brand
+        Brand=models.CharField(max_length=50)
+        slug = models.SlugField(unique=True)
+        description = models.TextField(blank=True,null=True)
+        # Images of the products
+        image = models.ImageField(upload_to='Products/')
+        image1 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image2 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image3 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image4 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image5 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image6 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image7 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image8 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        image9 = models.ImageField(blank=True, null=True,upload_to='Products/')
+        video = models.CharField(max_length=300,blank=True, null=True)
+        # rating and reviews
+        ratings_and_reviews =models.ManyToManyField('rating_and_reviews',blank=True)
+        overall_rating = models.FloatField(default=0)
+        # color
+        color = models.CharField(max_length=50,blank=True,null=True,choices=Colors_choices)
+        color2 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color3 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color4 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color5 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color6 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color7 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color8 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color9 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color10 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color11 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        color12 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
+        colors=models.ManyToManyField("self",blank=True)
+        #Date Added
+        date=models.DateField(auto_now_add=True)
+        # size
+        Size = models.CharField(choices=size_choices,blank=True,null=True,max_length=50)
+        # size chart
+        def __str__(self):
+            return self.Name
+        # Fields for seller
+        user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,blank=True,null=True)
+        UID = models.ForeignKey(SellerProfile, on_delete=models.SET_NULL, blank=True, null=True)
+
+        NumberOfPieces = models.IntegerField(default=1)
+        Stock = models.IntegerField(default=1)
+        # Packaging detail
+        weight_of_product = models.IntegerField()
+        product_length = models.IntegerField()
+        product_breadth = models.IntegerField()
+        product_height = models.IntegerField()
+
+        # Warranty
+        Product_warranty = models.CharField(max_length=50,blank=True,null=True)
+        Warranty_summary = models.TextField(blank=True,null=True)
+        Fit = models.CharField(choices=Fit_Categories,blank=True,null=True,max_length=50)
+        Pattern = models.CharField(max_length=50,blank=True,null=True)
+        Neck_type = models.CharField(max_length=50,blank=True,null=True)
+        Sleeve_type=models.CharField(choices=sleeve_type_cats,blank=True,null=True,max_length=50)
+        Theme = models.CharField(max_length=50,blank=True,null=True)
+        Fabric = models.CharField(max_length=50,blank=True,null=True)
+        occasion= models.CharField(choices=occasion_cats,blank=True,null=True,max_length=50)
+        Collar = models.CharField(blank=True,null=True,max_length=50)
+        type = models.CharField(blank=True,null=True,max_length=50)
+        Distress = models.CharField(blank=True,null=True,max_length=50)
+        Fade = models.CharField(blank=True,null=True,max_length=50)
+        Waist_rise = models.CharField(choices=Waist_rise_choices,blank=True,null=True,max_length=50)
+        heel_height = models.CharField(blank=True,null=True,max_length=50)
+        Length = models.CharField(blank=True,null=True,max_length=50)
+        Closure = models.CharField(blank=True,null=True,max_length=50)
+        Sleeve_style = models.CharField(blank=True,null=True,max_length=50)
+        usage = models.CharField(blank=True,null=True,max_length=50)
+        Hooded = models.CharField(blank=True,null=True,max_length=50)
+        Ornamentation = models.CharField(blank=True,null=True,max_length=50)
+        Styling = models.CharField(blank=True,null=True,max_length=50)
+        Suitable_for = models.CharField(blank=True,null=True,max_length=50)
+        Applied_for = models.CharField(blank=True,null=True,max_length=50)
+        Hair_type = models.CharField(blank=True,null=True,max_length=50)
+        Pack_of = models.CharField(blank=True,null=True,max_length=50)
+        Washable = models.CharField(blank=True,null=True,max_length=50)
+        Water_resistance = models.CharField(blank=True,null=True,max_length=50)
+        Rise = models.CharField(max_length=50,blank=True,null=True)
+        Straps = models.CharField(max_length=50,blank=True,null=True)
+        Wire_support = models.CharField(max_length=50,blank=True,null=True)
+        Padding = models.CharField(max_length=50,blank=True,null=True)
+        Seam = models.CharField(max_length=50,blank=True,null=True)
+        Coverage = models.CharField(max_length=50,blank=True,null=True)
+        Back_style = models.CharField(max_length=50,blank=True,null=True)
+        Dial_color = models.CharField(blank=True,null=True,max_length=50)
+        Features = models.CharField(blank=True,null=True,max_length=50)
+        Dial_shape = models.CharField(blank=True,null=True,max_length=50)
+        Strap_material = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_compartments = models.CharField(blank=True,null=True,max_length=50)
+        Material = models.CharField(blank=True,null=True,max_length=50)
+        Bag_size = models.CharField(max_length=50,blank=True,null=True)
+        wheels = models.CharField(max_length=50,blank=True,null=True)
+        body_type = models.CharField(max_length=50,blank=True,null=True)
+        Body_material = models.CharField(max_length=50, blank=True, null=True)
+        capacity = models.CharField(max_length=50,blank=True,null=True)
+        card_slot = models.CharField(max_length=50,blank=True,null=True)
+        Strap_color = models.CharField(max_length=50,blank=True,null=True)
+        Compatible_OS = models.CharField(max_length=50,blank=True,null=True)
+        Display_type = models.CharField(max_length=50,blank=True,null=True)
+        Gemstones = models.CharField(max_length=50,blank=True,null=True)
+        Gender  = models.CharField(max_length=50,blank=True,null=True)
+        Blade_material = models.CharField(max_length=50,blank=True,null=True)
+        Battery_run_time = models.CharField(max_length=50,blank=True,null=True)
+        Plate_coating = models.CharField(max_length=50,blank=True,null=True)
+        Wattage = models.CharField(max_length=50,blank=True,null=True)
+        Collection = models.CharField(max_length=50,blank=True,null=True)
+        Ring_size = models.CharField(max_length=50,blank=True,null=True)
+        Dress_length = models.CharField(blank=True,null=True,max_length=50)
+        Length_type = models.CharField(max_length=50,blank=True,null=True)
+        Saree_type = models.CharField(max_length=50,blank=True,null=True)
+        Saree_style = models.CharField(max_length=50,blank=True,null=True)
+        Saree_length = models.CharField(max_length=50,blank=True,null=True)
+        Blouse_included = models.CharField(max_length=50,blank=True,null=True)
+        Saree_Fall_length = models.CharField(max_length=50,blank=True,null=True)
+        Saree_Fall_width = models.CharField(max_length=50,blank=True,null=True)
+        Dupatta_included = models.CharField(max_length=50,blank=True,null=True)
+        Rechargeable = models.CharField(max_length=50,blank=True,null=True)
+        Battery_operated = models.CharField(max_length=50,blank=True,null=True)
+        Character = models.CharField(max_length=50,blank=True,null=True)
+        Thermoware = models.CharField(max_length=50,blank=True,null=True)
+        Age_group = models.CharField(max_length=50,blank=True,null=True)
+        Pot_included = models.CharField(max_length=50,blank=True,null=True)
+        Bonsai = models.CharField(max_length=50,blank=True,null=True)
+        Outer_material = models.CharField(max_length=50,blank=True,null=True)
+        Towel_type = models.CharField(max_length=50,blank=True,null=True)
+        Reversible = models.CharField(max_length=50,blank=True,null=True)
+        width = models.CharField(max_length=50,blank=True,null=True)
+        Shape = models.CharField(max_length=50,blank=True,null=True)
+        Microwave_safe = models.CharField(max_length=50,blank=True,null=True)
+        Showpiece_type = models.CharField(max_length=50,blank=True,null=True)
+        No_of_prongs = models.CharField(max_length=50,blank=True,null=True)
+        Fragrance = models.CharField(max_length=50,blank=True,null=True)
+        Quantity = models.CharField(max_length=50,blank=True,null=True)
+        Form = models.CharField(max_length=50,blank=True,null=True)
+        Light_used = models.CharField(max_length=50,blank=True,null=True)
+        adjustable = models.CharField(max_length=50,blank=True,null=True)
+        Mount_type = models.CharField(max_length=50,blank=True,null=True)
+        Bulb_included = models.CharField(max_length=50,blank=True,null=True)
+        Dimmable = models.CharField(max_length=50,blank=True,null=True)
+        Foldable = models.CharField(max_length=50,blank=True,null=True)
+        Adjustable_height = models.CharField(max_length=50,blank=True,null=True)
+        Mouse_tray = models.CharField(max_length=50,blank=True,null=True)
+        Height = models.CharField(max_length=50,blank=True,null=True)
+        Storage_included = models.CharField(max_length=50,blank=True,null=True)
+        Separated = models.CharField(max_length=50,blank=True,null=True)
+        Weight = models.CharField(max_length=50,blank=True,null=True)
+        Heart_rate_sensor = models.CharField(max_length=50,blank=True,null=True)
+        Design = models.CharField(max_length=50,blank=True,null=True)
+        Diameter = models.CharField(max_length=50,blank=True,null=True)
+        Contains_pump = models.CharField(max_length=50,blank=True,null=True)
+        Thickness = models.CharField(max_length=50,blank=True,null=True)
+        Grip = models.CharField(blank=True,null=True,max_length=50)
+        Playing_level = models.CharField(max_length=50,blank=True,null=True)
+        Strung_type = models.CharField(max_length=50,blank=True,null=True)
+        Cover_type = models.CharField(max_length=50,blank=True,null=True)
+        Grip_size = models.CharField(max_length=50,blank=True,null=True)
+        Head_size = models.CharField(max_length=50,blank=True,null=True)
+        Speed = models.CharField(max_length=50,blank=True,null=True)
+        Willow_type =models.CharField(max_length=50,blank=True,null=True)
+        Bat_grade = models.CharField(max_length=50,blank=True,null=True)
+        Cover = models.CharField(max_length=50,blank=True,null=True)
+        Visor = models.CharField(max_length=50,blank=True,null=True)
+        Bails_included = models.CharField(max_length=50,blank=True,null=True)
+        Fill_type = models.CharField(max_length=50,blank=True,null=True)
+        Tyre_size = models.CharField(max_length=50,blank=True,null=True)
+        Gear_type = models.CharField(max_length=50,blank=True,null=True)
+        Rear_brake = models.CharField(max_length=50,blank=True,null=True)
+        Front_brake = models.CharField(max_length=50,blank=True,null=True)
+        Playback_mode = models.CharField(max_length=50,blank=True,null=True)
+        Accessory_holder = models.CharField(max_length=50,blank=True,null=True)
+        Rod_power = models.CharField(max_length=50,blank=True,null=True)
+        Rod_type = models.CharField(max_length=50,blank=True,null=True)
+        Rod_action = models.CharField(max_length=50,blank=True,null=True)
+        Handle_material = models.CharField(max_length=50,blank=True,null=True)
+        Construction = models.CharField(max_length=50,blank=True,null=True)
+        Drag_type = models.CharField(max_length=50,blank=True,null=True)
+        Container_type = models.CharField(max_length=50,blank=True,null=True)
+        Edge_type = models.CharField(max_length=50,blank=True,null=True)
+        Sheath = models.CharField(max_length=50,blank=True,null=True)
+        Coated = models.CharField(max_length=50,blank=True,null=True)
+        Finish = models.CharField(max_length=50,blank=True,null=True)
+        Attachment_type = models.CharField(max_length=50,blank=True,null=True)
+        Auto_locking = models.CharField(max_length=50,blank=True,null=True)
+        Tray_included = models.CharField(max_length=50,blank=True,null=True)
+        Magnetic = models.CharField(max_length=50,blank=True,null=True)
+        Diary_type = models.CharField(blank=True,null=True,max_length=50)
+        Steam_burst = models.CharField(blank=True,null=True,max_length=50)
+        Spray = models.CharField(blank=True,null=True,max_length=50)
+        Power_consumption = models.CharField(blank=True,null=True,max_length=50)
+        Rated_pressure = models.CharField(blank=True,null=True,max_length=50)
+        Star_rating = models.CharField(blank=True,null=True,max_length=50)
+        Filter_type = models.CharField(blank=True,null=True,max_length=50)
+        Auto_revolving_heater = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_stitches = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_blades = models.CharField(blank=True,null=True,max_length=50)
+        Load_type = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_ways = models.CharField(blank=True,null=True,max_length=50)
+        Wired_or_wireless = models.CharField(blank=True,null=True,max_length=50)
+        Energy_ratings = models.CharField(blank=True,null=True,max_length=50)
+        Condenser_coil = models.CharField(blank=True,null=True,max_length=50)
+        Ideal_for = models.CharField(blank=True,null=True,max_length=50)
+        Technology = models.CharField(blank=True,null=True,max_length=50)
+        Defrosting_type = models.CharField(blank=True,null=True,max_length=50)
+        Year = models.CharField(blank=True,null=True,max_length=50)
+        Star = models.CharField(blank=True,null=True,max_length=50)
+        Bee_rating = models.CharField(blank=True,null=True,max_length=50)
+        Washing_system = models.CharField(blank=True,null=True,max_length=50)
+        Power = models.CharField(blank=True,null=True,max_length=50)
+        Control = models.CharField(blank=True,null=True,max_length=50)
+        Ductless = models.CharField(blank=True,null=True,max_length=50)
+        Auto_clean = models.CharField(blank=True,null=True,max_length=50)
+        Cups = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_eggs = models.CharField(blank=True,null=True,max_length=10)
+        Number_of_slices = models.CharField(blank=True,null=True,max_length=50)
+        Screen_size = models.CharField(blank=True,null=True,max_length=50)
+        Operating_system = models.CharField(blank=True,null=True,max_length=50)
+        Hard_disk_capacity = models.CharField(blank=True,null=True,max_length=50)
+        Storage_type = models.CharField(blank=True,null=True,max_length=50)
+        Processor = models.CharField(blank=True,null=True,max_length=50)
+        Processor_brand = models.CharField(blank=True,null=True,max_length=50)
+        Processor_gen = models.CharField(blank=True,null=True,max_length=50)
+        RAM_type = models.CharField(blank=True,null=True,max_length=50)
+        RAM = models.CharField(blank=True,null=True,max_length=50)
+        Graphics = models.CharField(blank=True,null=True,max_length=50)
+        Graphics_name = models.CharField(blank=True,null=True,max_length=50)
+        Graphics_processor_series = models.CharField(blank=True,null=True,max_length=50)
+        Graphics_memory_type = models.CharField(blank=True,null=True,max_length=50)
+        Touch_screen = models.CharField(blank=True,null=True,max_length=10)
+        Interface = models.CharField(blank=True,null=True,max_length=50)
+        Water_proof = models.CharField(blank=True,null=True,max_length=10)
+        Operation_type = models.CharField(blank=True,null=True,max_length=20)
+        Number_of_cells = models.CharField(blank=True,null=True,max_length=10)
+        Compatible_laptop_size = models.CharField(blank=True,null=True,max_length=50)
+        Ergonomic = models.CharField(blank=True,null=True,max_length=10)
+        Illuminated_keys = models.CharField(blank=True,null=True,max_length=10)
+        Shock_resistance = models.CharField(blank=True,null=True,max_length=10)
+        Wireless_speed = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_Ethernet_ports= models.CharField(blank=True,null=True,max_length=10)
+        Transfer_speed = models.CharField(blank=True,null=True,max_length=10)
+        Voice_support = models.CharField(blank=True,null=True,max_length=10)
+        Memory_capacity = models.CharField(blank=True,null=True,max_length=10)
+        Max_wireless_transmission_rate = models.CharField(blank=True,null=True,max_length=50)
+        # Router
+        Frequency_band = models.CharField(blank=True,null=True,max_length=50)
+        Compatibility = models.CharField(blank=True,null=True,max_length=50)
+        Frequency = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_USB_ports = models.CharField(blank=True,null=True,max_length=10)
+        Antennae = models.CharField(blank=True,null=True,max_length=50)
+        GST_invoice = models.CharField(blank=True,null=True,max_length=10)
+        Offers = models.CharField(blank=True,null=True,max_length=50)
+
+        # ('Computer Peripherals', 'Computer Peripherals')
+        # Printer Inks
+        Printer_type = models.CharField(blank=True,null=True,max_length=50)
+        Scanner_type = models.CharField(blank=True,null=True,max_length=50)
+        Printer_output = models.CharField(blank=True,null=True,max_length=50)
+        # Printer
+        Refilling_type = models.CharField(blank=True,null=True,max_length=50)
+        Function = models.CharField(blank=True,null=True,max_length=50)
+        # Projectors
+        Portable = models.CharField(blank=True,null=True,max_length=10)
+        Device_chipset = models.CharField(blank=True,null=True,max_length=50)
+        Lamp_life = models.CharField(blank=True,null=True,max_length=50)
+        Brightness = models.CharField(blank=True,null=True,max_length=50)
+
+        # ('Software', 'Software'),
+        # Astrology
+        Edition = models.CharField(blank=True,null=True,max_length=50)
+        #OS
+        Architecture = models.CharField(blank=True,null=True,max_length=50)
+        # Educational Media
+        Board = models.CharField(blank=True,null=True,max_length=50)
+        Class = models.CharField(blank=True,null=True,max_length=50)
+        Subject = models.CharField(blank=True,null=True,max_length=50)
+        # Antivirus
+        Validity = models.CharField(blank=True,null=True,max_length=50)
+
+        # ('Computer Components', 'Computer Components'),
+        # Monitors
+        Screen_resolution = models.CharField(blank=True,null=True,max_length=50)
+        Screen_form_factor = models.CharField(blank=True,null=True,max_length=20)
+        Inbuilt_speaker = models.CharField(blank=True,null=True,max_length=20)
+        Panel_type = models.CharField(blank=True,null=True,max_length=50)
+        Connectivity = models.CharField(blank=True,null=True,max_length=10)
+        Response_time = models.CharField(blank=True,null=True,max_length=50)
+        # CPU Fan
+        Fan_diameter = models.CharField(blank=True,null=True,max_length=20)
+        Max_fan_speed = models.CharField(blank=True,null=True,max_length=20)
+        # Power Supply units
+        Number_of_satacables = models.CharField(blank=True,null=True,max_length=50)
+        Power_output = models.CharField(blank=True,null=True,max_length=50)
+
+        # Processor type
+        Number_of_cores = models.CharField(blank=True,null=True,max_length=50)
+        Processor_speed = models.CharField(blank=True,null=True,max_length=50)
+
+        # Ram
+        Data_rate = models.CharField(blank=True,null=True,max_length=50)
+        Device = models.CharField(blank=True,null=True,max_length=50)
+
+        #motherboard
+        Chipset = models.CharField(blank=True,null=True,max_length=50)
+        Clock_speed = models.CharField(blank=True,null=True,max_length=50)
+        Number_of_HDMI_ports = models.CharField(blank=True,null=True,max_length=10)
+
+        # ('Printers & Inks', 'Printers & Inks'),
+        # ('Tablet Accessories', 'Tablet Accessories'),
+        # ('Desktop PCs', 'Desktop PCs'),
+
+        # ('Routers', 'Routers'),
+        # ('Data Cards', 'Data Cards'),
+        # ('Supplies', 'Supplies'),
+        # ('Monitors', 'Monitors'),
+        # ('Storage', 'Storage'),
+        # ('Audio Players', 'Audio Players'),
+        # ('Video Players', 'Video Players'),
+        # ('TV & Accessories', 'TV & Accessories'),
+
+        # # Home Entertainment
+        # ('Video Players & Accessories', 'Video Players & Accessories'),
+        # Video Players & accessories
+
+        Configuration = models.CharField(max_length=50,blank=True,null=True)
+
+        # ('MP3 players/Ipods Accessories', 'MP3 players/Ipods Accessories'),
+        # ('Audio Players', 'Audio Players'),
+        # ('Home Audio', 'Home Audio'),
+        # ('DTH', 'DTH'),
+        # ('Televisions', 'Televisions'),
+        Smart_tv = models.CharField(max_length=50, blank=True, null=True)
+        Screen_type = models.CharField(max_length=50, blank=True, null=True)
+        Curve_tv = models.CharField(max_length=20, blank=True, null=True)
+
+        # # Mobiles & Accessories
+        # ('Mobiles', 'Mobiles'),
+        Internal_storage = models.CharField(max_length=50, blank=True, null=True)
+        Battery_capacity = models.CharField(max_length=50, blank=True, null=True)
+        Network_type = models.CharField(max_length=50, blank=True, null=True)
+        SIM_type = models.CharField(max_length=50, blank=True, null=True)
+        Primary_camera = models.CharField(max_length=50, blank=True, null=True)
+        Secondary_camera = models.CharField(max_length=50, blank=True, null=True)
+        Operating_system_name = models.CharField(max_length=50, blank=True, null=True)
+        Speciality = models.CharField(max_length=50, blank=True, null=True)
+
+        # ('Tablets', 'Tablets'),
+        Voice_calling = models.CharField(max_length=20, blank=True, null=True)
+
+        # ('Mobile Accessories', 'Mobile Accessories'),
+        #Power Banks
+        Battery_type = models.CharField(max_length=50, blank=True, null=True)
+        Syncing_method = models.CharField(max_length=50, blank=True, null=True)
+        #Charging Pads
+        Wireless_standard = models.CharField(max_length=50, blank=True, null=True)
+        Indicator = models.CharField(max_length=50, blank=True, null=True)
+        Compatible_mobile = models.CharField(max_length=50, blank=True, null=True)
+        # ('Tablet Accessories', 'Tablet Accessories'),
+
+
+        # # Building Materials & Supplies
+        # Door and Windows fitting
+
+        Extension = models.CharField(max_length=50, blank=True, null=True)
+        Movement = models.CharField(max_length=50, blank=True, null=True)
+        Fixture_type = models.CharField(max_length=50, blank=True, null=True)
+        # ('Bathroom & Kitchen Fittings', 'Bathroom & Kitchen Fittings'),
+        # Faucets
+        Installation_type = models.CharField(max_length=50, blank=True, null=True)
+
+        # ('Plumbing Supplies', 'Plumbing Supplies'),
+        # ('Solar & Alternate Energy', 'Solar & Alternate Energy'),
+        # ('Electrical Hardware', 'Electrical Hardware'),
+        # Exhaust Fans
+        Sweep_diameter = models.CharField(max_length=50, blank=True, null=True)
+        Phase = models.CharField(max_length=50, blank=True, null=True)
+        # RCCB
+        Number_of_poles = models.CharField(max_length=50, blank=True, null=True)
+
+        # ('Paint Supplies & Equipment', 'Paint Supplies & Equipment'),
+        Flammable = models.CharField(max_length=50, blank=True, null=True)
+
+        # # Cameras & Accessories
+        # ('Cameras', 'Cameras'),
+        # Camcorders
+        Sensor_type = models.CharField(max_length=50, blank=True, null=True)
+        # Point & Shoot
+        Effective_pixels = models.CharField(max_length=50, blank=True, null=True)
+
+
+        # ('Camera Accessories', 'Camera Accessories'),
+        Maximum_load_capacity = models.CharField(max_length=50, blank=True, null=True)
+        # Camera Lens
+        Prime_Zoom = models.CharField(max_length=20, blank=True, null=True)
+        Focal_length = models.CharField(max_length=50, blank=True, null=True)
+        Lens_type = models.CharField(max_length=50, blank=True, null=True)
+        Max_aperture = models.CharField(max_length=50, blank=True, null=True)
+        Lens_mount = models.CharField(max_length=50, blank=True, null=True)
+        # Binoculars
+        Max_magnification = models.CharField(max_length=50, blank=True, null=True)
+        # Telescopes
+        Mount_tracking = models.CharField(max_length=50, blank=True, null=True)
+        # Camera Mounts
+        Placement_type = models.CharField(max_length=50, blank=True, null=True)
+        # Stepping Rings
+        Male_thread_diameter = models.CharField(max_length=50, blank=True, null=True)
+        Female_thread_diameter = models.CharField(max_length=50, blank=True, null=True)
+
+        # # Automotive Accessories
+
+        # ('Tyre & Wheel', 'Tyre & Wheel'),
+        Vehicle_brand = models.CharField(max_length=50, blank=True, null=True)
+        Vehicle_model = models.CharField(max_length=50, blank=True, null=True)
+
+        # ('Vehicle Safety,Security & Guards', 'Vehicle Safety,Security & Guards'),
+
+        # ('Car Dashboard Accessories', 'Car Dashboard Accessories'),
+        Number_of_indicator_lamps = models.CharField(max_length=50, blank=True, null=True)
+        Tachometer = models.CharField(max_length=50, blank=True, null=True)
+        # ('Car Air Purifiers & Air Fresheners', 'Car Air Purifiers & Air Fresheners'),
+        # ('Vehicle Cleaners', 'Vehicle Cleaners'),
+        # ('Vehicle Styling', 'Vehicle Styling'),
+        # ('Vehicle Stereo & Music Systems', 'Vehicle Stereo & Music Systems'),
+        # ('Vehicle Door,Windshield,Windows & Mirrors', 'Vehicle Door,Windshield,Windows & Mirrors'),
+        # ('Vehicle Utility & Accessories', 'Vehicle Utility & Accessories'),
+        # ('Oils & Lubricants', 'Oils & Lubricants'),
+        # ('Spares,Tools & Maintenance Service Parts', 'Spares,Tools & Maintenance Service Parts'),
+        # ('Vehicle Storage & Organizers', 'Vehicle Storage & Organizers'),
+        # ('Helmets & Riding Gear', 'Helmets & Riding Gear'),
+        Armours = models.CharField(max_length=50, blank=True, null=True)
+
+        # ('Vehicle Lights', 'Vehicle Lights'),
+        # ('Automotive Combos', 'Automotive Combos'),
+        # ('Vehicle Repair', 'Vehicle Repair'),
+
+        # # Musical Instruments
+        # ('Keys & Synthesizers', 'Keys & Synthesizers'),
+        # ('Studio/Stage Equipments', 'Studio/Stage Equipments'),
+        # ('Electronic Instruments', 'Electronic Instruments'),
+        # ('Drums & Percussion', 'Drums & Percussion'),
+        # ('Accessories', 'Accessories'),
+
+        # # Home Improvement
+        # ('Lawn & Gardening', 'Lawn & Gardening'),
+        # ('Tools & Measuring Equipments', 'Tools & Measuring Equipments'),
+        # ('Home Utilities & Organizers', 'Home Utilities & Organizers'),
+        # ('Home Safety', 'Home Safety'),
+
+        # # Gaming
+        # ('Gaming Consoles', 'Gaming Consoles'),
+        Platform = models.CharField(blank=True,null=True,max_length=50)
+
+        # ('Games', 'Games'),
+        # ('Gaming Accessories', 'Gaming Accessories'),
+        # ('Gaming Components', 'Gaming Components'),
+        PEGI_rating = models.CharField(blank=True,null=True,max_length=50)
+        Game_modes = models.CharField(blank=True,null=True,max_length=50)
+        ESRB_rating = models.CharField(blank=True,null=True,max_length=50)
+
+        # # Home Lighting
+        # ('Utility Lighting', 'Utility Lighting'),
+        # ('Decor Lighting & Accessories', 'Decor Lighting & Accessories'),
+
+        # # Home Cleaning & Bathroom Accessories
+        # ('Cleaning Supplies', 'Cleaning Supplies'),
+        # ('HouseHold Supplies', 'HouseHold Supplies'),
+        # ('Bathroom Accessories', 'Bathroom Accessories'),
+
+        # # Automation & Robotics
+        # ('Smart Lighting', 'Smart Lighting'),
+        # ('Multipurpose Controllers', 'Multipurpose Controllers'),
+        # ('Smart Switches', 'Smart Switches'),
+        # ('Sensors & Alarms', 'Sensors & Alarms'),
+        # ('Surveillance Devices', 'Surveillance Devices'),
+
+        # # Industrial & Scientific
+        # ('Sound Meters', 'Sound Meters'),
+        # ('LCR Meters', 'LCR Meters'),
+        # ('Ohmmeters', 'Ohmmeters'),
+        # ('Tachometers', 'Tachometers'),
+        # ('Light Meters', 'Light Meters'),
+        # ('Test Indicator', 'Test Indicator'),
+        # ('Dial Indicator', 'Dial Indicator'),
+        # ('Ring Gauge', 'Ring Gauge'),
+        # ('Height Gauge', 'Height Gauge'),
+        # ('Hole Gauge', 'Hole Gauge'),
+        # ('Pin Gauge', 'Pin Gauge'),
+        # ('Radius Gauge', 'Radius Gauge'),
+        # ('Snap Gauge', 'Snap Gauge'),
+        # ('Bore Gauge', 'Bore Gauge'),
+        # ('Air Quality Meters', 'Air Quality Meters'),
+        # ('Inside Macrometers', 'Inside Macrometers'),
+        # ('Frequency Meters', 'Frequency Meters'),
+        # ('Packaging & Shipping', 'Packaging & Shipping'),
+        # ('Lab & Scientific Products', 'Lab & Scientific Products'),
+        # ('Addictive Manufacturing Products', 'Addictive Manufacturing Products'),
+        # ('Industrial Testing Devices', 'Industrial Testing Devices'),
+        # ('Safety Products', 'Safety Products'),
+
+        # # Health & Medical CareL
+        # ('Professional Medical Supplies', 'Professional Medical Supplies'),
+        # ('Home Medical Supplies', 'Home Medical Supplies'),
+        # ('Home Medicines', 'Home Medicines'),
+        # ('Health Supplements', 'Health Supplements'),
+
+        # # Eyewear & Sunglasses
+        # ('Frames', 'Frames'),
+        Temple_material = models.CharField(blank=True,null=True,max_length=50)
+        Lens_type_supported = models.CharField(blank=True,null=True,max_length=50)
+        Temple_color = models.CharField(blank=True,null=True,max_length=50)
+
+        # ('Sunglasses', 'Sunglasses'),
+
+        # # Pet Supplies
+        # ('Dogs', 'Dogs'),
+        # ('Cats', 'Cats'),
+        # ('Birds', 'Birds'),
+        # ('Fish & Aquatic', 'Fish & Aquatic'),
+        # ('Horse', 'Horse'),
+        # ('Large Animals', 'Large Animals'),
+        # ('Small Animals', 'Small Animals'),
+        # ('Grooming & Hygiene', 'Grooming & Hygiene'),
+        # ('Health & Safety', 'Health & Safety'),
+
+        @property                                            # we are adding this property to avoid Django The 'image' attribute has no file associated with it
+        def image_url(self):
+            if self.image and hasattr(self.image, 'url'):
+                return self.image.url
+
+        @property
+        def image1_url(self):
+            if self.image1 and hasattr(self.image1, 'url'):
+                return self.image1.url
+
+        @property
+        def image2_url(self):
+            if self.image2 and hasattr(self.image2, 'url'):
+                return self.image2.url
+
+        @property
+        def image3_url(self):
+            if self.image3 and hasattr(self.image3, 'url'):
+                return self.image3.url
+
+        @property
+        def image4_url(self):
+            if self.image4 and hasattr(self.image4, 'url'):
+                return self.image4.url
+
+        @property
+        def image5_url(self):
+            if self.image5 and hasattr(self.image5, 'url'):
+                return self.image5.url
+
+        @property
+        def image6_url(self):
+            if self.image6 and hasattr(self.image6, 'url'):
+                return self.image6.url
+
+        @property
+        def image7_url(self):
+            if self.image7 and hasattr(self.image7, 'url'):
+                return self.image7.url
+
+        @property
+        def image8_url(self):
+            if self.image8 and hasattr(self.image8, 'url'):
+                return self.image8.url
+
+        @property
+        def image9_url(self):
+            if self.image9 and hasattr(self.image9, 'url'):
+                return self.image9.url
+
+        def get_abs_url(self):
+            return reverse(viewname="Base:product-page", #url-app-name:url_patter_name
+                           kwargs={
+                               'slug': self.slug
+                           })
+        # for passing slug of the product to add_reviews
+        def add_review_url(self):
+            return reverse(viewname="Base:review-page",
+                           kwargs={
+                               'slug':self.slug
+                           })
+        def get_add_to_cart_url(self):
+            return reverse(viewname="Base:add-to-cart",  # url-app-name:url_patter_name
+                           kwargs={
+                               'slug': self.slug
+                           })
+
+        def get_remove_from_cart_url(self):
+            return reverse(viewname="Base:remove-from-cart", kwargs={
+                'slug': self.slug
+            })
+        def delete_from_cart_url(self):
+            return reverse(viewname="Base:delete-from-cart", kwargs={
+                'slug': self.slug
+            })
+
+        def get_add_to_wishlist_url(self):
+            return reverse(viewname="Base:add-to-wishlist",
+                           kwargs={
+                               'slug': self.slug
+                           })
+
+        def get_remove_from_wishlist_url(self):
+            return reverse(viewname="Base:remove-from-wishlist",
+                           kwargs={
+                               'slug': self.slug
+                           })
+
+class Order_Item(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,blank=True,null=True)
+    items = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True,null=True)
+    ordered = models.BooleanField(default=False,blank=True,null=True)
+    shipped = models.BooleanField(default=False, blank=True, null=True)
+    delivered = models.BooleanField(default=False, blank=True, null=True)
+    refund_requested = models.BooleanField(default=False, blank=True, null=True)
+    refund_granted = models.BooleanField(default=False, blank=True, null=True)
+    quantity = models.IntegerField(default=1,blank=True,null=True)
+    unique_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True,blank=True,null=True)
+    date_of_order = models.DateField(blank=True, null=True, editable=True)
+    Seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, blank=True, null=True)
+
+    def add_to_saved(self):
+        return reverse(viewname="Base:add-to-saved",
+                       kwargs={
+                           'id': self.unique_id
+                       })
+
+    def delete_from_saved(self):
+        return reverse(viewname="Base:delete-from-saved",
+                       kwargs={
+                           'id': self.unique_id
+                       })
+    def move_to_cart(self):
+        return reverse(viewname="Base:move-to-cart",
+                       kwargs={
+                           'id': self.unique_id
+                       })
+    def dispatched_url(self):
+        return reverse(viewname="Seller:dispatched",
+                       kwargs={
+                           'id': self.unique_id
+                       })
+
+    def get_total_item_price(self):
+        return self.quantity * self.items.price
+    def get_total_discount_item_price(self):
+        return self.quantity *self.items.discount_price
+    def get_amount_save(self):
+        return self.get_total_item_price() - self.get_total_discount_item_price()
+    def get_final_price(self):
+        if self.items.discount_price:
+            return self.get_total_discount_item_price()
+        return self.get_total_item_price()
+
+class saved_order(models.Model):
+    user= models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,blank=True,null=True)
+    items = models.ManyToManyField(Order_Item)
+
+class Delivery_Address(models.Model):
+    user= models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,blank=True,null=True)
+    name = models.CharField(max_length=50,blank=True,null=True)
+    mobile_number = models.CharField(max_length=10,blank=True,null=True)
+    zip_code = models.CharField(max_length=10,blank=True,null=True)
+    locality = models.CharField(max_length=50,blank=True,null=True)
+    address= models.CharField(max_length=100,blank=True,null=True)
+    district= models.CharField(max_length=50,blank=True,null=True)
+    state= models.CharField(choices=States,max_length=50,blank=True,null=True)
+    landmark = models.CharField(max_length=50,blank=True,null=True)
+    alternate_number=models.CharField(max_length=10,blank=True,null=True)
+    class Meta:
+        verbose_name_plural = 'Addresses'
+
+class Order(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,blank=True,null=True)
+    items = models.ManyToManyField(Order_Item)
+    Address=models.ForeignKey(Delivery_Address ,blank=True,null=True,on_delete=models.CASCADE)
+    ordered=models.BooleanField(default=False,blank=True,null=True)
+    ordered_date = models.DateTimeField(blank=True,null=True)
+    shipped = models.BooleanField(default=False,blank=True,null=True)
+    shipping_date=models.DateTimeField(blank=True,null=True)
+    received = models.BooleanField(default=False,blank=True,null=True)
+    received_date=models.DateTimeField(blank=True,null=True)
+    refund_requested = models.BooleanField(default=False,blank=True,null=True)
+    refund_granted = models.BooleanField(default=False,blank=True,null=True)
+    def get_total(self):
+        total = 0
+        for order_item in self.items.all():
+            total+=order_item.get_final_price()
+        return total
+# rating and reviews
+class rating_images(models.Model):
+    image_to=models.ForeignKey('rating_and_reviews',on_delete=models.CASCADE,blank=True,null=True)
+    image=models.ImageField(upload_to='ratings/',blank=True,null=True)
+class rating_and_reviews(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,blank=True,null=True)
+    rating=models.FloatField(default=1,validators=[MinValueValidator(1),MaxValueValidator(5)],blank=True,null=True)
+    review=models.TextField(blank=True,null=True)
+    photos=models.ManyToManyField(rating_images,blank=True)
+    Date = models.DateField(auto_now_add=True)
+# Wishlist
+class Wishlist(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,blank=True,null=True)
+    items = models.ManyToManyField(Product,blank=True)
+
+
+# size for product
+
+

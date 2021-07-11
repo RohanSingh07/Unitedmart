@@ -1,0 +1,1007 @@
+{% load static %}
+<style>
+        /* for large screen navbar1*/
+        .NavbarLg{
+                position:fixed;
+                z-index:2;
+                top:0;
+                -webkit-box-shadow: 0 3px 6px -6px black;
+                -moz-box-shadow: 0 3px 6px -6px black;
+                    box-shadow: 0 3px 6px -6px black;
+
+            }
+        /* for large screen navbar1*/
+       /* for small screen navbar1 */
+       .navbar1{
+        position:fixed;
+        z-index:2;
+        top:0;
+        }
+
+
+
+       /* when screen size is less than 500 */
+  @media only screen and (max-width : 500px) {
+       .navbar-collapse {
+       background-color:#27858a;
+       }
+
+       /* for the toggler icon */
+
+
+
+
+       /* when the size of screen is less than 500 brand hides */
+
+        .form{
+        max-width:100%;
+        }
+        }
+
+        /* when screen size is less than 500 end */
+
+        /* when the screen size is greater than 991px*/
+         @media only screen and (min-width: 991px){
+           .show{
+              display: none ;
+            }
+
+         }
+         /* when the screen size is greater than 991px*/
+
+        /* when screen size is less than 1000 */
+
+        @media only screen and (max-width: 991px) {
+           .collapse {
+               display: none !important;
+           }
+           .hide{
+
+                      display: none !important;
+
+                }
+            .show{
+              display: block !important;
+            }
+            .navbar-toggler{
+            display: block !important;}
+
+            .search-results{
+            padding-top:4em;
+            }
+        }
+        /* when screen size is less than 1000 end  */
+         .bar{
+            color:white;
+            }
+        .input-group.md-form.form-sm.form-1 input{
+          border: 1px solid #bdbdbd;
+          border-top-right-radius: 0.25rem;
+          border-bottom-right-radius: 0.25rem;
+        }
+        .input-group.md-form.form-sm.form-2 input {
+          border: 1px solid #bdbdbd;
+          border-top-left-radius: 0.25rem;
+          border-bottom-left-radius: 0.25rem;
+        }
+        .input-group.md-form.form-sm.form-2 input.red-border {
+          border: 1px solid #ef9a9a;
+        }
+        .input-group.md-form.form-sm.form-2 input.lime-border {
+          border: 1px solid #cddc39;
+        }
+        .input-group.md-form.form-sm.form-2 input.amber-border {
+          border: 1px solid #ffca28;
+        }
+
+         #text-inside-comp{
+            padding-left:2em;
+            padding-top:1.25em;
+            padding-bottom:1.25em;
+            font-size:small;
+
+             }
+         #text-inside{
+            padding-left:2em;
+            padding-top:1.25em;
+            padding-bottom:1.25em;
+            font-size:small;
+
+             }
+
+        /* css for text area */
+        /* Side Nav */
+
+
+        .sidenav {
+          height: 100%;
+          width: 0;
+          position: fixed;
+          z-index: 3;
+          top: 0;
+          left: 0;
+          overflow-x: hidden;
+          transition: 0.5s;
+          padding-top:0;
+        }
+
+        .sidenav a {
+          /* padding: 8px 8px 8px 32px; */
+          text-decoration: none;
+          /* font-size: 25px; */
+          /* color: #818181; */
+          display: block;
+          transition: 0.3s;
+
+        }
+        .sidenav .closebtn {
+        position:absolute;
+        z-index:2;
+        right:15%;
+        font-size:2em;
+
+        }
+
+        /* sidenav end*/
+        /* Navbar Brand */
+        .nav-brand{
+            height:3em;
+            }
+
+    .category:hover{
+        color:#22c2e6;
+        }
+    .category{
+        color:black;
+        }
+
+
+     /* Men */
+     .Men-content{
+     display:None;
+     position:absolute;
+     z-index: 2;
+     width: 100%;
+     margin-top: 25px;
+     border-top:0.5px solid #e1e4e8;
+     }
+
+     /* Men */
+
+     /* Women */
+     .Women-content{
+     display:None;
+     position:absolute;
+     z-index: 2;
+     width: 100%;
+     margin-top: 25px;
+     border-top:0.5px solid #e1e4e8;
+
+     }
+     .Women-content:hover .Women-content a{
+        display:block!important;
+        }
+     /* Women */
+
+     /* kids */
+     .Kids-content{
+     display:None;
+     position:absolute;
+     z-index: 2;
+     width: 100%;
+     margin-top: 25px;
+     border-top:0.5px solid #e1e4e8;
+
+     }
+     .Kids-content:hover .Kids-content a{
+        display:block!important;
+        }
+     /* kids */
+    /*HomeLiving */
+          .HomeLiving-content{
+         display:None;
+     position:absolute;
+     z-index: 2;
+     width: 100%;
+     margin-top: 25px;
+     border-top:0.5px solid #e1e4e8;
+
+         }
+     .HomeLiving-content:hover .HomeLiving-content a{
+        display:block!important;
+        }
+    /*HomeLiving */
+      /*Sports */
+          .Sports-content{
+         display:None;
+     position:absolute;
+     z-index: 2;
+     width: 100%;
+     margin-top: 25px;
+     border-top:0.5px solid #e1e4e8;
+
+         }
+     .Sports-content:hover .Sports-content a{
+        display:block!important;
+        }
+
+
+    .column-navbar2 a {
+      float: none;
+      color: black;
+      padding: 0.5em;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+    }
+    .column-navbar2 {
+      float: left;
+      width: 20%;
+      padding: 10px;
+    }
+
+</style>
+<!-- Navbar for large screen -->
+<div class="container-fluid bg-white hide NavbarLg ">
+    <div class="row d-flex align-items-center">
+        <!-- For Logo -->
+        <div class="col-2">
+            <div class="row d-flex justify-content-center align-items-center">
+                <!--logo-->
+                <a href="{% url 'Base:Homepage' %}"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150"></a>
+                <!--logo-->
+            </div>
+        </div>
+        <!-- For Logo -->
+        <!-- For content and Searchbar -->
+        <div class="col-7">
+            <div class="row d-flex justify-content-center align-items-center">
+                <!-- Entire content -->
+                <div class="col-6" id="All-Categories">
+                      <a href="" class="category Men font-weight-normal" style="font-size:14px;font-family:Arial;color:dark-grey">MEN</a>
+                      <a href="" class="ml-3 category Women font-weight-normal" style="font-size:14px;font-family:Arial;" >WOMEN</a>
+                      <a href="" class="ml-3 category Kids font-weight-normal" style="font-size:14px;font-family:Arial;">KIDS</a>
+                      <a href="" class="ml-3 category HomeLiving font-weight-normal" style="font-size:14px;font-family:Arial;">HOME & LIVING</a>
+                      <a href="" class="ml-3 category Sports font-weight-normal" style="font-size:14px;font-family:Arial;">SPORTS</a>
+                </div>
+                <!-- Entire content -->
+                <!-- Searchbar -->
+                <form method="GET" action="{% url 'Base:searchbar'%}"  class="input-group form-sm form-2 ml-0 col-6" >
+                  <div class="input-group">
+                      <input  name="q" id="text-inside-comp" type="text" style="border-style:solid;border-right:0;border-width:0.5px;border-color:#d4d3d2;height:35px;width:85%;font-size:small;padding-left:20px;border-radius:0;outline:none;" placeholder="Search for markets, malls, shops and more" aria-label="search" aria-describedby="search" autocomplete="off">
+                      <input type="hidden" name="next[0]" value="{{request.path}}">
+                      <input type="hidden" name="next[1]" value="rel">
+                      <div class="input-group-prepend">
+                        <button class="input-group-text bg-white" style="border-left:0;height:35px;border-color:#d4d3d2;" id="search" >
+                          <i class="fas fa-search " style="color:grey"></i>
+                        </button>
+                      </div>
+                  </div>
+                </form>
+                <!-- Searchbar -->
+            </div>
+              <div class="Men-content bg-white">
+                    <div class="row d-flex justify-content-center align-item-center ">
+                        <div class="col bg-white">
+                          <a><h6 class="pl-3 mt-2 mb-2 font-weight-normal" style="color:#bf3013;font-size:14px;">Topwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweatshirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweaters</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Blazers & Coats</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Suits</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Raincoats</h6></a>
+                            <hr>
+                          <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Indian Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Kurtas & Kurtas Sets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sherwanis</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sadris</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Dhotis</h6></a>
+                        </div>
+                        <div class="col bg-light ">
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Bottom Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jeans</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Joggers</h6></a>
+                            <hr>
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Innerwear & Sleepwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Briefs & Trunks</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Boxers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Vests</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sleepwear & Loungewear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Thermals</h6></a>
+
+
+                        </div>
+                         <div class="col bg-white">
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Footwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sneakers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sandals & Floaters</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Flip Flops</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Socks</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Personal Care & Grooming</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Sunglasses & Frames</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Watches</h6></a>
+                        </div>
+                         <div class="col bg-light">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Sports & Active Wear</h6></a>
+                           <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts Sandals</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Active T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Shorts</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Tracksuits</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets & Sweatshirt</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Accessories</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Swimwear</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Smart Watches</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Fitness Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Headphones</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Speakers</h6></a>
+                        </div>
+                         <div class="col bg-white">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Fashion Accessories</h6></a>
+                          <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Wallets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Belts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Perfumes & Body Mists</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Trimmers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Deodrants</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Ties, Cufflinks & Pocket Squares</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Accessory Gift Sets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Caps & Hats</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Mufflers, Scarves & Gloves</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Phone Cases</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Rings & Wristwear</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Helmets</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Bags & Bagpacks</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#bf3013;font-size:14px;">Luggages & Troleys</h6></a>
+                        </div>
+                    </div>
+                </div>
+
+
+              <div class="Women-content bg-white ">
+                    <div class="row d-flex justify-content-center align-item-center ">
+                        <div class="col bg-white">
+                          <a><h6 class="pl-3 mt-2 mb-2 font-weight-normal" style="color:#c416b9;font-size:14px;">Indian & Fushionwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweatshirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweaters</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Blazers & Coats</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Suits</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Raincoats</h6></a>
+                            <hr>
+                          <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Indian Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Kurtas & Kurtas Sets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sherwanis</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sadris</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Dhotis</h6></a>
+                        </div>
+                        <div class="col bg-light ">
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Bottom Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jeans</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Joggers</h6></a>
+                            <hr>
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Innerwear & Sleepwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Briefs & Trunks</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Boxers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Vests</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sleepwear & Loungewear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Thermals</h6></a>
+
+
+                        </div>
+                         <div class="col bg-white">
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Footwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sneakers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sandals & Floaters</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Flip Flops</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Socks</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Personal Care & Grooming</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Sunglasses & Frames</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Watches</h6></a>
+                        </div>
+                         <div class="col bg-light">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Sports & Active Wear</h6></a>
+                           <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts Sandals</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Active T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Shorts</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Tracksuits</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets & Sweatshirt</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Accessories</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Swimwear</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Smart Watches</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Fitness Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Headphones</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Speakers</h6></a>
+                        </div>
+                         <div class="col bg-white">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Fashion Accessories</h6></a>
+                          <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Wallets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Belts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Perfumes & Body Mists</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Trimmers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Deodrants</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Ties, Cufflinks & Pocket Squares</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Accessory Gift Sets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Caps & Hats</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Mufflers, Scarves & Gloves</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Phone Cases</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Rings & Wristwear</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Helmets</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Bags & Bagpacks</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Luggages & Troleys</h6></a>
+                        </div>
+                    </div>
+                </div>
+
+
+              <div class="Kids-content bg-white ">
+                    <div class="row d-flex justify-content-center align-item-center ">
+                        <div class="col bg-white">
+                          <a><h6 class="pl-3 mt-2 mb-2 font-weight-normal" style="color:#c45616;font-size:14px;">Boys Clothing</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweatshirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweaters</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Blazers & Coats</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Suits</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Raincoats</h6></a>
+                            <hr>
+                          <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Indian Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Kurtas & Kurtas Sets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sherwanis</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sadris</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Dhotis</h6></a>
+                        </div>
+                        <div class="col bg-light ">
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Bottom Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jeans</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Joggers</h6></a>
+                            <hr>
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Innerwear & Sleepwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Briefs & Trunks</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Boxers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Vests</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sleepwear & Loungewear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Thermals</h6></a>
+
+
+                        </div>
+                         <div class="col bg-white">
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Footwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sneakers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sandals & Floaters</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Flip Flops</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Socks</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Personal Care & Grooming</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Sunglasses & Frames</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Watches</h6></a>
+                        </div>
+                         <div class="col bg-light">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Sports & Active Wear</h6></a>
+                           <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts Sandals</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Active T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Shorts</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Tracksuits</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets & Sweatshirt</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Accessories</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Swimwear</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Smart Watches</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Fitness Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Headphones</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Speakers</h6></a>
+                        </div>
+                         <div class="col bg-white">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Fashion Accessories</h6></a>
+                          <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Wallets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Belts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Perfumes & Body Mists</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Trimmers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Deodrants</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Ties, Cufflinks & Pocket Squares</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Accessory Gift Sets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Caps & Hats</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Mufflers, Scarves & Gloves</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Phone Cases</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Rings & Wristwear</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Helmets</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Bags & Bagpacks</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c45616;font-size:14px;">Luggages & Troleys</h6></a>
+                        </div>
+                    </div>
+                </div>
+
+
+              <div class="HomeLiving-content bg-white ">
+                    <div class="row d-flex justify-content-center align-item-center ">
+                        <div class="col bg-white">
+                          <a><h6 class="pl-3 mt-2 mb-2 font-weight-normal" style="color:#9c971a;font-size:14px;">Home Furniture</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweatshirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweaters</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Blazers & Coats</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Suits</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Raincoats</h6></a>
+                            <hr>
+                          <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Indian Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Kurtas & Kurtas Sets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sherwanis</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sadris</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Dhotis</h6></a>
+                        </div>
+                        <div class="col bg-light ">
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Bottom Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jeans</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Joggers</h6></a>
+                            <hr>
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Innerwear & Sleepwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Briefs & Trunks</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Boxers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Vests</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sleepwear & Loungewear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Thermals</h6></a>
+
+
+                        </div>
+                         <div class="col bg-white">
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Footwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sneakers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sandals & Floaters</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Flip Flops</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Socks</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Personal Care & Grooming</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Sunglasses & Frames</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Watches</h6></a>
+                        </div>
+                         <div class="col bg-light">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Sports & Active Wear</h6></a>
+                           <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts Sandals</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Active T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Shorts</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Tracksuits</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets & Sweatshirt</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Accessories</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Swimwear</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Smart Watches</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Fitness Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Headphones</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Speakers</h6></a>
+                        </div>
+                         <div class="col bg-white">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Fashion Accessories</h6></a>
+                          <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Wallets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Belts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Perfumes & Body Mists</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Trimmers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Deodrants</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Ties, Cufflinks & Pocket Squares</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Accessory Gift Sets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Caps & Hats</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Mufflers, Scarves & Gloves</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Phone Cases</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Rings & Wristwear</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Helmets</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Bags & Bagpacks</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#9c971a;font-size:14px;">Luggages & Troleys</h6></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sports content -->
+                <div class="Sports-content bg-white ">
+                    <div class="row d-flex justify-content-center align-item-center ">
+                        <div class="col bg-white">
+                          <a><h6 class="pl-3 mt-2 mb-2 font-weight-normal" style="color:#c416b9;font-size:14px;">Footballs</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweatshirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sweaters</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Blazers & Coats</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Suits</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Raincoats</h6></a>
+                            <hr>
+                          <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Indian Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Kurtas & Kurtas Sets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sherwanis</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sadris</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Dhotis</h6></a>
+                        </div>
+                        <div class="col bg-light ">
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Bottom Wear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jeans</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Trousers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Joggers</h6></a>
+                            <hr>
+                            <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Innerwear & Sleepwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Briefs & Trunks</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Boxers</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Vests</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sleepwear & Loungewear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Thermals</h6></a>
+
+
+                        </div>
+                         <div class="col bg-white">
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Footwear</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Casual Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Formal Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sneakers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sandals & Floaters</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Flip Flops</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Socks</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Personal Care & Grooming</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Sunglasses & Frames</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Watches</h6></a>
+                        </div>
+                         <div class="col bg-light">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Sports & Active Wear</h6></a>
+                           <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Shoes</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Shorts Sandals</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Active T-Shirts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Track Pants & Shorts</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Tracksuits</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Jackets & Sweatshirt</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Sports Accessories</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Swimwear</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Smart Watches</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Fitness Gadgets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Headphones</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Speakers</h6></a>
+                        </div>
+                         <div class="col bg-white">
+                         <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Fashion Accessories</h6></a>
+                          <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Wallets</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Belts</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Perfumes & Body Mists</h6></a>
+                            <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Trimmers</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Deodrants</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Ties, Cufflinks & Pocket Squares</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Accessory Gift Sets</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Caps & Hats</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Mufflers, Scarves & Gloves</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Phone Cases</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Rings & Wristwear</h6></a>
+                             <a><h6 class="pl-3 font-weight-normal" style="font-size:14px;color:#706f6d;">Helmets</h6></a>
+                             <hr>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Bags & Bagpacks</h6></a>
+                             <a><h6 class="pl-3 mt-2 mb-1 font-weight-normal" style="color:#c416b9;font-size:14px;">Luggages & Troleys</h6></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sports content -->
+
+        </div>
+      <!-- Entire content End-->
+
+        <div class="col-3">
+            <div class="row d-flex justify-content-center align-items-center">
+
+                <div class=" d-flex justify-content-center align-items-center font-weight-normal pl-1 ">
+                    <a class="text-dark d-flex justify-content-center align-items-center " type="button" data-toggle="dropdown"
+                       aria-expanded="false">
+                        <i class="far fa-user"></i>
+                        <small class="pl-1">Profile</small>
+                    </a>
+                    <div class="dropdown-menu" style="margin-top:34px;border-radius:0;width:60%;">
+                        <a href="{% url 'Base:wishlist' %}" class=" dropdown-item font-weight-normal" style="border-width:thin;border-bottom:0.5px solid grey;padding-top:3px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-heart" style="color:#3266a8;"></i>  Wishlist</a>
+
+                        <a href="{% url 'Seller:seller-home' %}" class="dropdown-item font-weight-normal " style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-gift " style="color:#3266a8;"></i>  Seller</a>
+
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'users:logout' %}" class="dropdown-item font-weight-normal " style="padding-top:8px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-sign-out-alt " style="color:#3266a8;"></i>  Logout</a>
+                         {% else %}
+                            <a href="{% url 'users:login' %}?next={{ request.path|urlencode }}" class="dropdown-item font-weight-normal " style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-sign-out-alt " style="color:#3266a8;"></i>  Login</a>
+
+                            <a href="{% url 'users:signup' %}" class=" dropdown-item font-weight-normal " style="padding-top:8px;padding-bottom:3px;font-size:14px;white-space:pre;"><i class="fas fa-user-plus " style="color:#3266a8;"></i>  Register</a>
+
+                        {% endif %}
+                    </div>
+                </div>
+                  <div class="d-flex justify-content-center align-items-center font-weight-normal pl-2 ">
+                    <a class="nav-link waves-effect " href="{% url 'Base:Cart' %}"> <!--Bcz core is a different url appname -->
+                            {% if order %}
+                                <span class="badge red z-depth-1 mr-0">
+                                {{order.items.count}}
+                                </span>
+                                {% else %}
+                            {% endif %}
+                        <i class="fas fa-shopping-cart shopicon " style="color:#6a6c6e;"></i>
+                        <small class="text-dark">Cart</small>
+                    </a>
+                  </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Small screen size navbar -->
+<div class="container-fluid show bg-info navbar1">
+    <div class="row  d-flex align-items-center">
+
+      <!-- Togler Button -->
+      <div class=" navbar-toggler col-2 d-flex justify-content-center align-items-center " type="button" data-toggle="collapse" data-target="" onclick="openNav()">
+        <i class="fas fa-bars bar pl-1" ></i>
+      </div>
+
+      <!--logo-->
+           <div class=" d-flex justify-content-center align-items-center col-4 ">
+            <a class="navbar-brand  text-white " href="{% url 'Base:Homepage' %}">Prototype</a>
+          </div>
+      <!--logo-->
+
+      <!-- Cart icon -->
+        <div class="nav-item  col-6 d-flex justify-content-end align-items-center font-weight-normal">
+
+        <a class="nav-link waves-effect " href="{% url 'Base:Cart' %}"> <!--Bcz core is a different url appname -->
+
+                            {% if order %}
+                                <span class="badge red z-depth-1 mr-0">
+                                {{order.items.count}}
+                                </span>
+                                {% else %}
+                            {% endif %}
+
+
+                        <i class="fas fa-shopping-cart shopicon text-white "></i>
+
+        </a>
+      </div>
+
+    </div>
+    <div class="row d-flex justify-content-center">
+
+           <!-- Searchbar -->
+        <form method="GET" action="{% url 'Base:searchbar'%}"  class="input-group form-sm form-2  pr-2" autocomplete="off">
+
+             <div class="input-group col-12 pb-1">
+              <input id="text-inside" class=" form-control " name="q" type="text"  placeholder="Search for markets, malls, shops and more" aria-label="search" aria-describedby="search">
+              <input type="hidden" name="next[0]" value="{{request.path}}">
+              <input type="hidden" name="next[1]" value="rel">
+              <div class="input-group-prepend">
+                <button class="input-group-text" id="search">
+                  <i class="fas fa-search text-info"></i>
+                </button>
+              </div>
+            </div>
+
+        </form>
+    <!-- Searchbar -->
+
+
+    </div>
+</div>
+<!-- Small screen size navbar -->
+
+<!-- Side Navbar content-->
+
+<div id="mySidenav" class="sidenav bg-white">
+
+            <a href="javascript:void(0)" class="closebtn text-warning" onclick="closeNav()">&times;</a>
+
+    <ul class="navbar-nav  ">
+                <a class="text-dark nav-item border  d-flex justify-content-center align-items-center bg-info nav-brand" href="{% url 'Base:Homepage' %}"><!-- Exlore url to be given -->
+                   Logo
+               </a>
+
+               <a class="text-dark nav-item d-flex justify-content-center align-items-center" href="{% url 'Explore:Explore-home' %}"><!-- Exlore url to be given -->
+                   Explore
+               </a>
+        <div class="dropdown-divider"></div>
+
+                <a class=" dropdown-toggle nav-item text-dark d-flex justify-content-center align-items-center " type="button" data-toggle="dropdown"
+                  aria-expanded="false">Profile</a>
+
+                <div class="dropdown-menu mt-2  ">
+                    {% if user.is_authenticated %}
+
+                        <a href="{% url 'users:logout' %}" class=" font-weight-bold d-flex justify-content-center align-items-center dropdown-item " >Logout</a>
+
+                     {% else %}
+                        <a href="{% url 'users:login' %}?next={{ request.path|urlencode }}" class="d-flex justify-content-center align-items-center dropdown-item font-weight-bold  " >Login</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="{% url 'users:signup' %}" class="d-flex justify-content-center align-items-center dropdown-item font-weight-bold  " >SignUp</a>
+                        <div class="dropdown-divider"></div>
+                    {% endif %}
+                </div>
+
+        <div class="dropdown-divider"></div>
+
+
+            <a href="{% url 'Seller:seller-home' %}" class="text-dark nav-item  ml-3 d-flex justify-content-center align-items-center" >Seller</a>
+
+        <div class="dropdown-divider"></div>
+
+           <a class="text-dark nav-item d-flex justify-content-center align-items-center " href="{% url 'Explore:Explore-home' %}"><!-- Exlore url to be given -->
+               All Categories
+           </a>
+
+    </ul>
+</div>
+<!-- Side Navbar -->
+
+
+<script>
+// for side Navbar
+
+function openNav() {
+  document.getElementById("mySidenav").style.width = "100%";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+// for side Navbar
+
+
+// Men
+  $(".Men").mouseover(function(){
+    $(".Men-content").show();
+    $(".Women-content").hide();
+    $(".Kids-content").hide();
+    $(".HomeLiving-content").hide();
+    $(".Sports-content").hide();
+    })
+  $(".Men-content").mouseout(function(){
+       if($(".Men-content:hover").length==0){
+       $(".Men-content").hide();
+        }
+  })
+   $(".Men").mouseout(function(){
+   if($(".Men-content:hover").length==0 && $("#All-Categories:hover").length==0){
+   $(".Men-content").hide();
+
+
+    }
+  })
+// Men End
+
+//Women
+  $(".Women").mouseover(function(){
+    $(".Women-content").show();
+     $(".Men-content").hide();
+    $(".Kids-content").hide();
+    $(".HomeLiving-content").hide();
+    $(".Sports-content").hide();
+    })
+     $(".Women-content").mouseout(function(){
+       if($(".Women-content:hover").length==0){
+       $(".Women-content").hide();
+
+        }
+  })
+       $(".Women").mouseout(function(){
+       if($(".Women-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       $(".Women-content").hide();
+
+        }
+  })
+//Women
+
+//Kids
+  $(".Kids").mouseover(function(){
+    $(".Kids-content").show();
+     $(".Men-content").hide();
+    $(".Women-content").hide();
+    $(".HomeLiving-content").hide();
+    $(".Sports-content").hide();
+    })
+     $(".Kids-content").mouseout(function(){
+       if($(".Kids-content:hover").length==0){
+       $(".Kids-content").hide();
+
+        }
+  })
+       $(".Kids").mouseout(function(){
+       if($(".Kids-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       $(".Kids-content").hide();
+
+        }
+  })
+//Kids
+//HomeLiving
+  $(".HomeLiving").mouseover(function(){
+    $(".HomeLiving-content").show();
+     $(".Men-content").hide();
+    $(".Women-content").hide();
+    $(".Kids-content").hide();
+    $(".Sports-content").hide();
+    })
+     $(".HomeLiving-content").mouseout(function(){
+       if($(".HomeLiving-content:hover").length==0){
+       $(".HomeLiving-content").hide();
+
+        }
+  })
+       $(".HomeLiving").mouseout(function(){
+       if($(".HomeLiving-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       $(".HomeLiving-content").hide();
+
+        }
+  })
+//Home&Living
+//Sports
+  $(".Sports").mouseover(function(){
+    $(".Sports-content").show();
+     $(".Men-content").hide();
+    $(".Women-content").hide();
+    $(".Kids-content").hide();
+    $(".HomeLiving-content").hide();
+    })
+     $(".Sports-content").mouseout(function(){
+       if($(".Sports-content:hover").length==0){
+       $(".Sports-content").hide();
+
+        }
+  })
+       $(".Sports").mouseout(function(){
+       if($(".Sports-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       $(".Sports-content").hide();
+
+        }
+  })
+//Sports
+
+</script>

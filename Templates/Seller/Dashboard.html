@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+
+</style>
+{% if Seller %}
+<div class="container-fluid ">
+  <div class="row">
+      <h4>Welcome {{profile.name_of_owner}} !</h4>
+  </div>
+  <div class="row ">
+    <div class="col-2 border">
+      <a href="{{profile.get_abs_url}}">Public profile</a><br>
+      <!-- My products -->
+      <a href="{% url 'Seller:orders' %}">My Orders</a><br>
+      <a href="{% url 'Seller:add-product' %}">Add product</a><br>
+      <a href="{% url 'Seller:delete-product' %}">Delete product</a><br>
+      <a href="{% url 'Seller:order-history' %}">Order History</a><br>/
+      <a href="{% url 'Seller:refund-requests' %}">Refund Requests</a><br>/
+      <a href="{% url 'Seller:returns' %}">Returns</a><br>/
+    </div>
+    <div class="col-10 border">
+      <div class="row">
+        <div id="container" style="width: 75%;">
+          <canvas id="pie-chart"></canvas>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script>
+
+    var config = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+            'red','blue',
+          ],
+          Color:['blue'],
+          label: 'Sales made this month',
+        }],
+        labels: {{ labels|safe }},
+
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    };
+
+  </script>
+{% endblock %}

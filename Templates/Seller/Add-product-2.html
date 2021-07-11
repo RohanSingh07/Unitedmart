@@ -1,0 +1,391 @@
+{% load static %}
+<html>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- base:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/typicons/typicons.css' %}">
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/css/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+
+
+</head>
+<body>
+
+
+<i class="typcn typcn-delete-outline" id="bannerClose"></i>
+
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100"><!-- URl -->
+          <a class="navbar-brand brand-logo" href="{% url 'Base:Homepage' %}"><span class="text-white">Prototype</span></a>
+          <!-- URL -->
+          <!-- Small Screen logo and url-->
+          <a class="navbar-brand brand-logo-mini" href="{% url 'Base:Homepage' %}"><img src="{% static 'Dashboard/images/logo-mini.svg' %}" alt="logo"/></a>
+          <!-- Small Screen logo -->
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="typcn typcn-th-menu"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav mr-lg-2">
+          <li class="nav-item nav-profile dropdown">
+            <!-- Image and Name of owner-->
+            <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+              {% if profile.photo_of_owner %}
+              <img src="{{profile.photo_of_owner.url}}" />
+              {% else %}
+              <img src="{% static 'img/user.png' %}" />
+              {% endif %}
+              <span class="nav-profile-name">{{profile.name_of_owner}}</span>
+            </a>
+            <!-- Image and Name of owner-->
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-date dropdown">
+            <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
+              <h6 class="date mb-0">Today : {{today}}</h6>
+              <i class="typcn typcn-calendar"></i>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+              <i class="typcn typcn-cog-outline mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+
+              <!-- Edit Profile -->
+              <a class="dropdown-item" href="{% url 'Seller:profile-edit' %}">
+                <i class="typcn typcn-cog-outline text-primary"></i>
+                Settings
+              </a>
+              <!-- Logout -->
+              <a class="dropdown-item" href="{% url 'users:logout' %}">
+                <i class="typcn typcn-eject text-primary"></i>
+                Logout
+              </a>
+              <!-- Logout End -->
+
+            </div>
+          </li>
+          <li class="nav-item dropdown mr-0">
+            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
+              <i class="typcn typcn-bell mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-success">
+                    <i class="typcn typcn-info mx-0"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
+                  <p class="font-weight-light small-text mb-0 text-muted">
+                    Just now
+                  </p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-warning">
+                    <i class="typcn typcn-cog-outline mx-0"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject font-weight-normal">Settings</h6>
+                  <p class="font-weight-light small-text mb-0 text-muted">
+                    Private message
+                  </p>
+                </div>
+              </a>
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-info">
+                    <i class="typcn typcn-user mx-0"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
+                  <p class="font-weight-light small-text mb-0 text-muted">
+                    2 days ago
+                  </p>
+                </div>
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="typcn typcn-th-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <!-- Dashboard -->
+           <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:dashboard' %}">
+              <i class="typcn typcn-device-desktop menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <!-- Dashboard -->
+          <!-- My orders -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:orders' %}" >
+              <i class="typcn typcn-gift menu-icon"></i>
+              <span class="menu-title" >My Orders</span>
+              <!-- Display Number of orders-->
+              <div class="badge badge-danger">{{orders.count}}</div>
+            </a>
+          </li>
+          <!-- My orders -->
+          <!-- Public Profile -->
+          <li class="nav-item">
+          <a class="nav-link" href="{{profile.get_abs_url}}">
+              <i class="typcn typcn-world-outline menu-icon"></i>
+              <span class="menu-title">Public Profile</span>
+              <div class="badge badge-danger">web</div>
+            </a>
+          </li>
+          <!-- Public Profile -->
+          <!-- My products -->
+          <!-- Make changes to the quantity -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:my-products' %}" aria-expanded="false">
+              <i class="typcn typcn-shopping-cart menu-icon"></i>
+              <span class="menu-title">My Products</span>
+              <div class="badge badge-danger">{{products.count}}</div>
+            </a>
+          </li>
+          <!-- My products -->
+          <!-- Add products -->
+          <!-- Only enter when Adhaar and bank details has been provided -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:add-product' %}"  aria-expanded="false" aria-controls="ui-basic">
+              <i class="typcn typcn-plus-outline menu-icon"></i>
+              <span class="menu-title">Add Products</span>
+            </a>
+          </li>
+          <!-- Add products -->
+          <!-- Delete products -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:delete-product' %}" aria-expanded="false" aria-controls="form-elements">
+              <i class="typcn typcn-trash menu-icon"></i>
+              <span class="menu-title">Remove Products</span>
+            </a>
+          </li>
+          <!-- Delete products -->
+          <!-- Order History -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:order-history' %}" aria-expanded="false" aria-controls="tables">
+              <i class="typcn typcn-stopwatch menu-icon"></i>
+              <span class="menu-title">Order History</span>
+            </a>
+          </li>
+          <!-- Order History -->
+          <!-- Refund Requests -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:refund-requests' %}" aria-expanded="false" aria-controls="icons">
+              <i class="typcn typcn-arrow-sync-outline menu-icon"></i>
+              <span class="menu-title">Refund Requests</span>
+              <div class="badge badge-danger">0</div>
+            </a>
+          </li>
+          <!-- Refund Requests -->
+          <!-- Returns -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:returns' %}" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-arrow-sync menu-icon"></i>
+              <span class="menu-title">Returns</span>
+            </a>
+          </li>
+          <!-- Returns -->
+          <!-- Mall -->
+          <li class="nav-item">
+            <a class="nav-link"  href="" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/mall1.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Mall</span>
+            </a>
+          </li>
+          <!-- Mall -->
+          <!-- Market -->
+          <li class="nav-item">
+            <a class="nav-link" href="" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/market.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Market</span>
+            </a>
+          </li>
+          <!-- Market -->
+          <!-- Bank Details -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:bank-details' %}" aria-expanded="false" aria-controls="auth">
+              <i class="fas fa-university menu-icon"></i>
+              <span class="menu-title">Bank Details</span>
+              {% if not profile.bank_account_number %}
+              <i class="fas fa-exclamation menu-icon text-danger pl-2"></i>
+              {% endif %}
+            </a>
+          </li>
+          <!-- Bank Details End-->
+           <!-- Settings -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:profile-edit' %}" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-cog-outline menu-icon"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+          <!-- Settings End-->
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+        <div class="container-fluid ">
+				<div class="row align-items-center">
+						<h5 style="text-decoration:underline;" class="text-secondary">Select Quantity</h5><br>
+				</div>
+                <div class="row align-items-center">
+						<h6 style="text-decoration:underline;" class="text-muted">Select Category/</h6>
+						<h6 style="text-decoration:underline;" class="text-primary">Number of products/</h6>
+						<h6 style="text-decoration:underline;" class="text-muted">Add Product Info/</h6>
+				</div>
+                <form method="get" action="{% url 'Seller:add-product-3' %}">
+                <div class="row align-items-center">
+						<!-- + - and quantity -->
+						<div class="row pt-2 pb-2 d-flex justify-content-start">
+							<div class="col-12 d-flex justify-content-center align-items-center">
+
+								<input class="border border-dark" min="1" max="100" type="number" id="Quantity" name="Quantity" style="width:50px;" required>
+
+                              <h6 class="pl-5 text-danger" id="errors"></h6>
+							</div>
+						</div>
+						<!-- + - and quantity -->
+				</div>
+                <div class="row align-items-center pt-2">
+						<h6 style="text-decoration:underline;" class="text-secondary">Category Selected</h6><br>
+
+				</div>
+                <div class="row align-items-center pt-2">
+                  <h6 id="CategorySelected" class="text-primary "></h6>
+                </div>
+
+                    <input type="text" id="main_cat" name="main_cat" hidden>
+                    <input type="text" id="sub_cat" name="sub_cat" hidden>
+                    <input type="text" id="sub_sub_cat" name="sub_sub_cat" hidden>
+                    <input type="text" id="sub_sub_sub_cat" name="sub_sub_sub_cat" hidden>
+                    <button class="row w-100 d-flex justify-content-center mt-5 btn-secondary border" type="submit">
+						<h5 class="text-white font-weight-light">SELECT</h5>
+					</button>
+                </form>
+
+
+        </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2020 <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">Free <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrap dashboard</a> templates from Bootstrapdash.com</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- partial -->
+
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  </div>
+
+  <!-- base:js -->
+  <script src="{% static 'Dashboard/vendors/js/vendor.bundle.base.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static 'Dashboard/vendors/chart.js/Chart.min.js' %}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static 'Dashboard/js/off-canvas.js' %}"></script>
+  <script src="{% static 'Dashboard/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'Dashboard/js/template.js' %}"></script>
+  <script src="{% static 'Dashboard/js/settings.js' %}"></script>
+  <script src="{% static 'Dashboard/js/todolist.js' %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static 'Dashboard/js/dashboard.js' %}"></script>
+  <!-- End custom js for this page-->
+
+
+<script>
+// Receive URL params
+ var searchParams = new URLSearchParams(window.location.search);
+
+ var main_cat = searchParams.get('main_cat');
+ $("#main_cat").val(main_cat);
+ var sub_cat = searchParams.get('sub_cat');
+ $("#sub_cat").val(sub_cat);
+ var sub_sub_cat = searchParams.get('sub_sub_cat');
+ $("#sub_sub_cat").val(sub_sub_cat);
+ var sub_sub_sub_cat = searchParams.get('sub_sub_sub_cat');
+ $("#sub_sub_sub_cat").val(sub_sub_sub_cat);
+
+ // For displaying category selected
+ if(sub_cat==='' ){
+ $("#CategorySelected").text(main_cat);
+ }
+ else if(sub_sub_cat===''){
+ $("#CategorySelected").text(main_cat+'/'+sub_cat);
+ }
+ else if(sub_sub_sub_cat ===''){
+ $("#CategorySelected").text(main_cat+'/'+sub_cat+'/'+sub_sub_cat);
+ }
+ else{
+ $("#CategorySelected").text(main_cat+'/'+sub_cat+'/'+sub_sub_cat+'/'+sub_sub_sub_cat);
+ }
+
+// for quantity input
+var quantity = $('#Quantity');
+quantity.on("input",function(){
+  if(quantity.val()<=0){
+      $('#errors').text('The quantity should be a positive number greater than 0 !!');}
+  else if(quantity.val()>100){
+      $('#errors').text('Only 100 products are allowed at once !!');
+    }
+  else{
+    $('#errors').text('');
+  }
+})
+
+
+</script>
+</body>
+</html>

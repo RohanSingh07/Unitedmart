@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="95d3b069-45e3-4ed7-a183-99c5ca8b6a3f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/documents.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/documents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0002_auto_20201222_1622.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0003_auto_20201230_0909.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0004_auto_20210107_1726.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0005_auto_20210107_1741.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0006_auto_20210111_1037.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0007_auto_20210111_1249.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0008_auto_20210111_1458.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/migrations/0009_auto_20210326_0201.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0002_auto_20201222_1623.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0003_pincodes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0004_sellerprofile_email_of_owner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0005_auto_20201226_1426.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0006_auto_20201226_1642.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0007_auto_20201230_0909.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0008_auto_20201231_1215.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0009_auto_20210102_1828.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/migrations/0010_auto_20210102_2051.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Seller/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Seller/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Checkout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Home_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Home_main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Navbar1.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Navbar1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Navbar2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Navbar3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/add_review.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/add_review.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/product-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/product-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/searchbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/searchbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Explore/Marketplace.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Explore/Marketplace.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Explore/seller-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Explore/seller-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-product-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-product-3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_signup_2.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_signup_2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_signup_3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_success.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static_files/custom/searchbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/static_files/custom/searchbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static_files/img/carousel/image1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static_files/img/carousel/image2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static_files/img/carousel/image3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/tokens.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/tokens.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1hfQuVUTRbAKMUNqo3Zth4BZT1m" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Notes\Web Development\Projects\Main\Templates\Seller" />
+      <recent name="D:\Notes\Web Development\Projects\Main\static_files\img\carousel" />
+      <recent name="D:\Notes\Web Development\Projects\Main\Templates\account" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Notes\Web Development\Projects\Main\static_files\custom" />
+      <recent name="D:\Notes\Web Development\Projects\Main\static_files\img\carousel" />
+      <recent name="D:\Notes\Web Development\Projects\Main\media\carousel" />
+      <recent name="D:\Notes\Web Development\Projects\Main" />
+      <recent name="D:\Notes\Web Development\Projects\Main\static_files\font-awesome" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="95d3b069-45e3-4ed7-a183-99c5ca8b6a3f" name="Default Changelist" comment="" />
+      <created>1600399889376</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600399889376</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="526" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1625917720881">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="526" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1625917720881" />
+    <state x="592" y="218" key="FileChooserDialogImpl" timestamp="1625913191309">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="592" y="218" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1625913191309" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1621491456238">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1621491456238" />
+    <state x="498" y="178" width="672" height="678" key="search.everywhere.popup" timestamp="1625765279202">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="498" y="178" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1625765279202" />
+  </component>
+</project>

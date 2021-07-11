@@ -1,0 +1,638 @@
+		<div class="bg-white mh">
+				<div class="row mt-3">
+			    	<!-- First Column for images -->
+			    	<div class="col-5 first">
+
+			           	<div class="row">
+			           		<div class="col-3 overf ">
+
+			           				{% if object.image %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image">
+			           					<img src="{{object.image.url}}"	  alt="loading..." height="100" width="100">
+			           				</div>
+			           				<br>
+			           				{% endif %}
+
+			           				{% if object.image1 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image1">
+			           					<img src="{{object.image1.url}}" alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image2 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image2">
+			           					<img src="{{object.image2.url}}"  alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image3 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image3">
+			           					<img src="{{object.image3.url}}"	alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image4 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image4">
+			           					<img src="{{object.image4.url}}"	  alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image5 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image5">
+			           					<img src="{{object.image5.url}}"	  alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image6 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image6">
+			           					<img src="{{object.image6.url}}"	  alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image7 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image7">
+			           					<img src="{{object.image7.url}}"	  alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image8 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image8">
+			           					<img src="{{object.image8.url}}"	  alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.image9 %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="image9">
+			           					<img src="{{object.image9.url}}"	  alt="loading..." height="100" width="100">
+			           				</div>
+			           				{% endif %}
+			           				{% if object.video %}
+			           				<div class="row d-flex justify-content-center align-items-center" id="video">
+											<iframe width="100" height="100" src="{{object.video}}">
+										    </iframe>
+									</div>
+			           				{% endif %}
+
+			           		</div>
+
+			           		<div class="col-8" >
+			           				<div id="image_dispaly">
+										<a href="{{object.image_url}}" id="display-href"><img src="{{object.image_url}}" class="img-fluid image"  alt="loading..."  id="display-content" style="border-radius:0;"></a>
+				           			</div>
+
+				           			<div id="video_display">
+										<iframe  height="400" src="{{object.video}}" allowfullscreen>
+										</iframe>
+				           			</div>
+								<div class=" pt-2 d-flex justify-content-around mx-4">
+									<br/>
+									<br/>
+									<div class='container-fluid'>
+									<a href="{{object.get_add_to_wishlist_url}}" class="btn button button1 p-0 hover1" >Add to<br> Wishlist</a> <a href="{{object.get_add_to_cart_url}}" class="btn btn-danger button button1 p-0 hover2">ADD TO <br>CART</a></div>
+								</div>
+
+			           		</div>
+			           	</div>
+
+
+
+
+			    	</div>
+			    	<!-- First Column for images -->
+
+			    	<!-- Second column of description -->
+			    	<div class="col-7 pl-5">
+			           <div class="row ">
+				    		<h5 class="text-muted">{{object.Brand}}</h5>
+
+
+				    	</div>
+				    	<div class="row">
+				    		<h3>{{object.Name}}</h3>
+				    	</div>
+
+				    	{% if object.discount_price %}
+
+				    	<div class="row">
+
+					    		<small class="text-success">Special Price</small>
+					    </div>
+					    <div class="row d-flex align-items-center">
+					    		<h2>₹{{object.discount_price}}</h2> <h6><span class="discount text-muted pl-2"><strike>₹{{object.price}}</strike></span> </h6>
+					    </div>
+
+				    	{% else %}
+						<div class="row">
+
+				    			<h2>₹{{object.price}} </h2>
+				    	</div>
+				    	{% endif %}
+						<!-- Color -->
+						<div class="row">
+							<div class="col pl-0 pt-4 " id="colors" >
+								<h5 class="font-weight-light text-muted">Color</h5>
+
+								{% for color in colors %}
+									<a href="{{color.get_abs_url}} " id="colorshref-{{forloop.counter}}" ><img src="{{color.image.url}}" id="colorssrc-{{forloop.counter}}" height="60" width="60" ></a>
+								{% endfor %}
+							</div>
+						</div>
+						<!-- Colors end  -->
+
+						<!-- size -->
+						<div class="row">
+							<div class="col pl-0 pt-4" id="size">
+								<h5 class="font-weight-normal">Select Size  <a class=" pl-3" style="color:#eb3486;">size chart </a></h5>
+							</div>
+						</div>
+
+						<!-- size end -->
+
+						<!-- Product details -->
+						<div class="row ">
+				    		<div class="col pl-0 pt-4 ">
+				    			<h5 class="text-dark description  ">Product Details</h5>
+				    			<h6 class="text-dark">{{object.description}}</h6>
+				    		</div>
+				    	</div>
+						<!-- Product details end  -->
+						<!-- Rating and Reviews -->
+						<div class="row pt-4">
+							<div class="col pl-0">
+								<h2>Rating and Reviews <small><a href="{{object.add_review_url}}">Write your reviews</a></small> </h2>
+								{% if reviews %}
+								<h3 class="text-white">{{overall}} <i class="fas fa-star text-warning"></i>  {{reviews.count}} ratings  </h3>
+								<h5 class="font-weight-normal">Customer Images</h5>
+								{% for images in all_images %}
+									<a href="{{images.image.url}}"><img src="{{images.image.url}}" height="60" width="60"></a>
+								{% endfor %}
+								<br>
+								<br>
+								{% for rates in reviews %}
+									<h6><i class="fas fa-user"></i> {{rates.user.username}}</h6>
+									<h6 class="text-white bg-success">{{rates.rating}} <i class="fas fa-star"></i></h6>
+
+
+									<h5>{{rates.review}}</h5>
+									{% for imgs in rates.photos.all %}
+										<a href="{{imgs.image.url}}"><img src="{{imgs.image.url}}"  height="60" width="60"></a>
+									{% endfor %}
+									<br>
+									<br>
+								{% endfor %}
+								{% else %}
+									<h5>Be the first one to rate this item</h5>
+
+								{% endif %}
+							</div>
+
+						</div>
+						<!-- Rating and Reviews End-->
+
+
+			    		</div>
+			   		 </div>
+				</div>
+
+
+		<script type="text/javascript">
+
+$('#video_display').hide()
+if($("#image" ).length !== 0) {									// Check whether this id exists or not
+  $('#image').on('mouseenter',function(){
+  		// if the image exists then get the url
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image_url}}')	// for changing the image onhover in the main view
+  	$('#display-href').attr('href','{{object.image_url}}')	// for accessing the large sized image page
+  })
+
+}
+
+if($("#image1" ).length !== 0){
+	$('#image1').on('mouseenter',function(){
+	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image1_url}}')
+  	$('#display-href').attr('href','{{object.image1_url}}')
+
+  })
+
+}
+if($("#image2" ).length !== 0) {
+  $('#image2').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image2_url}}')
+  	$('#display-href').attr('href','{{object.image2_url}}')
+
+  })
+}
+
+if($("#image3" ).length !== 0) {
+  $('#image3').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image3_url}}')
+  	$('#display-href').attr('href','{{object.image3_url}}')
+
+
+  })
+}
+if($("#image4" ).length !== 0) {
+  $('#image4').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image4_url}}')
+  	$('#display-href').attr('href','{{object.image4_url}}')
+  })
+}
+if($("#image5" ).length !== 0) {
+  $('#image5').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image5_url}}')
+  	$('#display-href').attr('href','{{object.image5_url}}')
+  })
+}
+if($("#image6" ).length !== 0) {
+  $('#image6').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image6_url}}')
+  	$('#display-href').attr('href','{{object.image6_url}}')
+  })
+}
+if($("#image7" ).length !== 0) {
+  $('#image7').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image7_url}}')
+  	$('#display-href').attr('href','{{object.image7_url}}')
+  })
+}
+if($("#image8" ).length !== 0) {
+  $('#image8').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image8_url}}')
+  	$('#display-href').attr('href','{{object.image8_url}}')
+  })
+}
+if($("#image9" ).length !== 0) {
+  $('#image9').on('mouseenter',function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src','{{object.image9_url}}')
+  	$('#display-href').attr('href','{{object.image9_url}}')
+  })
+ }
+if($("#video" ).length !== 0) {
+
+  $('#video').on('mouseenter',function(){
+  		$("#image_dispaly").hide()
+  		$('#video_display').show()
+
+  })
+}
+
+// js for changing images in main view of the colors
+var back= $('#display-content').attr('src')
+var backhref = $('#display-href').attr('href')
+
+if($("#colors" ).length !== 0) {
+  $('#colorshref-1').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-1').attr('src'))
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+
+if($("#colors" ).length !== 0) {
+  $('#colorshref-2').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-2').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-3').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-3').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-4').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-4').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-5').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-5').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-6').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-6').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-7').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-7').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-8').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-8').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-9').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-9').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-10').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-10').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-11').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-11').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-12').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-12').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-13').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-13').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-14').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-14').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-15').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-15').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-16').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-16').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-17').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-17').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-18').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-18').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-19').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-19').attr('src'))
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-20').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-20').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-21').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-21').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-22').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-22').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-23').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-23').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-24').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-24').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-25').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-25').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-26').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-26').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-27').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-27').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-28').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-28').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-29').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-29').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-30').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-30').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+if($("#colors" ).length !== 0) {
+  $('#colorshref-31').mouseover(function(){
+  	$('#video_display').hide()
+  	$('#image_dispaly').show()
+  	$('#display-content').attr('src',$('#colorssrc-31').attr('src'))
+
+  }).mouseout(function(){
+  	$('#display-content').attr('src',back)
+  	$('#display-href').attr('href',backhref)
+  })
+}
+// js for changing images in main view of the colors end
+
+
+</script>

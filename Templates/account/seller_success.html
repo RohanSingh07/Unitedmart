@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block Navbar1 %}
+    {% include "Base/Navbar1.html" %}
+{% endblock %}
+{% block content %}
+<style>
+        input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+.inputs{
+		position:absolute;
+		top:10px;
+		border-radius:10px;
+		font-size:13px;
+		}
+.labels{
+ position:absolute;
+ top:0px;
+ left:20px;
+ z-index:1;
+}
+</style>
+<body style="background-color:#ebedf5;">
+<div class="container-fluid d-flex justify-content-center" style="margin-top:100px;">
+    <div style="position:absolute;width:600px;background-color:white;" class="d-flex align-items-center justify-content-center ">
+       <form  method="post" action="{% url 'users:seller-signup-4' %}">
+           {% csrf_token %}
+           <br>
+           <h6 style="text-decoration:underline;margin-bottom:20px;font-weight:bold;color:#785730;" >SELLER REGISTRATION</h6>
+           <br>
+           <div style="position:relative;" >
+               <small  class="bg-white text-primary font-weight-bold labels">Email</small>
+               <input type="email" style="width:500px;" class="form-control inputs" name="email" required>
+           </div>
+           <div  style="position:relative;margin-top:60px;" >
+               <small  class="bg-white text-primary font-weight-bold labels">Full Name</small>
+               <input type="text"  style="width:500px;" class="form-control inputs" name="name"  required><br>
+           </div>
+           <div  style="position:relative;" class="mt-5">
+               <small  class="bg-white text-primary font-weight-bold labels">Address of the Shop</small>
+               <input type="text"  style="width:500px;" class="form-control inputs" name="address"  required><br>
+           </div>
+           <div  style="position:relative;" class="mt-5">
+                <small  class="bg-white text-primary font-weight-bold labels">Area of the Shop</small>
+                <input type="text" style="width:500px;" class="form-control inputs" name="area"  required autocapitalize="on"><br>
+           </div>
+           <div  style="position:relative;" class="mt-5">
+               <small  class="bg-white text-primary font-weight-bold labels">Landmark, if any</small>
+                <input type="text" style="width:500px;" class="form-control inputs" name="landmark"  ><br>
+           </div>
+           <input type="text"  style="width:500px;" class="form-control" name="mobile" value="{{mobile}}" hidden>
+           <input type="text" style="width:500px;" class="form-control inputs" name="pincode" value="{{pincode.pincode}}" hidden>
+           <input type="text" style="width:500px;" class="form-control inputs" name="district" value="{{pincode.district}}" hidden>
+           <input type="text" style="width:500px;" class="form-control inputs" name="state" value="{{pincode.state}}" hidden>
+           <!-- Address -->
+           <div  style="position:relative;" class="mt-5">
+           <!-- Shop Name -->
+               <small  class="bg-white text-primary font-weight-bold labels">Shop Name</small>
+                <input type="text" style="width:500px;" class="form-control inputs" name="shop_name" required><br>
+           </div>
+           <!-- Shop Name -->
+           <!-- Set password -->
+           <div  style="position:relative;" class="mt-5">
+               <small  class="bg-white text-primary font-weight-bold labels">Set Password</small>
+                <input  name="password1" style="width:500px;"  type="password"  class="form-control inputs" required><br>
+           </div>
+           <div  style="position:relative;" class="mt-5">
+               <small  class="bg-white text-primary font-weight-bold labels">Confirm Password</small>
+                <input  name="password2" style="width:500px;"  type="password"  class="form-control inputs" required><br>
+           <!-- Set password -->
+           </div>
+           <button style="border-radius:0;width:500px;margin-bottom:20px;" class="btn btn-primary mt-5" type="submit">Continue</button>
+       </form>
+    </div>
+</div>
+</body>
+{% endblock %}

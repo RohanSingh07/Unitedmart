@@ -250,7 +250,6 @@ def Seller_Signup_3(request):
             # Send the pincode object
             district = Pincodes[pincode][0]
             state = Pincodes[pincode][1]
-            print(district,state)
             return render(request,'account/seller_success.html',{
                 'mobile':mobile,
                 'pincode':pincode,

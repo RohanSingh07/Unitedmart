@@ -154,7 +154,7 @@ EMAIL_PORT = 465
 # Optional SMTP authentication information for EMAIL_HOST.
 EMAIL_HOST_USER = 'singhrohanss007@gmail.com'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = '9839602029'
+EMAIL_HOST_PASSWORD = 'Imhulk@07'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 

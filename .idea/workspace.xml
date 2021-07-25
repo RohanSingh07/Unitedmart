@@ -19,69 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95d3b069-45e3-4ed7-a183-99c5ca8b6a3f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Base/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Base/documents.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/documents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Base/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Explore/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Explore/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Explore/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Explore/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Seller/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/Seller/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Seller/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Seller/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Seller/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Seller/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Seller/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Seller/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/Cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Cart.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/Checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Checkout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/Home_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Home_main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/Navbar1.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Navbar1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/add_review.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/add_review.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/product-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/product-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/searchbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/searchbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/wishlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/wishlist.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Explore/Explore_Navbar.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Explore/explore_homepage.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Explore/seller-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Explore/seller-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-product-2.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-product-2.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-product-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-product-3.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-product.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/Delete-product.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Delete-product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/My-orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/My-orders.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/Order-history.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Order-history.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/charts/chartjs.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/documentation/documentation.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/forms/basic_elements.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/icons/mdi.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/samples/error-404.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/samples/error-500.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/samples/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/samples/register.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/tables/basic-table.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/ui-features/buttons.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/ui-features/dropdowns.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/pages/ui-features/typography.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/partials/_footer.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/partials/_navbar.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/partials/_settings-panel.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/partials/_sidebar.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/refunds-requested.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/refunds-requested.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_bank_details.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_base.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_profile_edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_profile_edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_shop_edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_shop_edit.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/account/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/account/seller_success.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_success.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/account/set_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/set_password.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/account/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/signup.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/account/success.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/success.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="95d3b069-45e3-4ed7-a183-99c5ca8b6a3f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

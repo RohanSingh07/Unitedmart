@@ -1,7 +1,3 @@
-<!-- Pending
-1. How will seller add the product with some color variation which is already uploaded on any product.
-2. Allow the sellers to choose a unique name for themselves.
--->
 {% load static %}
 <html>
 <head>
@@ -39,7 +35,6 @@
                   </button>
               </div>
         {% endfor %}
-
 
     {% endif %}
 <i class="typcn typcn-delete-outline" id="bannerClose"></i>
@@ -171,26 +166,10 @@
             </a>
           </li>
           <!-- Order History -->
-          <!-- Refund Requests -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Seller:refund-requests' %}" aria-expanded="false" aria-controls="icons">
-              <i class="typcn typcn-arrow-sync-outline menu-icon"></i>
-              <span class="menu-title">Refund Requests</span>
-              <div class="badge badge-danger">0</div>
-            </a>
-          </li>
-          <!-- Refund Requests -->
-          <!-- Returns -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Seller:returns' %}" aria-expanded="false" aria-controls="auth">
-              <i class="typcn typcn-arrow-sync menu-icon"></i>
-              <span class="menu-title">Returns</span>
-            </a>
-          </li>
-          <!-- Returns -->
+
           <!-- Mall -->
           <li class="nav-item">
-            <a class="nav-link"  href="" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" href="{% url 'Seller:my-mall' %}" aria-expanded="false" aria-controls="auth">
               <img src="{% static 'img/mall1.jpg'%}" height="40" width="40">
               <span class="menu-title">My Mall</span>
             </a>
@@ -198,23 +177,13 @@
           <!-- Mall -->
           <!-- Market -->
           <li class="nav-item">
-            <a class="nav-link" href="" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" href="{% url 'Seller:my-market' %}" aria-expanded="false" aria-controls="auth">
               <img src="{% static 'img/market.jpg'%}" height="40" width="40">
               <span class="menu-title">My Market</span>
             </a>
           </li>
           <!-- Market -->
-          <!-- Bank Details -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Seller:bank-details' %}" aria-expanded="false" aria-controls="auth">
-              <i class="fas fa-university menu-icon"></i>
-              <span class="menu-title">Bank Details</span>
-              {% if not profile.bank_account_number %}
-              <i class="fas fa-exclamation menu-icon text-danger pl-2"></i>
-              {% endif %}
-            </a>
-          </li>
-          <!-- Bank Details End-->
+
            <!-- Settings -->
           <li class="nav-item">
             <a class="nav-link"  href="{% url 'Seller:profile-edit' %}" aria-expanded="false" aria-controls="auth">
@@ -232,13 +201,13 @@
             <div class="col-md-6">
               <div class="card">
                 <h6 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">Sales Made</h6>
-                <h3 style="margin-top:20px;margin-left:30px;font-weight:bold;">0</h3>
+                <h3 style="margin-top:20px;margin-left:30px;font-weight:bold;">{{profile.sales}}</h3>
               </div>
             </div>
             <div class="col-md-6">
               <div class="card">
-                <h6 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">Total Earnings</h6>
-                <h3 style="margin-top:20px;margin-left:30px;font-weight:bold;">0</h3>
+                <h6 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">Total Earnings </h6>
+                <h3 style="margin-top:20px;margin-left:30px;font-weight:bold;">₹ {{profile.Earning}}</h3>
               </div>
             </div>
           </div>
@@ -263,29 +232,21 @@
                     {% for items in orders %}
                     <tbody>
                       <tr>
-                        <td>#D1</td>
-                        <td>Consectetur adipisicing elit </td>
-                        <td>Beulah Cummings</td>
-                        <td>03 Jan 2019</td>
-                        <td>$ 5235</td>
+                        <td>{{items.items.slug}}</td>
+                        <td>{{items.items.Name}}</td>
+                        <td>{{items.user.username}}</td>
+                        <td>{{items.date_of_order}}</td>
+                        <td>₹ {{items.get_total_discount_item_price}}</td>
                         <td>
-                          <div class="d-flex align-items-center">
-                            <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
-                              Edit
+                           <a href="{% url 'Seller:orders' %}"><button type="button" class="btn btn-success btn-sm btn-icon-text mr-3 mt-0">
+                              Details
                               <i class="typcn typcn-edit btn-icon-append"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm btn-icon-text">
-                              Delete
-                              <i class="typcn typcn-delete-outline btn-icon-append"></i>
-                            </button>
-                          </div>
+                            </button></a>
                         </td>
                       </tr>
                       {% endfor %}
                      </tbody>
                   </table>
-
-
                 </div>
               </div>
             </div>
@@ -365,7 +326,6 @@
     $('#ToggleLogo').on('click',function(){
     $('#Logo').toggle();
     })
-
   </script>
 </body>
 

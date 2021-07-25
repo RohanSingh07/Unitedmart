@@ -1,19 +1,16 @@
 # Pending
 # 1. Take Care of anonymous users , Admin and non admins , Seller and Non sellers.
 from django.shortcuts import render
-from .models import Product, Order_Item, Order, Delivery_Address,Wishlist,saved_order,rating_and_reviews,rating_images
+from .models import Product, Order_Item, Order, Delivery_Address,Wishlist,saved_order,rating_and_reviews,rating_images,MyOrders
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect,reverse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
+from datetime import datetime
 from . import  models
-
-
-#make a validation to check whether the entered data in the form is empty or not
-
-
+from Seller.views import create_random_unique_product_slug
 # make a validation to check whether the entered data in the form is empty or not
 
 def is_valid_form(values):
@@ -22,7 +19,6 @@ def is_valid_form(values):
         if fields == '':
             valid = False
     return valid
-
 
 def Home(request):
     # for order info
@@ -34,8 +30,6 @@ def Home(request):
             order=False
     except :
         order=False
-
-
     content = {
         'products': Product.objects.all(),
         'order':order
@@ -55,45 +49,13 @@ def Product_Detail(request, slug):
             order=False
     except :
         order=False
-    if object.ratings_and_reviews !=None:
-        reviews = object.ratings_and_reviews.ratings.all()
-        sum=0
-        count=0
-        for r in reviews:
-            sum+=float(r.rating)
-            count+=1
-        if count>0:
-            overall=sum/count
-            overall = round(overall,2)
-            # Updating the overall_rating of the product
-            object.overall_rating=overall
-            object.save()
-        else:
-            overall=0
-
-        #All the similar products with color variations
-
-
-        # same rating and reviews for all the color variation items
-        # this has to be handled at the time of making or adding the colors in the seller views
-
-        # #All the customer images for product
-        all_images = object.ratings_and_reviews.images.all()
-    else:
-        reviews=None
-        all_images=None
-        overall=None
-    colors = object.colors.all()
-    # if the user is Seller
-
+    reviews=object.ratings_and_reviews.all()
+    overall=object.overall_rating
     content = {
         'object': object,
         'order': order,
         'reviews':reviews,
         'overall':overall,
-        'all_images':all_images,
-        'colors':colors,
-
     }
     return render(request, 'Base/product-page.html', content)
 
@@ -104,12 +66,9 @@ def reviews_page(request):
 
 # add review to product
 def add_review(request,slug):
-    product=get_object_or_404(Product, slug=slug)
+    product=get_object_or_404(Product, slug=slug)# call 1
     if request.method=='GET':
-
-        content={
-        }
-        return render(request,'Base/add_review.html',content)
+        return render(request,'Base/add_review.html', {})
     else:
         rating=request.POST['stars']
         review=request.POST['review']
@@ -120,19 +79,28 @@ def add_review(request,slug):
                 review=review,
         )
         rat_and_rev.save()
-        product.save()
-        for imgs in images:
+        for img in images:
             temp_img = rating_images(
                 image_to=rat_and_rev,
-                image=imgs)
+                image=img)
             temp_img.save()
             rat_and_rev.photos.add(temp_img)
-            product.ratings_and_reviews.images.add(temp_img)
-        product.ratings_and_reviews.ratings.add(rat_and_rev)
+        product.ratings_and_reviews.add(rat_and_rev)
+        # Updating review
+        reviews = product.ratings_and_reviews.all()  # call3
+        sum = 0
+        for r in reviews:
+            sum += r.rating
+        overall = sum / int(product.ratings_and_reviews.count())
+        overall = round(overall, 2)
+        # Updating the overall_rating of the product
+        product.overall_rating = overall
+        product.save()
+        messages.success(request,'Thank you for adding your valuable review :)')
+        return redirect(reverse(('Base:product-page'),kwargs={
+            'slug':product.slug
+                             }))
 
-        return redirect('Base:ratings-and-reviews')
-    # in reviews only people who purchased the product can give reviews
-    # one user can review only once
 @login_required
 def add_to_cart(request, slug):
     # Get the item by its slug or pk value
@@ -141,7 +109,7 @@ def add_to_cart(request, slug):
     order_item, created = Order_Item.objects.get_or_create(
         user=request.user,
         items=item,
-        ordered=False
+        ordered=False,
     )
     # Check if the order already exists or not
     order_qs = Order.objects.filter(user=request.user,
@@ -155,63 +123,38 @@ def add_to_cart(request, slug):
             order_item.save()
         else:
             order.items.add(order_item)  # else add the order_item in the order
-        return redirect("Base:Cart")  # then redirect to the checkout-summary page
+        return JsonResponse(order.items.count(),safe=False) # then redirect to the checkout-summary page
     else:
         order = Order.objects.create(user=request.user)  # create a new order and pass the user
         order.items.add(order_item)
-        return redirect("Base:Cart")
+        return JsonResponse(order.items.count(),safe=False)
 
 
 @login_required
 def remove_from_cart(request, slug):
-    # Get the item by its slug or pk value
-    item = get_object_or_404(Product, slug=slug)
     # Get order Item
     order_item = Order_Item.objects.get(
         user=request.user,
-        items=item,
+        items__slug=slug,
         ordered=False
     )
-    # Check if the order already exists or not
-    order_qs = Order.objects.filter(user=request.user,
-                                    ordered=False)
-    order = order_qs[0]  # The first thing in the query is the object
-    if order:
-
-        if order.items.filter(
-                items__slug=item.slug).exists():  # If the order_item already exists in the order then update its quantity
-            if order_item.quantity > 1:
-                order_item.quantity -= 1
-                order_item.save()
-            else:
-                order.items.remove(order_item)  # else remove the order_item from the order
-                order_item.delete() # delete the order_item from database
-                order.save()
-
+    if order_item.quantity > 1:
+        order_item.quantity -= 1
+        order_item.save()
+    else:
+        order_item.delete() # delete the order_item from database
     return redirect("Base:Cart")  # then redirect to the checkout-summary page
 
 # deleting item from cart
 @login_required
 def delete_from_cart(request, slug):
-    # Get the item by its slug or pk value
-    item = get_object_or_404(Product, slug=slug)
     # Get order Item
     order_item = Order_Item.objects.get(
         user=request.user,
-        items=item,
+        items__slug=slug,
         ordered=False
     )
-    # Check if the order already exists or not
-    order_qs = Order.objects.filter(user=request.user,
-                                    ordered=False)
-    order = order_qs[0]  # The first thing in the query is the object
-    if order:
-
-        if order.items.filter(
-                items__slug=item.slug).exists():  # If the order_item already exists in the order then update its quantity
-                order.items.remove(order_item)  # else remove the order_item from the order
-                order_item.delete() # delete the order_item from database
-                order.save()
+    order_item.delete()
     return redirect("Base:Cart")  # then redirect to the checkout-summary page
 @login_required
 def Cart(request):
@@ -227,27 +170,11 @@ def Cart(request):
             saved = saved_qs[0]
         else:
             saved = False
-        # Subtotal product price and saved amount
-        Subtotal=0
-        saved_amount=0
-        # delivery charges
-        if Subtotal>600:
-            delivery=False
-        else:
-            delivery=100
-        # total order price
-        if delivery:
-          total=Subtotal+delivery
-        else:
-            total=Subtotal
+        saved_amount = 0
         content={
             'order':order,
-            'saved':saved,
-            'Subtotal':Subtotal,
-            'delivery':delivery,
-            'total':total,
-            'count':1,
-            'saved_amount':saved_amount
+            'saved_amount':saved_amount,
+            'saved':saved
         }
         return render(request, "Base/Cart.html", content)
 
@@ -293,16 +220,18 @@ def move_to_cart(request,id):
         order = Order.objects.create(user=request.user)
         order.save()
     order.items.add(order_item)
-    order.save()
     saved = saved_order.objects.get(user=request.user)
     saved.items.remove(order_item)
-    saved.save()
     return redirect("Base:Cart")
-
+from Seller.models import SellerProfile
 @login_required
 def Checkout(request):
-
     order = Order.objects.get(user=request.user, ordered=False)
+    try:
+        my_orders = MyOrders.objects.get(user=request.user)
+    except:
+        my_orders = MyOrders(user=request.user)
+        my_orders.save()
     if request.method=='GET':
         content = {
             'order': order,
@@ -318,8 +247,7 @@ def Checkout(request):
         state = request.POST.get('State')
         landmark = request.POST.get('Landmark')
         alternate_number = request.POST.get('Alternate')
-        type = 'Home'
-        email = 'rohansinghss007@gmail.com'
+        email = request.POST.get('email')
         Address = Delivery_Address(
             user=request.user,
             name=name,
@@ -331,12 +259,25 @@ def Checkout(request):
             state=state,
             landmark=landmark,
             alternate_number=alternate_number,
-            type=type
         )
         Address.save()
         order.Address = Address
         order.email = email
+        order.ordered=True
         order.save()  # save the order
+
+        for order_items in order.items.all():
+            order_items.ordered=True # Set order =True
+            order_items.date_of_order = datetime.date.today() # Date or ordering
+            order_items.items.UID.Earning +=order_items.get_total_discount_item_price() # Increase the Earning of the seller
+            order_items.items.UID.sales+=order_items.quantity # Increse the quantity of the products sold by seller
+            order_items.items.UID.My_orders.add(order_items) # Add this order items to seller my_orders
+            order_items.items.UID.Order_history.add(order_items)  # Add this order items to seller my_orders
+            order_items.order_to = order
+            my_orders.items.add(order_items) # Add order_items to buyer order history
+            order_items.save()
+            order_items.items.UID.save()
+        messages.success(request,' Congratulations ! Your order has been placed ')
         return redirect('Base:Homepage')
 
 
@@ -419,7 +360,7 @@ def NewestArrivals(queryset):
         pivot = arr[start]
         i = start + 1
         j = end - 1
-        from datetime import datetime
+
         while True:
             while (i <= j and datetime.strptime(str(arr[i].date),'%Y-%m-%d') >= datetime.strptime(str(pivot.date),'%Y-%m-%d')): # dates.sort(key = lambda date: datetime.strptime(date, '%d %b %Y'))
                 i = i + 1
@@ -432,6 +373,7 @@ def NewestArrivals(queryset):
                 arr[start], arr[j] = arr[j], arr[start]
                 return j
     quicksort(queryset,0,len(queryset))
+
 def searchbar(request):
     if request.method == 'GET':
         # for order info
@@ -452,7 +394,7 @@ def searchbar(request):
                                                  fuzziness="AUTO",
                                                  ).params(request_timeout=60)
             r_shops =  SellerProfile_Document.search().query("multi_match",query=q,
-                                                             fields=['shop_name','unique_id','Area','district','state'],
+                                                             fields=['name','unique_id','Area','district','state'],
                                                              fuzziness="AUTO",).params(request_timeout=60)
             r_malls = Mall_Document.search().query("multi_match",query=q,
                                                    fields=['name','unique_id','Area','district','state'],
@@ -2199,31 +2141,43 @@ def searchbar(request):
             if request.GET.get('next[286]'):
                 s = s.query("multi_match", query=request.GET.get('next[286]'), fields=['Temple_color'])
 
+
             # to convert the results to model results
 
             # Product results
-            qs = s.to_queryset()
-            qs=list(qs)
+            qs = list(s.to_queryset())
 
             # Marketplace results
             shop_qs = list(r_shops.to_queryset())
             mall_qs = list(r_malls.to_queryset())
             market_qs = list(r_markets.to_queryset())
+            ms = qs+shop_qs+mall_qs+market_qs
 
+            # Marketplace
+            if request.GET.get('next[300]'):
+                marketplace = request.GET.get('next[300]')
+                if marketplace == 'Marketplace':
+                    ms= shop_qs+mall_qs+market_qs
+                else:
+                    ms = qs
             # sorting for ascending order or descending order
             if request.GET.get('next[1]')=="asc":
-                sorting_price_ascending(qs)
+                sorting_price_ascending(ms)
             elif request.GET.get('next[1]')=="dsc":
-                sorting_price_descending(qs)
+                sorting_price_descending(ms)
             elif request.GET.get('next[1]')=='Nwst':
-                NewestArrivals(qs)
+                NewestArrivals(ms)
             else:
                 pass
-            return render(request, 'Base/searchbar.html', {'results': qs,
+            return render(request, 'Base/searchbar.html', {'results': ms,
                                                            'order':order,
                                                            'Brands':Brands,
                                                            'Colors':Colors,
                                                            'base':base,
+
+            # Marketplace results
+            'results_marketplace':market_qs, 'results_shops':shop_qs, 'results_malls':mall_qs,
+
             # Product Based Filters
 
             'Fit':Fit,'Pattern':Pattern,'Neck_type':Neck_type,'Sleeve_type':Sleeve_type,'Theme':Theme,'Fabric':Fabric,'occasion':occasion,
@@ -2324,33 +2278,14 @@ def searchbar(request):
 
             'ESRB_rating':ESRB_rating,'Temple_material':Temple_material,'Lens_type_supported':Lens_type_supported,'Temple_color':Temple_color,
 
-            # Marketplace results
-            'results_marketplace':market_qs, 'results_shops':shop_qs, 'results_malls':mall_qs,
-
                                                            })
             # if the search is empty
         else:
             next = request.GET.get('next[0]', '/')
             return HttpResponseRedirect(next)
-    else:
-        # This has to be corrected
-        q = request.POST.get('q')
-        print(q)
-        if q != '':
-            s = Products_Document.search().query("multi_match", query=q,
-                                                 fields=["Name", "main_category", "sub_category", "sub_sub_category",
-                                                         "sub_sub_sub_category", "description", "Brand"],
-                                                 fuzziness="AUTO",
 
-                                                 ).params(request_timeout=60)
 
-            if request.POST.get('name')!=None:
-                print(request.POST.get('name'))
-                s = s.query("multi_match", query=request.POST.get('name'), fields=["Brand"])
-        qs = s.to_queryset()
-        qs = list(qs)
-        print(qs)
-        return HttpResponse({'results': qs})
+
 # Add item to wishlist
 @login_required
 def Wishlist_Add(request,slug):
@@ -2359,11 +2294,9 @@ def Wishlist_Add(request,slug):
     if wishlist_qs.exists():
         wishlist=wishlist_qs[0]
         if wishlist.items.filter(slug=slug).exists():
-
             return redirect('Base:wishlist')
         else:
             wishlist.items.add(item)
-            wishlist.save()
             return redirect('Base:wishlist')
     else:
         wishlist = Wishlist(user=request.user)
@@ -2375,11 +2308,9 @@ def Wishlist_Add(request,slug):
 @login_required
 def Wishlist_Remove(request,slug):
     item = get_object_or_404(Product, slug=slug)
-    wishlist_qs = Wishlist.objects.filter(user=request.user)
-    wishlist = wishlist_qs[0]
+    wishlist= Wishlist.objects.get(user=request.user)
     wishlist.items.remove(item)
-    wishlist.save()
-    return redirect('Base:wishlist')
+    return JsonResponse('Done',safe=False)
 
 @login_required
 def Wishlist_View(request):
@@ -2392,21 +2323,29 @@ def Wishlist_View(request):
             order=False
     except :
         order=False
-    wishlist_qs = Wishlist.objects.filter(user=request.user)
-
-    items = Wishlist.objects.filter(user=request.user)
-
-    # create the wishlist if it does not exists already
-    if not wishlist_qs.exists():
-        wishlist = Wishlist(user=request.user)
+    try:
+        wishlist = Wishlist.objects.get(user=request.user)
+    except:
+        wishlist = Wishlist(user = request.user)
         wishlist.save()
-    items=items[0]
-    content={'Wishlist':items,
+
+    content={'Wishlist':wishlist,
              'order':order}
     return render(request,'Base/wishlist.html',content)
 
-# Buying products instantly
 @login_required
-def Buy_Now(request):
-    #order=Order()
-    pass
+def MyOrdersView(request):
+    # for order info
+    try:
+        order_qs = Order.objects.filter(user=request.user, ordered=False)
+        if order_qs.exists():
+            order = order_qs[0]
+        else:
+            order = False
+    except:
+        order = False
+    my_orders = MyOrders.objects.get_or_create(user = request.user)
+    return render(request, 'Base/MyOrders.html', {
+        'order':order,
+        'MyOrders':my_orders
+    })

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block Navbar1 %}
 
 	 {% include "Base/Navbar1.html" %}
@@ -6,6 +7,15 @@
 {% endblock %}
 {% block content %}
 <style>
+
+			input[type=number]::-webkit-inner-spin-button,
+	input[type=number]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		margin: 0;
+	}
+
 	.rating {
   display: inline-block;
   position: relative;
@@ -72,55 +82,58 @@
   text-shadow: 0 0 5px #09f;
 }
 </style>
-<div class="container-fluid" style="margin-top:89px;">
-	<div class="row d-flex align-items-center justify-content-center">
-		<form method="POST" enctype="multipart/form-data"> <!-- Without enctype files will not get uploaded , only strings will get uploaded-->
-			{% csrf_token %}
-			<h4>Rate this product</h4>
-				<div class="rating">
-				  <label>
-					<input type="radio" name="stars" value="1" required/>
-					<span class="icon">★</span>
-				  </label>
-				  <label>
-					<input type="radio" name="stars" value="2" required/>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-				  </label>
-				  <label>
-					<input type="radio" name="stars" value="3" required/>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-				  </label>
-				  <label>
-					<input type="radio" name="stars" value="4" required/>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-				  </label>
-				  <label>
-					<input type="radio" name="stars" value="5" required/>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-					<span class="icon">★</span>
-				  </label>
-				</div>
-			<br>
-			<h4>Write your review</h4>
-			<textarea  name="review" id="review" style="height:200px;width:200px;"></textarea>
-			<br>
-			<h4>Add photos</h4>
-			<input type="file" id="img" name="img[]" accept="image/*" multiple >
-			<br>
-			<br>
-			<input type="submit">
-		</form>
+
+<body style="background-color:#ebedf5;">
+<div class="container-fluid d-flex justify-content-center align-items-center" style="margin-top:95px;">
+	<div style="position:absolute;top:20%;height:70%;width:600px;background-color:white;"  class="d-flex align-items-center justify-content-center " >
+			<form method="POST" enctype="multipart/form-data"> <!-- Without enctype files will not get uploaded , only strings will get uploaded-->
+				{% csrf_token %}
+				<h5 style="text-decoration:underline;font-weight:bold;color:#785730;">Rate this product</h5>
+					<div class="rating">
+					  <label>
+						<input type="radio" name="stars" value="1" required/>
+						<span class="icon">★</span>
+					  </label>
+					  <label>
+						<input type="radio" name="stars" value="2" required/>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+					  </label>
+					  <label>
+						<input type="radio" name="stars" value="3" required/>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+					  </label>
+					  <label>
+						<input type="radio" name="stars" value="4" required/>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+					  </label>
+					  <label>
+						<input type="radio" name="stars" value="5" required/>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+						<span class="icon">★</span>
+					  </label>
+					</div>
+				<br>
+				<h5 style="text-decoration:underline;font-weight:bold;color:#785730;">Write your review</h5>
+				<textarea  name="review" id="review" style="height:200px;width:300px;"></textarea>
+				<br>
+				<h5 style="text-decoration:underline;font-weight:bold;color:#785730;">Add photos</h5>
+				<input type="file" id="img" name="img[]" accept="image/*" multiple >
+				<br>
+				<br>
+				<button type="submit" class="btn btn-primary">ADD REVIEW</button>
+			</form>
 	</div>
 </div>
+</body>
 <script>
 	$(':radio').change(function() {
   console.log('New star rating: ' + this.value);

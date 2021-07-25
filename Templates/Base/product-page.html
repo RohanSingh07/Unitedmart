@@ -1,9 +1,5 @@
-<!--
-	Pending :
-	1.If the user is the seller of the product then he should be able to edit things like picture and other details.
-	2. Color for the current product .
--->
 {% extends 'base.html' %}
+{% load static %}
 {% block Navbar1 %}
 
 	 {% include "Base/Navbar1.html" %}
@@ -14,16 +10,23 @@
 	body{
 	overflow-x:hidden;
 	}
+	.imageT:hover{
+	transform:scale(1.01);
+	}
 </style>
 
 <div class="container-fluid bg-white" style="margin-top:100px;">
+	 <div  id="MyAlert" class="bg-success text-white d-flex justify-content-center align-items-center font-weight-bold"  style="position:fixed;top:89px;z-index:2;width:100%;opacity:0.7;background-color:#a31818;">
+                  <h6 class="pt-1 pb-1 font-weight-normal" id="Message"></h6>
+		  <a  style="position:absolute;right:50px;font-size:14px;font-weight:bold;" id="Close">x</a>
+ 	</div>
 	<div class="row d-flex justify-content-center" >
 		<!-- Column for Showing Products -->
 		<div class="col-7 pt-2">
 			<div class="row ml-2">
 				{% if object.image %}
 				<div class="col-6 mt-2" id="image">
-					<a href="{{object.image.url}}" ><img src="{{object.image.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image.url}}" ><img src="{{object.image.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				<br>
 				{% endif %}
@@ -35,48 +38,48 @@
 				{% endif %}
 				{% if object.image1 %}
 				<div class="col-6 mt-2" id="image1">
-					<a href="{{object.image1.url}}" ><img src="{{object.image1.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image1.url}}" ><img src="{{object.image1.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 
 				{% if object.image2 %}
 				<div class="col-6 mt-2" id="image2">
-					<a href="{{object.image2.url}}" ><img src="{{object.image2.url}}" class="img-fluid image"  alt="loading..."  style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image2.url}}" ><img src="{{object.image2.url}}" class="img-fluid image imageT"  alt="loading..."  style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 				{% if object.image3 %}
 				<div class="col-6 mt-2" id="image3">
-					<a href="{{object.image3.url}}" ><img src="{{object.image3.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image3.url}}" ><img src="{{object.image3.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 				{% if object.image4 %}
 				<div class="col-6 mt-2" id="image4">
-					<a href="{{object.image4.url}}" ><img src="{{object.image4.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image4.url}}" ><img src="{{object.image4.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 				{% if object.image5 %}
 				<div class="col-6 mt-2" id="image5">
-					<a href="{{object.image5.url}}" ><img src="{{object.image5.url}}" class="img-fluid image"  alt="loading..."  style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image5.url}}" ><img src="{{object.image5.url}}" class="img-fluid image imageT"  alt="loading..."  style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 				{% if object.image6 %}
 				<div class="col-6 mt-2" id="image6">
-					<a href="{{object.image6.url}}" ><img src="{{object.image6.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image6.url}}" ><img src="{{object.image6.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 				{% if object.image7 %}
 				<div class="col-6 mt-2" id="image7">
-					<a href="{{object.image7.url}}" ><img src="{{object.image7.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image7.url}}" ><img src="{{object.image7.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 				{% if object.image8 %}
 				<div class="col-6 mt-2" id="image8">
-					<a href="{{object.image8.url}}" ><img src="{{object.image8.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image8.url}}" ><img src="{{object.image8.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 				{% if object.image9 %}
 				<div class="col-6 mt-2" id="image9">
-					<a href="{{object.image9.url}}" ><img src="{{object.image9.url}}" class="img-fluid image"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
+					<a href="{{object.image9.url}}" ><img src="{{object.image9.url}}" class="img-fluid image imageT"  alt="loading..."   style="border-radius:0;height:500px;width:100%;"></a>
 				</div>
 				{% endif %}
 
@@ -93,10 +96,12 @@
 			  <span class="discount text-muted pl-2"><strike>₹{{object.price}}</strike></span>
 			</div>
 			<div class="row">
-				<a href="{{object.get_add_to_cart_url}}" class="btn col-5" style="font-weight:normal;color:white;white-space:pre;background-color:#f09e2b"><i class="fas fa-shopping-bag"></i>  ADD TO CART</a>
-				<a href="{{object.get_add_to_wishlist_url}}" class="btn col-5" style="font-weight:normal;white-space:pre;"><i class="far fa-heart"></i>  Wishlist</a>
-
+				<a id="AddToCart" class="btn col-5" style="font-weight:normal;color:white;white-space:pre;background-color:#f09e2b"><i class="fas fa-shopping-bag"></i>  ADD TO CART</a>
+				<a id="AddToWishlist" class="btn col-5" style="font-weight:normal;white-space:pre;color:black;"><i class="far fa-heart"></i>  WISHLIST</a>
 			</div>
+			<hr>
+			<h6 style="font-weight:bold;">SELLER</h6>
+			<a href="{% url 'Explore:seller-page' object.UID.unique_id %}"><h6 style="font-weight:normal;" >{{object.UID.name}}</h6></a>
 			<hr>
 			<!-- Product Details -->
 			<h6 style="font-weight:bold;">PRODUCT DETAILS</h6>
@@ -105,14 +110,16 @@
 			<hr>
 			<!-- Product Details -->
 			<!-- Ratings -->
-			<span class="row ml-1" ><h6 style="font-weight:bold;">RATINGS AND REVIEWS</h6>  <i class="far fa-star ml-2"></i></span>
+			<span class="row ml-1" ><h6 style="font-weight:bold;">RATINGS AND REVIEWS</h6>  <a href="{% url 'Base:review-page' object.slug %}"><i class=" ml-4 fas fa-pencil-alt" style="font-size:20px;color:#03a5fc;"></i></a></span>
 <!--			<a href="object.add_review_url">Write your reviews</a>-->
 			<!-- reviews.count -->
 			{% if reviews %}
 			<span class="row ml-1"><h1 class="font-weight-normal">{{overall}}</h1> <i class="fas fa-star text-warning ml-2 pt-2" style="font-size:25px;"></i></span>
 			<h6 class="font-weight-normal">Customer Images ({{reviews.count }})</h6>
-			{% for images in all_images %}
-				<a href="{{images.image.url}}"><img src="{{images.image.url}}" height="60" width="60"></a>
+			{% for rates in reviews %}
+				{% for images in rates.photos.all %}
+					<a href="{{images.image.url}}"><img src="{{images.image.url}}" height="60" width="60"></a>
+				{% endfor %}
 			{% endfor %}
 			<h6 class="font-weight-normal mt-3">Ratings ({{reviews.count }})</h6>
 			<hr>
@@ -137,9 +144,90 @@
 	</div>
 </div>
 
+<!-- Footer -->
+<div class="container-fluid " style="margin-top:100px;background-color:#162691;">
+  <div class="row pt-4 pb-5">
+    <div class="col-md-3 col-12">
+        <!-- Logo -->
+          <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+        <!-- Logo -->
+
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+        <!-- Social Sites -->
+          <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+        <!-- Social Sites -->
+    </div>
+    <div class="col-md-3 col-12">
+      <h5 class="text-white font-weight-bold">About</h5>
+      <h6 style="color:#c0c3cf">Contact Us</h6>
+      <h6 style="color:#c0c3cf">Careers</h6>
+      <h6 style="color:#c0c3cf">About Us</h6>
+    </div>
+    <div class="col-md-3 col-12">
+      <h5 class="text-white font-weight-bold">Help</h5>
+      <h6 style="color:#c0c3cf">Payments</h6>
+      <h6 style="color:#c0c3cf">Shipping</h6>
+      <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+      <h6 style="color:#c0c3cf">FAQ</h6>
+      <h6 style="color:#c0c3cf">Report Infringement</h6>
+    </div>
+    <div class="col-md-3 col-12">
+      <h5 class="text-white font-weight-bold">Policy</h5>
+      <h6 style="color:#c0c3cf">Return Policy</h6>
+      <h6 style="color:#c0c3cf">Terms of Use</h6>
+      <h6 style="color:#c0c3cf">Security</h6>
+      <h6 style="color:#c0c3cf">Privacy</h6>
+      <h6 style="color:#c0c3cf">Terms of Service</h6>
+    </div>
+
+
+
+  </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <!-- rating.js file -->
-
+<script>
+	// Script for adding item to cart and updating the value
+	$('#MyAlert').hide();
+	$('#Message').hide();
+	$('#AddToCart').on('click',function(){
+	$.ajax({
+              method: "GET",
+              url: "{% url 'Base:add-to-cart' object.slug %}",
+              data: {},
+              success: function(data) {
+              document.getElementById('CartCount').innerHTML = data;
+              }
+        })
+    document.getElementById('Message').innerHTML = "This item has been added to your cart";
+	$('#MyAlert').show();
+	$('#Message').show();
+	})
+	$('#Close').on('click',function(){
+	 $('#MyAlert').hide();
+	$('#Message').hide();
+	});
+	// Script for adding item to Wishlist and updating the value
+	$('#AddToWishlist').on('click',function(){
+	$.ajax({
+              method: "GET",
+              url: "{% url 'Base:add-to-wishlist' object.slug %}",
+              data: {},
+              success: function(data) {
+              }
+        })
+    document.getElementById('Message').innerHTML = "This item has been added to your wishlist";
+	$('#MyAlert').show();
+	$('#Message').show();
+	})
+</script>
 
 
 {% endblock %}

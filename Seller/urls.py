@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import ProfileView,AddProductView,Seller_Home,Delete_Product,Order_history,Ordered_products,Dispatch_item,refund_requests,\
-    returns,profile_edit,My_products,Bank_details,AddProduct2,AddProduct3
+    returns,profile_edit,My_products,AddProduct2,AddProduct3,My_Mall,My_Market,Add_New_Mall,Add_New_Market
 
 app_name = 'Seller'
 urlpatterns = [
@@ -31,11 +31,17 @@ urlpatterns = [
                 path('seller/profile-edit/',profile_edit,name='profile-edit'),
                 # My products
                 path('seller/my-products/',My_products,name='my-products'),
-                # Bank details
-                path('seller/bank-details/',Bank_details,name='bank-details'),
+                # My Mall
+                path('seller/my-mall/',My_Mall,name='my-mall'),
+                # My Market
+                path('seller/my-market/',My_Market,name='my-market'),
+                # Add New Market
+                path('seller/add-new-market/',Add_New_Market,name='new-market'),
+                # Add New Mall
+                path('seller/add-new-mall/',Add_New_Mall,name='new-mall'),
+
 
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,

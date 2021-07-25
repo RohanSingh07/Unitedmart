@@ -4,7 +4,15 @@
     {% include "Base/Navbar1.html" %}
 {% endblock %}
 {% block content %}
-
+<style>
+        input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+</style>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,7 +35,7 @@
   <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
 
   <div class="container-scroller">
-    <div class="container-fluid page-body-wrapper full-page-wrapper">
+    <div class="container-fluid page-body-wrapper full-page-wrapper " style="background-color:#a4cde0">
       <div class="content-wrapper d-flex align-items-center auth px-0">
         <div class="row w-100 mx-0">
           <div class="col-lg-4 mx-auto">

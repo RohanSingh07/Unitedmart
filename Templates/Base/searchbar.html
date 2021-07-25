@@ -20,27 +20,14 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0;
 }
+.card:hover{
+    transform:scale(1.01);
+}
 </style>
 <div class="container-fluid bg-white " style="margin-top:84px;">
     <div class="row bg-info" style="height:12px;">
 
     </div>
-<!--    <div class="row">-->
-<!--        <div class="col">-->
-<!--            <a onclick="Hide_Marketplace_Show_Products()">-->
-<!--            <div class="row btn-primary d-flex justify-content-center">-->
-<!--                <h2>Products</h2>-->
-<!--            </div>-->
-<!--            </a>-->
-<!--        </div>-->
-<!--        <div class="col">-->
-<!--            <a onclick="Hide_Products_Show_Marketplace()">-->
-<!--            <div class="row btn-secondary d-flex justify-content-center">-->
-<!--                <h2>Marketplace</h2>-->
-<!--            </div>-->
-<!--            </a>-->
-<!--        </div>-->
-<!--    </div>-->
     {% if results %}
     <div class="row" id="Products_section"><!-- Main -->
         <!-- Side Column -->
@@ -53,6 +40,15 @@ input[type=number]::-webkit-outer-spin-button {
             <div class="row btn btn-warning border" onclick="ApplyFilter()">
                 Apply Filters
             </div>
+            <!-- MarketPlace or Products -->
+            <div class="row d-flex justify-content-start align-items-center pl-2 pb-4 border" id="MARKET">
+                <div class="col">
+                    <h6 class="font-weight-bold Filterhead pt-2 " style="font-size:14px;">SEARCH FOR</h6>
+                    <input type="radio" name="Marketplace" id="Marketplace" value="Marketplace"> <label class="FilterContent" id="Marketplace_label"> MARKETPLACE</label><br>
+                    <input type="radio" name="Marketplace" id="Products" value="Products"> <label id="Products_label" class="FilterContent"> PRODUCTS </label><br>
+                </div>
+            </div>
+            <!-- MarketPlace or Products -->
             <!-- Price Filter -->
             <div class="row d-flex justify-content-start align-items-center pl-2 pb-4 border" id="PRICE">
                 <div class="col">
@@ -63,6 +59,7 @@ input[type=number]::-webkit-outer-spin-button {
             </div>
             <!-- Price Filter End-->
             <!-- Brand Filter -->
+            {% if Brands %}
             <div class="row d-flex justify-content-start align-items-center pl-2  border">
                 <div class="col" id="BRAND">
                     <h6 class="font-weight-bold Filterhead pt-2 " >BRAND</h6>
@@ -78,8 +75,10 @@ input[type=number]::-webkit-outer-spin-button {
                 </div>
 
             </div>
+            {% endif %}
             <!-- Brand Filter End-->
             <!-- Color Filter-->
+            {% if Colors %}
             <div class="row d-flex justify-content-start align-items-center pl-2 border" id="Colors">
                 <div class="col">
                     <h6 class="font-weight-bold Filterhead pt-2 " >COLOR</h6>
@@ -92,6 +91,7 @@ input[type=number]::-webkit-outer-spin-button {
                     <a onclick="DisplayColorItems()"><i id="Color-arrow" class="fas fa-chevron-up" style="position:absolute;right:10px;top:2px;color:grey;font-size:13px;"></i></a>
                 </div>
             </div>
+            {% endif %}
             <!-- Color Filter-->
             <!-- Reviews Filter -->
             <div class="row d-flex justify-content-start align-items-center pl-2 border" id="RATINGS">
@@ -4906,12 +4906,50 @@ input[type=number]::-webkit-outer-spin-button {
                     <div class="row wow fadeIn d-flex justify-content-start pl-2 pt-2 ">
                       {% for item in results %} <!-- When we use Listview we call objects using object_list -->
                       <!--Grid column-->
-                      <div class="col-lg-3 col-md-4 col-xl-3 col-12 d-flex  align-items-stretch pr-0 pl-1 pb-1">
+                        {% if item.shop_photo1 %}
                         <!--Card-->
-                        <div class="card " >
+                        <div class="card ml-2 mr-2 mt-2 " style="max-width:280px;">
                           <!--Card image-->
                           <div class="view overlay ">
-                            <img src="{{ item.image_url }}" class="card-img-top " height="250" width="250" style="max-width:250px;">
+                            <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="300" width="280" style="max-width:280px;">
+                            {% if item.shops %}
+                              <a href="{% url 'Explore:Marketplace-page' item.unique_id %}">
+                              <div class="mask rgba-white-slight"></div>
+                            </a>
+                            {% else %}
+                              <a href="{% url 'Explore:seller-page' item.unique_id %}">
+                              <div class="mask rgba-white-slight"></div>
+                              </a>
+                            {% endif %}
+
+                          </div>
+                          <!--Card image-->
+                          <!--Card content-->
+                          {% if item.shops %}
+                            <a href="{% url 'Explore:Marketplace-page' item.unique_id %}" class="dark-grey-text">
+                          {% else %}
+                            <a href="{% url 'Explore:seller-page' item.unique_id %}" class="dark-grey-text">
+                          {% endif %}
+                          <div class="card-body text-center" style="height:120px;">
+                            <h6 style="text-overflow:ellipsis;font-size:16px;overflow:hidden;white-space:nowrap;font-weight:bold;">
+                                {{ item.name }}  <!-- Here we have used reverse and passes the url of product -->
+                                   <!-- Used for fetching data from label-->
+                            </h6>
+                            <h6 class="font-weight-bold Filterhead pt-2 blue-text">
+                              {{item.district}}
+                            </h6>
+                            <span style="font-size:small;font-weight:bold;background-color:red;color:white;" class="pl-1 pr-1 pt-1 pb-1">Marketplace</span>
+                          </div>
+                          </a>
+                          <!--Card content-->
+                        </div>
+                      <!--Card-->
+                        {% else %}
+                        <!--Card-->
+                        <div class="card ml-2 mr-2 mt-2 " style="max-width:280px;">
+                          <!--Card image-->
+                          <div class="view overlay ">
+                            <img src="{{ item.image_url }}" class="card-img-top " height="300" width="280" style="max-width:280px;">
                             <a href="{{item.get_abs_url}}">
                               <div class="mask rgba-white-slight"></div>
                             </a>
@@ -4919,9 +4957,9 @@ input[type=number]::-webkit-outer-spin-button {
                           <!--Card image-->
                           <!--Card content-->
                           <a href="{{item.get_abs_url}}" class="dark-grey-text">
-                          <div class="card-body text-center">
+                          <div class="card-body text-center" style="height:120px;">
                             <h6 style="font-weight:bold;">{{item.Brand}}</h6>
-                            <h6 style="text-overflow:ellipsis;font-size:14px;">
+                            <h6 style="text-overflow:ellipsis;font-size:14px;overflow:hidden;white-space:nowrap;">
                                 {{ item.Name }}  <!-- Here we have used reverse and passes the url of product -->
                                    <!-- Used for fetching data from label-->
                             </h6>
@@ -4937,154 +4975,30 @@ input[type=number]::-webkit-outer-spin-button {
                           <!--Card content-->
                         </div>
                       <!--Card-->
-                    </div>
+                        {% endif %}
+
+
                     <!--Grid column-->
                   {% endfor %}
              </div>
         </div>
         <!-- Product Column-->
         {% else %}
-        <h1>Nothing Found!</h1>
+        <h2>Nothing Found!</h2>
         {% endif %}
     </div>
 
-
-    <!-- Marketplace section -->
-    <div id="Marketplace_section">
-    <!-- Malls section -->
-    <div class="row">
-
-        {% for item in results_malls %}
-        <div class="col-lg-4 col-md-6  col-xl-3  d-flex  align-items-stretch pr-0 pl-1 pb-1">
-
-            <!--Card-->
-            <div class="card " >
-
-              <!--Card image-->
-              <div class="view overlay ">
-
-                <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="300" >
-                <a href="{{item.get_abs_url}}">
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-
-              </div>
-
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center  "  >
-                <!--Category & Title-->
-                <a href="" class="grey-text">
-                  <h5></h5> <!-- Getting the category and displaying it -->
-                </a>
-                <h5>
-                  <strong>
-                    <a href="{{item.get_abs_url}}" class="dark-grey-text">{{ item.name }}  <!-- Here we have used reverse and passes the url of product -->
-                      <span class="badge -color">NEW</span> <!-- Used for fetching data from label-->
-                    </a>
-                  </strong>
-                </h5>
-
-              </div>
-              <!--Card content-->
-            </div>
-          <!--Card-->
-        </div>
-        {% endfor %}
-    </div>
-    <!-- Malls section End-->
-    <!-- Shops Section-->
-    <div class="row">
-
-        {% for item in results_shops %}
-        <div class="col-lg-4 col-md-6  col-xl-3  d-flex  align-items-stretch pr-0 pl-1 pb-1">
-
-            <!--Card-->
-            <div class="card " >
-
-              <!--Card image-->
-              <div class="view overlay ">
-
-                <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="300" >
-                <a href="{{item.get_abs_url}}">
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-
-              </div>
-
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center  "  >
-                <!--Category & Title-->
-                <a href="" class="grey-text">
-                  <h5></h5> <!-- Getting the category and displaying it -->
-                </a>
-                <h5>
-                  <strong>
-                    <a href="{{item.get_abs_url}}" class="dark-grey-text">{{ item.shop_name }}  <!-- Here we have used reverse and passes the url of product -->
-                      <span class="badge -color">NEW</span> <!-- Used for fetching data from label-->
-                    </a>
-                  </strong>
-                </h5>
-
-              </div>
-              <!--Card content-->
-            </div>
-          <!--Card-->
-        </div>
-        {% endfor %}
-    </div>
-    <!-- Shops Section End-->
-    <!-- Markets_section -->
-    <div class="row">
-
-        {% for item in results_marketplace %}
-        <div class="col-lg-4 col-md-6  col-xl-3  d-flex  align-items-stretch pr-0 pl-1 pb-1">
-
-            <!--Card-->
-            <div class="card " >
-
-              <!--Card image-->
-              <div class="view overlay ">
-
-                <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="300" >
-                <a href="{{item.get_abs_url}}">
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-
-              </div>
-
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center  "  >
-                <!--Category & Title-->
-                <a href="" class="grey-text">
-                  <h5></h5> <!-- Getting the category and displaying it -->
-                </a>
-                <h5>
-                  <strong>
-                    <a href="{{item.get_abs_url}}" class="dark-grey-text">{{ item.shop_name }}  <!-- Here we have used reverse and passes the url of product -->
-                      <span class="badge -color">NEW</span> <!-- Used for fetching data from label-->
-                    </a>
-                  </strong>
-                </h5>
-
-              </div>
-              <!--Card content-->
-            </div>
-          <!--Card-->
-        </div>
-        {% endfor %}
-    </div>
-    <!-- Markets_section End -->
-    </div>
-    <!-- Marketplace section End -->
 </div>
 <script>
+//Products_label
+$('#Marketplace_label').on('click',function(){
+$('#Marketplace').prop("checked",true);
 
+})
+$('#Products_label').on('click',function(){
+$('#Products').prop("checked",true);
+
+})
 
    $('#Marketplace_section').hide();
 // Hide Products show marketplace section
@@ -9745,7 +9659,13 @@ for(var k=0;k<ratings.length;k++){
     if(searchParams_ratings === ratings[k].value){
         ratings[k].checked=true;
     }  }
-
+// Marketplace
+Marketplace = document.getElementsByName('Marketplace');
+searchParams_Marketplace=searchParams.get("next[300]");
+for(var k=0;k<Marketplace.length;k++){
+    if(searchParams_Marketplace === Marketplace[k].value){
+        Marketplace[k].checked=true;
+    }  }
 
 function ApplyFilter(){
 
@@ -11858,6 +11778,14 @@ function ApplyFilter(){
         Rating = ratings[k].value;}
         }
     searchParams.set("next[5]",Rating);
+
+    // Marketplace
+    let marketplace;
+    for(var k=0;k<Marketplace.length;k++){
+        if(Marketplace[k].checked){
+        marketplace = Marketplace[k].value;}
+        }
+    searchParams.set("next[300]",marketplace);
 
     // Distress
     var Distress_tam = 0;
@@ -14917,8 +14845,8 @@ function RemoveAllFilters(){
     //Temple_color
     searchParams.delete("next[286]")
 
-
-
+    // Marketplace
+    searchParams.delete("next[300]")
 
 
     window.location.search = searchParams.toString();

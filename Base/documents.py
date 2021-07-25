@@ -319,7 +319,7 @@ class SellerProfile_Document(Document):
     class Django:
         model = SellerProfile
 
-        fields =['shop_name',
+        fields =['name',
                  'unique_id',
                  'Area',
                  'district',

@@ -735,7 +735,6 @@
 
         <div class="col-3">
             <div class="row d-flex justify-content-center align-items-center">
-
                 <div class=" d-flex justify-content-center align-items-center font-weight-normal pl-1 ">
                     <a class="text-dark d-flex justify-content-center align-items-center " type="button" data-toggle="dropdown"
                        aria-expanded="false">
@@ -746,6 +745,7 @@
                         <a href="{% url 'Base:wishlist' %}" class=" dropdown-item font-weight-normal" style="border-width:thin;border-bottom:0.5px solid grey;padding-top:3px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-heart" style="color:#3266a8;"></i>  Wishlist</a>
 
                         <a href="{% url 'Seller:seller-home' %}" class="dropdown-item font-weight-normal " style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-gift " style="color:#3266a8;"></i>  Seller</a>
+                        <a href="{% url 'Base:MyOrders' %}" class="dropdown-item font-weight-normal " style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-history " style="color:#3266a8;"></i>  My Orders</a>
 
                         {% if user.is_authenticated %}
                             <a href="{% url 'users:logout' %}" class="dropdown-item font-weight-normal " style="padding-top:8px;padding-bottom:8px;font-size:14px;white-space:pre;"><i class="fas fa-sign-out-alt " style="color:#3266a8;"></i>  Logout</a>
@@ -760,7 +760,7 @@
                   <div class="d-flex justify-content-center align-items-center font-weight-normal pl-2 ">
                     <a class="nav-link waves-effect " href="{% url 'Base:Cart' %}"> <!--Bcz core is a different url appname -->
                             {% if order %}
-                                <span class="badge red z-depth-1 mr-0">
+                                <span id="CartCount" class="badge red z-depth-1 mr-0">
                                 {{order.items.count}}
                                 </span>
                                 {% else %}

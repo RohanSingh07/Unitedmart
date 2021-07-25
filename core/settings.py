@@ -56,6 +56,9 @@ INSTALLED_APPS = [
     # Search functionality
     'django_elasticsearch_dsl',
 
+    # AWS storage
+    'storages',
+
 ]
 
 MIDDLEWARE = [
@@ -95,11 +98,11 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd4hstcfeco75p7',
-        'HOST': 'ec2-52-5-1-20.compute-1.amazonaws.com',
+        'NAME': 'dcj1jj6qoa99md',
+        'HOST': 'ec2-52-86-25-51.compute-1.amazonaws.com',
         'PORT': 5432,
-        'USER': 'rmzbnqinubdfcr',
-        'PASSWORD': 'f9364380f1310dd9001b2b1c0013e3f99e5e914220d9e64419d86a7fc0059bee',
+        'USER': 'jqwisdahnasqwa',
+        'PASSWORD': '04de05eced110c347570fa237f3b071f568b930fdf51b34cfc8a5aee037a218b',
     }
 }
 # DATABASES = {
@@ -121,12 +124,12 @@ ELASTICSEARCH_DSL ={
     'default':{
                           #name : # password             @ #Endpoint
         'hosts':'https://admin:Imhulk_07@search-unilas-p3r33v3hiyoq64gyik2kxc7kfa.us-east-2.es.amazonaws.com/',
-
+        'timeout': 60,
 
         #'hosts':'localhost',
     }
-
 }
+
 # For auto updation of the search indexes
 ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = 'django_elasticsearch_dsl.signals.RealTimeSignalProcessor'
 
@@ -205,3 +208,15 @@ CRISPY_TEMPLATE_PACK ='bootstrap4'
 
 # # where to when customer login
 #LOGIN_REDIRECT_URL = '/'
+
+# AWS settings
+AWS_ACCESS_KEY_ID = 'AKIAQVZDNG5NCVIFDPX4'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'assets07'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_S3_SECURE_URLS = False
+DEFAULT_FILE_STORAGE = 'core.storage_backends.MediaStorage'

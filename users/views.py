@@ -65,12 +65,9 @@ class Signup(View):
                     'otp': otp,
                     'username': username
                 }))
-                # else:
-                #     messages.error(self.request, "Password do not match ")
-
         else:
             messages.error(self.request, "Form is not valid ")
-
+            return redirect('users:signup')
 
 def OTP_Singup(request, *args, **kwargs):
     number = kwargs['number']
@@ -127,8 +124,10 @@ def set_password(request, number, username):
                     auth.login(request, user)
                     # if the user is seller then redirect it to the seller homepage
                     if user.is_seller:
+                        messages.error(request, 'Congratulation, you have registered successfully :)')
                         return redirect('Seller:dashboard')
                     else:
+                        messages.error(request, 'Congratulation, you have registered successfully :)')
                         return redirect('Base:Homepage')
                 # redirect the user to the same page where logged in
                 return redirect('users:login')
@@ -158,7 +157,6 @@ def login_new(request):
                     return HttpResponseRedirect(next)
                 # for post request redirect when a user is registered
                 else:
-                    next = request.POST.get('next', '/')
                     return redirect('Base:Homepage')
         else:
             messages.info(request, 'invalid username or password')
@@ -238,19 +236,26 @@ def Seller_Signup_2(request):
         messages.info(request,'OTP DID NOT MATCH !')
         return redirect('Seller:seller-home')
 
-from Seller.models import Pincodes
+
 # To verify pincode of the seller
+Pincodes={
+    '226002':['Lucknow','Uttar Pradesh']
+}
 def Seller_Signup_3(request):
     # When the pincode is submitted
         mobile = request.POST.get('mobile')
         pincode = request.POST.get('pincode')
-        if Pincodes.objects.filter(pincode=pincode).exists():
+        if pincode in Pincodes:
             messages.success(request,'Congratulations ! We can pick up any product from your pincode :)')
             # Send the pincode object
-            pincode = Pincodes.objects.filter(pincode=pincode)[0]
+            district = Pincodes[pincode][0]
+            state = Pincodes[pincode][1]
+            print(district,state)
             return render(request,'account/seller_success.html',{
                 'mobile':mobile,
                 'pincode':pincode,
+                'district':district,
+                'state':state
             })
         else:
             messages.error(request,"Sorry,we don't pick up products here at time. Hopefully we will cover this area very soon :)")
@@ -296,7 +301,7 @@ def Seller_Singup_4(request):
                     name_of_owner = username,
                     email_of_owner=email,
                     mobile_number = mobile,
-                    shop_name= shop_name,
+                    name= shop_name,
                     address = address,
                     Area = area,
                     landmark = landmark,

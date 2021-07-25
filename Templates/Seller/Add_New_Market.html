@@ -1,0 +1,541 @@
+{% load static %}
+<html>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- base:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/typicons/typicons.css' %}">
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/css/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+
+
+</head>
+<style>
+        input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+</style>
+<body>
+    {% if messages %}
+
+        {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible  text-white d-flex justify-content-center font-weight-bold"  style="position:fixed;top:85px;z-index:3;width:100%;opacity:0.7;background-color:#a31818;">
+                  {{ message }}
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+        {% endfor %}
+
+    {% endif %}
+
+<i class="typcn typcn-delete-outline" id="bannerClose"></i>
+
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100"><!-- URl -->
+          <a href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
+          <!-- URL -->
+          <!-- Small Screen logo and url-->
+          <a class="navbar-brand brand-logo-mini" href="{% url 'Base:Homepage' %}"><img src="{% static 'Dashboard/images/logo-mini.svg' %}" alt="logo"/></a>
+          <!-- Small Screen logo -->
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" id="ToggleLogo">
+            <span class="typcn typcn-th-menu"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav mr-lg-2">
+          <li class="nav-item nav-profile dropdown">
+            <!-- Image and Name of owner-->
+            <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+              {% if profile.photo_of_owner %}
+              <img src="{{profile.photo_of_owner.url}}" />
+              {% else %}
+              <img src="{% static 'img/user.png' %}" />
+              {% endif %}
+              <span class="nav-profile-name">{{profile.name_of_owner}}</span>
+            </a>
+            <!-- Image and Name of owner-->
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-date dropdown">
+            <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
+              <h6 class="date mb-0">Today : {{today}}</h6>
+
+            </a>
+          </li>
+          <li class="nav-item d-flex justify-content-center align-items-center dropdown">
+            <a class="nav-link " id="messageDropdown" href="#" data-toggle="dropdown">
+              <i class="typcn typcn-cog-outline mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <!-- Edit Profile -->
+              <a class="dropdown-item" href="{% url 'Seller:profile-edit' %}">
+                <i class="typcn typcn-cog-outline text-primary"></i>
+                Settings
+              </a>
+              <!-- Logout -->
+              <a class="dropdown-item" href="{% url 'users:logout' %}">
+                <i class="typcn typcn-eject text-primary"></i>
+                Logout
+              </a>
+              <!-- Logout End -->
+            </div>
+          </li>
+
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="typcn typcn-th-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <div class="container-fluid page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <!-- Dashboard -->
+           <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:dashboard' %}">
+              <i class="typcn typcn-device-desktop menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <!-- Dashboard -->
+          <!-- My orders -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:orders' %}" >
+              <i class="typcn typcn-gift menu-icon"></i>
+              <span class="menu-title" >My Orders</span>
+              <!-- Display Number of orders-->
+              <div class="badge badge-danger">{{orders.count}}</div>
+            </a>
+          </li>
+          <!-- My orders -->
+          <!-- Public Profile -->
+          <li class="nav-item">
+          <a class="nav-link" href="{{profile.get_abs_url}}">
+              <i class="typcn typcn-world-outline menu-icon"></i>
+              <span class="menu-title">Public Profile</span>
+              <div class="badge badge-danger">web</div>
+            </a>
+          </li>
+          <!-- Public Profile -->
+          <!-- My products -->
+          <!-- Make changes to the quantity -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:my-products' %}" aria-expanded="false">
+              <i class="typcn typcn-shopping-cart menu-icon"></i>
+              <span class="menu-title">My Products</span>
+              <div class="badge badge-danger">{{products.count}}</div>
+            </a>
+          </li>
+          <!-- My products -->
+          <!-- Add products -->
+          <!-- Only enter when Adhaar and bank details has been provided -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:add-product' %}"  aria-expanded="false" aria-controls="ui-basic">
+              <i class="typcn typcn-plus-outline menu-icon"></i>
+              <span class="menu-title">Add Products</span>
+            </a>
+          </li>
+          <!-- Add products -->
+          <!-- Delete products -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:delete-product' %}" aria-expanded="false" aria-controls="form-elements">
+              <i class="typcn typcn-trash menu-icon"></i>
+              <span class="menu-title">Remove Products</span>
+            </a>
+          </li>
+          <!-- Delete products -->
+          <!-- Order History -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:order-history' %}" aria-expanded="false" aria-controls="tables">
+              <i class="typcn typcn-stopwatch menu-icon"></i>
+              <span class="menu-title">Order History</span>
+            </a>
+          </li>
+          <!-- Order History -->
+          <!-- Mall -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:my-mall' %}" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/mall1.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Mall</span>
+            </a>
+          </li>
+          <!-- Mall -->
+          <!-- Market -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:my-market' %}" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/market.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Market</span>
+            </a>
+          </li>
+          <!-- Market -->
+
+           <!-- Settings -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:profile-edit' %}" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-cog-outline menu-icon"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+          <!-- Settings End-->
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <h3 style="text-decoration:underline;font-weight:normal;color:#785730;">NEW MARKET</h3>
+            <form method="post" enctype="multipart/form-data">
+            <div class="row d-flex justify-content-between" >
+                {% csrf_token %}
+                  <div class="col-md-5 col-11 mt-5 " style="position:relative;">
+                      <small  id="NameLabel"  class="bg-white text-primary font-weight-bold labels">Name of Market</small>
+                      <input class="form-control w-100 inputs"  type="text"  name="Name" id="Name" required><br>
+                  </div>
+                  <div class="col-md-5 col-11 mt-5 " style="position:relative;">
+                      <small  id="LocalityLabel" class="bg-white text-primary font-weight-bold labels">Area</small>
+                      <input class="w-100 form-control inputs"  type="text"  name="Area" id="Area" required><br>
+                  </div>
+                  <div class="col-md-5 col-11 mt-5 " style="position:relative;">
+                      <small  id="DistrictLabel"  class="bg-white text-primary font-weight-bold labels">District</small>
+                      <input class="w-100 form-control inputs"  type="text"  name="District" id="District" required><br>
+                  </div>
+                  <div class="col-md-5 col-11 mt-5 " style="position:relative;">
+                      <small  id="StateLabel"  class="bg-white text-primary font-weight-bold labels">State</small>
+                      <select  class="w-100 form-control inputs border" name="State" id="State" required>
+                          <option selected disabled></option>
+                          <option class="form-control" value="Andaman and Nicobar">Andaman and Nicobar</option>
+                          <option class="form-control" value="Andhra Pradesh">Andhra Pradesh</option>
+                          <option class="form-control" value="Arunachal Pradesh">Arunachal Pradesh</option>
+                          <option class="form-control" value="Assam">Assam</option>
+                          <option class="form-control" value="Bihar">Bihar</option>
+                          <option class="form-control" value="Chhattisgarh">Chhattisgarh</option>
+                          <option class="form-control" value="Chandigarh">Chandigarh</option>
+                          <option class="form-control" value="Daman and Diu">Daman and Diu</option>
+                          <option class="form-control" value="Delhi">Delhi</option>
+                          <option class="form-control" value="Dadra & Nagar Haveli">Dadra & Nagar Haveli</option>
+                          <option class="form-control" value="Goa">Goa</option>
+                          <option class="form-control" value="Gujarat">Gujarat</option>
+                          <option class="form-control" value="Haryana">Haryana</option>
+                          <option class="form-control" value="Himachal Pradesh">Himachal Pradesh</option>
+                          <option class="form-control" value="Jharkhand">Jharkhand</option>
+                          <option class="form-control" value="Jammu & Kashmir">Jammu & Kashmir</option>
+                          <option class="form-control" value="Karnataka">Karnataka</option>
+                          <option class="form-control" value="Kerala">Kerala</option>
+                          <option class="form-control" value="Ladakh">Ladakh</option>
+                          <option class="form-control" value="Lakshadweep">Lakshadweep</option>
+                          <option class="form-control" value="Madhya Pradesh">Madhya Pradesh</option>
+                          <option class="form-control" value="Maharashtra">Maharashtra</option>
+                          <option class="form-control" value="Manipur">Manipur</option>
+                          <option class="form-control" value="Meghalaya">Meghalaya</option>
+                          <option class="form-control" value="Mizoram">Mizoram</option>
+                          <option class="form-control" value="Nagaland">Nagaland</option>
+                          <option class="form-control" value="Odisha">Odisha</option>
+                          <option class="form-control" value="Puducherry">Puducherry</option>
+                          <option class="form-control" value="Punjab">Punjab</option>
+                          <option class="form-control" value="Rajasthan">Rajasthan</option>
+                          <option class="form-control" value="Sikkim">Sikkim</option>
+                          <option class="form-control" value="Tamil Nadu">Tamil Nadu</option>
+                          <option class="form-control" value="Telangana">Telangana</option>
+                          <option class="form-control" value="Tripura">Tripura</option>
+                          <option class="form-control" value="Uttar Pradesh">Uttar Pradesh</option>
+                          <option class="form-control" value="Uttarakhand">Uttarakhand</option>
+                      </select>
+                      <br>
+                  </div>
+                  <div class="col-12 mt-5">
+                    <h6 style="text-decoration:underline;font-weight:bold;color:#785730;">Select Images (At least 2)</h6>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image1_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo1" id="shop_photo1" onchange="Image1_display(this)" hidden required>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image2_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo2" id="shop_photo2" onchange="Image2_display(this)" hidden required>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image3_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo3" id="shop_photo3" onchange="Image3_display(this)" hidden>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image4_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo4" id="shop_photo4" onchange="Image4_display(this)" hidden>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image5_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo5" id="shop_photo5" onchange="Image5_display(this)" hidden>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image6_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo6" id="shop_photo6" onchange="Image6_display(this)" hidden>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image7_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo7" id="shop_photo7" onchange="Image7_display(this)" hidden>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image8_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo8" id="shop_photo8" onchange="Image8_display(this)" hidden>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image9_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo9" id="shop_photo9" onchange="Image9_display(this)" hidden>
+                        </div>
+                        <div class="col-md-3 col-12 mt-2">
+                          <a><img src="{% static 'img/image_icon.png' %}" width="250" height="250" id="Image10_upload"></a>
+                          <input type="file" accept="image/*" name="shop_photo10" id="shop_photo10" onchange="Image10_display(this)" hidden>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-12" style="position:relative;margin-top:70px;">
+                      <button style="height:40px;color:white;border-radius:10px;" class="form-control bg-primary w-100">ADD MARKET</button>
+                  </div>
+            </div>
+            </form>
+        </div>
+        <!-- content-wrapper ends -->
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  </div>
+  <!-- Footer End -->
+    <div class="container-fluid " style="margin-top:10px;background-color:#162691;">
+      <div class="row pt-4 pb-5">
+        <div class="col-md-3 col-12">
+            <!-- Logo -->
+              <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+            <!-- Logo -->
+
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+            <!-- Social Sites -->
+              <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+            <!-- Social Sites -->
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">About</h5>
+          <h6 style="color:#c0c3cf">Contact Us</h6>
+          <h6 style="color:#c0c3cf">Careers</h6>
+          <h6 style="color:#c0c3cf">About Us</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Help</h5>
+          <h6 style="color:#c0c3cf">Payments</h6>
+          <h6 style="color:#c0c3cf">Shipping</h6>
+          <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+          <h6 style="color:#c0c3cf">FAQ</h6>
+          <h6 style="color:#c0c3cf">Report Infringement</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Policy</h5>
+          <h6 style="color:#c0c3cf">Return Policy</h6>
+          <h6 style="color:#c0c3cf">Terms of Use</h6>
+          <h6 style="color:#c0c3cf">Security</h6>
+          <h6 style="color:#c0c3cf">Privacy</h6>
+          <h6 style="color:#c0c3cf">Terms of Service</h6>
+        </div>
+      </div>
+    </div>
+  <!-- Footer End -->
+  <!-- base:js -->
+  <script src="{% static 'Dashboard/vendors/js/vendor.bundle.base.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static 'Dashboard/vendors/chart.js/Chart.min.js' %}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static 'Dashboard/js/off-canvas.js' %}"></script>
+  <script src="{% static 'Dashboard/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'Dashboard/js/template.js' %}"></script>
+  <script src="{% static 'Dashboard/js/settings.js' %}"></script>
+  <script src="{% static 'Dashboard/js/todolist.js' %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static 'Dashboard/js/dashboard.js' %}"></script>
+  <!-- End custom js for this page-->
+
+
+<script>
+
+// For Logo of unitedmart
+ $('#ToggleLogo').on('click',function(){
+    $('#Logo').toggle();
+   })
+ $('#Image1_upload').on('click',function(){
+    $('#shop_photo1').click();
+ })
+  $('#Image2_upload').on('click',function(){
+    $('#shop_photo2').click();
+ })
+  $('#Image3_upload').on('click',function(){
+    $('#shop_photo3').click();
+ })
+  $('#Image4_upload').on('click',function(){
+    $('#shop_photo4').click();
+ })
+  $('#Image5_upload').on('click',function(){
+    $('#shop_photo5').click();
+ })
+  $('#Image6_upload').on('click',function(){
+    $('#shop_photo6').click();
+ })
+  $('#Image7_upload').on('click',function(){
+    $('#shop_photo7').click();
+ })
+  $('#Image8_upload').on('click',function(){
+    $('#shop_photo8').click();
+ })
+  $('#Image9_upload').on('click',function(){
+    $('#shop_photo9').click();
+ })
+  $('#Image10_upload').on('click',function(){
+    $('#shop_photo10').click();
+ })
+// Display Selected Image
+function Image1_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image1_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image2_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image2_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image3_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image3_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image4_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image4_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image5_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image5_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image6_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image6_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image7_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image7_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image8_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image8_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image9_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image9_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+function Image10_display(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Image10_upload').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+      }
+</script>
+</body>
+</html>

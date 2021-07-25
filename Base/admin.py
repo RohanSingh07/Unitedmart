@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product,Order_Item,Order,Delivery_Address,Wishlist,saved_order,rating_and_reviews,rating_images
+from .models import Product,Order_Item,Order,Delivery_Address,Wishlist,saved_order,rating_and_reviews,rating_images,MyOrders
 
 # To display the field on the top of the model in django admin
 class OrderAdmin(admin.ModelAdmin):
@@ -31,4 +31,5 @@ admin.site.register(Wishlist)
 admin.site.register(saved_order)
 admin.site.register(rating_and_reviews)
 admin.site.register(rating_images)
+admin.site.register(MyOrders)
 

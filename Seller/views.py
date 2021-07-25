@@ -2,26 +2,27 @@
 # Pending
 # Automatically reduce the number or quantity of items when they are purchased and show out of stock when they are finished
 
-from django.shortcuts import render, get_object_or_404 ,redirect,reverse
+from django.shortcuts import render, get_object_or_404 ,redirect,reverse,HttpResponse
 from django.views.generic import ListView,DetailView, View
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.template.defaultfilters import slugify
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import SellerProfile
+from .models import SellerProfile,Market,Mall
 from Base.models import Product,Order,Order_Item
 from .forms import AddProduct
-# Create your views here.
+import datetime,calendar
+from Base.models import Order_Item
 
 # creating random and unique slug for items upload
 import random,string
 # this is for explore slugs
 def create_random_unique_slug():
-    slug = 'UNIM'+str(random.randint(0,9999999999))
+    slug = 'UNIM'+str(random.randint(0,999999))
     return slug
 
 def create_random_unique_product_slug(name):
-    slug = name+'-' + str(random.randint(0, 99999999999999999999999))
+    slug = "_".join(name.split())+'_' + str(random.randint(0, 99999))
     return slug
 # basic custom validation to check empty
 def is_valid_form(values):
@@ -39,43 +40,23 @@ def Seller_Home(request):
             return redirect("Seller:dashboard")
     return render(request,'Seller/seller_home.html', {})
 
-
 # View for seller dashboard
-
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from calendar import monthrange
-# Array for the year dates by month
-import pandas as pd
-import datetime,calendar
-from datetime import date
-import seaborn as sns
-
-
-number_of_days =date(2020,12,31)- date(2020,1,1)
-start_date = date(2020,1,1)
-date_array = [(start_date + datetime.timedelta(days = day)).isoformat() for day in range(number_of_days.days)]
-
-from Base.models import Order_Item
 @login_required
 def ProfileView(request):
         try:
             profile = SellerProfile.objects.get(user = request.user)
             Seller = True
         except SellerProfile.DoesNotExist:
-            messages.error(request,"This is not a Seller Account !")
+            messages.error(request,"Your account is not a Seller Account !")
             return redirect("Base:Homepage")
-        products = Product.objects.filter(user = request.user)
+        products = profile.products.all()
         if products.count() == 0:
             Noproduct = True
         else:
             Noproduct=False
         # My Orders
-        PreOrders = Order_Item.objects.filter(items__UID=profile)
-        Orders = PreOrders.filter(ordered=True, delivered=False)
+        Orders = profile.My_orders.all()
         day = datetime.date.today()
-
         content = {
             'profile':profile,
             'products':products,
@@ -91,12 +72,48 @@ def ProfileView(request):
 @login_required
 def profile_edit(request):
     profile = SellerProfile.objects.get(user=request.user)
+    Orders = profile.My_orders.all()
+    day = datetime.date.today()
+    products = profile.products.all()
     if request.method == 'GET':
         return render(request, 'Seller/seller_profile_edit.html', {
             'profile': profile,
+            'products': products,
+            'today': day,
+            'orders': Orders,
+
         })
     else:
-        name_of_owner = request.POST.get('name_of_owner')
+        if request.POST['name_of_owner']:
+            name_of_owner = request.POST['name_of_owner']
+        if request.FILES.get('photo_of_owner', False):
+            photo_of_owner = request.FILES['photo_of_owner']
+            profile.photo_of_owner = photo_of_owner
+        if request.POST['alternate_number']:
+            alternate_number = request.POST['alternate_number']
+            profile.alternate_number = alternate_number
+        if request.POST['name']:
+            name = request.POST['name']
+            profile.name = name
+        if request.POST['address']:
+            address = request.POST['address']
+            profile.address = address
+        if request.FILES.get('shop_photo1', False):
+            shop_photo1 = request.FILES['shop_photo1']
+            profile.shop_photo1 = shop_photo1
+        if request.FILES.get('shop_photo2', False):
+            shop_photo2 = request.FILES['shop_photo2']
+            profile.shop_photo2 = shop_photo2
+        if request.FILES.get('shop_photo3', False):
+            shop_photo3 = request.FILES['shop_photo3']
+            profile.shop_photo3 = shop_photo3
+        if request.FILES.get('shop_photo4', False):
+            shop_photo4 = request.FILES['shop_photo4']
+            profile.shop_photo4 = shop_photo4
+        if request.FILES.get('shop_photo5', False):
+            shop_photo5 = request.FILES['shop_photo5']
+            profile.shop_photo5 = shop_photo5
+
         profile.name_of_owner = name_of_owner
         profile.save()
         return redirect('Seller:dashboard')
@@ -104,84 +121,74 @@ def profile_edit(request):
 
 @login_required
 def AddProductView(request):
-    if request.method=='GET':
-        profile = SellerProfile.objects.get(user = request.user)
-        # if profile.bank_account_number:
         form = AddProduct()
+        try:
+            profile = SellerProfile.objects.get(user=request.user)
+            Seller = True
+        except SellerProfile.DoesNotExist:
+            messages.error(request, "Your account is not a Seller Account !")
+            return redirect("Base:Homepage")
+        products = profile.products.all()
+        if products.count() == 0:
+            Noproduct = True
+        else:
+            Noproduct = False
+        day = datetime.date.today()
+        # My Orders
+        Orders = profile.My_orders.all()
         content = {
             'profile':profile,
-            'form':form
+            'form':form,
+            'products':products,
+            'Seller':Seller,
+            'orders':Orders,
+            'today':day,
+            'Noproduct':Noproduct,
         }
         return render(request , 'Seller/Add-product.html',content)
-        # else:
-        #     return redirect('Seller:bank-details')
-    else:
-        profile = SellerProfile.objects.get(user=request.user)
-        form = AddProduct(request.POST or None,request.FILES) # we have to add request.FILES to store the files uploaded
-        if form.is_valid():
-            Name = form.cleaned_data.get('Name')
-            price = form.cleaned_data.get('price')
-            discount_price = form.cleaned_data.get('discount_price')
-            category = form.cleaned_data.get('category')
-            Brand = form.cleaned_data.get('Brand')
-            slug = create_random_unique_slug(Name)                  # automatically generating slugs
-            description = form.cleaned_data.get('description')
-            image = form.cleaned_data.get('image')                  # To associate an image with the product
-            image1 = form.cleaned_data.get('image1')
-            image2 = form.cleaned_data.get('image2')
-            image3 = form.cleaned_data.get('image3')
-            image4 = form.cleaned_data.get('image4')
-            image5 = form.cleaned_data.get('image5')
-            image6 = form.cleaned_data.get('image6')
-            image7 = form.cleaned_data.get('image7')
-            image8 = form.cleaned_data.get('image8')
-            image9 = form.cleaned_data.get('image9')
-            video = form.cleaned_data.get('video')
-            if is_valid_form([Name,price,discount_price,category,Brand,slug,description,image]):
-                new_product = Product.objects.create(
-                    Name = Name,
-                    price = price,
-                    discount_price=discount_price,
-                    category = category,
-                    Brand = Brand,
-                    slug = slug,
-                    description = description,
-                    image = image,
-                    image1=image1,
-                    image2=image2,
-                    image3=image3,
-                    image4=image4,
-                    image5=image5,
-                    image6=image6,
-                    image7=image7,
-                    image8=image8,
-                    image9=image9,
-                    video = video,
-                    user=request.user,
-                    UID = profile,
-                )
 
-                new_product.save()
-                profile.products.add(new_product)
-            profile.save()
-            return redirect("Seller:dashboard")
-        else:
-            messages.error(request, "Form is not valid ")
-            return redirect('Seller:dashboard')
 @login_required
 def AddProduct2(request):
-    if request.method=='GET':
-
+    try:
         profile = SellerProfile.objects.get(user=request.user)
-        return render(request,'Seller/Add-product-2.html',{
-            'profile': profile
-        })
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    products = profile.products.all()
+    if products.count() == 0:
+        Noproduct = True
     else:
-        pass
+        Noproduct = False
+    day = datetime.date.today()
+    # My Orders
+    Orders = profile.My_orders.all()
+    return render(request,'Seller/Add-product-2.html',{
+        'profile': profile,
+        'products': products,
+        'Seller': Seller,
+        'orders': Orders,
+        'today': day,
+        'Noproduct': Noproduct,
+    })
 
 @login_required
 def AddProduct3(request):
-    profile = SellerProfile.objects.get(user=request.user)
+    try:
+        profile = SellerProfile.objects.get(user=request.user)
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    products = profile.products.all()
+    if products.count() == 0:
+        Noproduct = True
+    else:
+        Noproduct = False
+    day = datetime.date.today()
+    # My Orders
+    Orders = profile.My_orders.all()
+
     if request.method=='GET':
         quantity = request.GET.get('Quantity')
         main_cat = request.GET.get('main_cat')
@@ -192,172 +199,36 @@ def AddProduct3(request):
 
         if quantity == '1':
             Single = True
-        # Check category and give form accordingly
-        Tshirt = False
-        Mobiles = False
-        Tablets = False
-        Mobile_Accessories = False
 
-        # Mobile Accessories
-        MobileCameraLensProtectors=False
-        Mobile_Accessories_CasesAndCover = False
-        Mobile_PowerBanks = False
-        Mobile_Smart_Keys = False
-        Mobile_Holders = False
-        Mobile_Body_Panels = False
-        Mobile_Pouches = False
-        Mobile_Spare_Parts = False
-        Mobile_Cables = False
-        Mobile_Enhancements = False
-        Mobile_Charging_Pads = False
-        Mobile_Styling_Maintenance = False
-        Mobile_Selfie_Sticks = False
-        Mobile_SIM_Adapters = False
-        Mobile_Headphone_Amplifiers = False
-        Mobile_Headphone_Splitters = False
-        Mobile_Mobile_Batteries = False
-        Mobile_Screen_Gaurds = False
-        Mobile_Displays = False
-        Mobile_Phone_Lens = False
-        Mobile_Charging_Pad_Receivers = False
-        Mobile_Headphone_Cushions_Earbuds = False
-        Mobile_Chargers = False
-        Mobile_Anti_Dust_Plugs = False
-        Tablet_Accessories = False
-
-
-        if sub_sub_cat == 'Mobiles':
-            Mobiles = True
-        elif sub_sub_cat == 'Tablets':
-            Tablets = True
-        elif sub_sub_cat == 'Mobile Accessories':
-            if sub_sub_cat == "Mobile Accessories" and sub_sub_sub_cat == "":
-                Mobile_Accessories = True
-            elif sub_sub_sub_cat == "Mobile Camera Lens Protectors":
-                MobileCameraLensProtectors = True
-            elif sub_sub_sub_cat == "Cases & Covers":
-                Mobile_Accessories_CasesAndCover = True
-            elif sub_sub_sub_cat == "Power Banks":
-                Mobile_PowerBanks = True
-            elif sub_sub_sub_cat == "Smart Keys":
-                Mobile_Smart_Keys = True
-            elif sub_sub_sub_cat == "Mobile Holders":
-                Mobile_Holders = True
-            elif sub_sub_sub_cat == "Mobile Body Panels":
-                Mobile_Body_Panels = True
-            elif sub_sub_sub_cat == "Mobile Batteries":
-                Mobile_Mobile_Batteries = True
-            elif sub_sub_sub_cat == "Mobile Pouches":
-                Mobile_Pouches = True
-            elif sub_sub_sub_cat == "Mobile Spare Parts":
-                Mobile_Spare_Parts = True
-            elif sub_sub_sub_cat == "Mobile Cables":
-                Mobile_Cables = True
-            elif sub_sub_sub_cat == "Mobile Enhancements":
-                Mobile_Enhancements = True
-            elif sub_sub_sub_cat == "Charging Pads":
-                Mobile_Charging_Pads = True
-            elif sub_sub_sub_cat == "Styling & Maintenance":
-                Mobile_Styling_Maintenance = True
-            elif sub_sub_sub_cat == "Selfie Sticks":
-                Mobile_Selfie_Sticks = True
-            elif sub_sub_sub_cat == "SIM Adapters":
-                Mobile_SIM_Adapters = True
-            elif sub_sub_sub_cat == "Headphone Amplifiers":
-                Mobile_Headphone_Amplifiers = True
-            elif sub_sub_sub_cat == "Headphone Splitters":
-                Mobile_Headphone_Splitters = True
-            elif sub_sub_sub_cat == "Screen Gaurds":
-                Mobile_Screen_Gaurds = True
-            elif sub_sub_sub_cat == "Mobile Displays":
-                Mobile_Displays = True
-            elif sub_sub_sub_cat == "Mobile Phone Lens":
-                Mobile_Phone_Lens = True
-            elif sub_sub_sub_cat == "Charging Pad Receivers":
-                Mobile_Charging_Pad_Receivers = True
-            elif sub_sub_sub_cat == "Mobile Chargers":
-                Mobile_Chargers = True
-            elif sub_sub_sub_cat == "Headphone Cushions & Earbuds":
-                Mobile_Headphone_Cushions_Earbuds = True
-            elif sub_sub_sub_cat == "Anti Dust Plugs":
-                Mobile_Anti_Dust_Plugs = True
-
-        elif sub_sub_cat == 'Tablet Accessories':
-            Tablet_Accessories = True
-        elif sub_sub_cat == 'T-Shirt':
-            Tshirt = True
         # Render for single product uploads
         if Single:
             return render(request,'Seller/Add-product-3.html',{
+                'products': products,
+                'Seller': Seller,
+                'orders': Orders,
+                'today': day,
+                'Noproduct': Noproduct,
+
                 'profile': profile,
                 'Quantity':quantity,  # Quantity of the products
                 'single':Single,     # For single listing
-                'Mobiles':Mobiles,
-                'Tablets':Tablets,
-                'Tshirt':Tshirt,
-                'Mobile_Accessories':Mobile_Accessories,
-
-                'MobileCameraLensProtectors':MobileCameraLensProtectors,'Mobile_Accessories_CasesAndCover':Mobile_Accessories_CasesAndCover,'Mobile_PowerBanks':Mobile_PowerBanks,
-
-                'Mobile_Smart_Keys':Mobile_Smart_Keys,'Mobile_Holders':Mobile_Holders,'Mobile_Body_Panels':Mobile_Body_Panels,
-
-                'Mobile_Pouches':Mobile_Pouches,'Mobile_Spare_Parts':Mobile_Spare_Parts,
-
-                'Mobile_Cables':Mobile_Cables,'Mobile_Enhancements':Mobile_Enhancements,
-
-                'Mobile_Charging_Pads':Mobile_Charging_Pads,'Mobile_Styling_Maintenance':Mobile_Styling_Maintenance,'Mobile_Selfie_Sticks':Mobile_Selfie_Sticks,
-
-                'Mobile_SIM_Adapters':Mobile_SIM_Adapters,'Mobile_Headphone_Amplifiers':Mobile_Headphone_Amplifiers,
-
-                'Mobile_Headphone_Splitters':Mobile_Headphone_Splitters,'Mobile_Screen_Gaurds':Mobile_Screen_Gaurds,
-
-                'Mobile_Displays':Mobile_Displays,'Mobile_Phone_Lens':Mobile_Phone_Lens,
-
-                'Mobile_Charging_Pad_Receivers':Mobile_Charging_Pad_Receivers,
-
-                'Mobile_Headphone_Cushions_Earbuds':Mobile_Headphone_Cushions_Earbuds,'Mobile_Chargers':Mobile_Chargers,
-
-                'Mobile_Mobile_Batteries':Mobile_Mobile_Batteries,'Mobile_Anti_Dust_Plugs':Mobile_Anti_Dust_Plugs,
-
-                'Tablet_Accessories':Tablet_Accessories,
 
             })
         else:
-            return render(request,'Seller/Add-multi-product-3.html',{'profile': profile,
+            return render(request,'Seller/Add-multi-product-3.html',{
+                'profile': profile,
+                 'products': products,
+                 'Seller': Seller,
+                 'orders': Orders,
+                 'today': day,
+                 'Noproduct': Noproduct,
                 'Quantity':quantity,  # Quantity of the products
                 'Listing_quantity':[i for i in range(1,int(quantity)+1)],# For giving number of input rows for product
                 'single':Single,     # For single listing
-                'Mobiles':Mobiles,
-                'Tablets':Tablets,
-                'Tshirt':Tshirt,
-                'Mobile_Accessories':Mobile_Accessories,
-
-                'MobileCameraLensProtectors':MobileCameraLensProtectors,'Mobile_Accessories_CasesAndCover':Mobile_Accessories_CasesAndCover,'Mobile_PowerBanks':Mobile_PowerBanks,
-
-                'Mobile_Smart_Keys':Mobile_Smart_Keys,'Mobile_Holders':Mobile_Holders,'Mobile_Body_Panels':Mobile_Body_Panels,
-
-                'Mobile_Pouches':Mobile_Pouches,'Mobile_Spare_Parts':Mobile_Spare_Parts,
-
-                'Mobile_Cables':Mobile_Cables,'Mobile_Enhancements':Mobile_Enhancements,
-
-                'Mobile_Charging_Pads':Mobile_Charging_Pads,'Mobile_Styling_Maintenance':Mobile_Styling_Maintenance,'Mobile_Selfie_Sticks':Mobile_Selfie_Sticks,
-
-                'Mobile_SIM_Adapters':Mobile_SIM_Adapters,'Mobile_Headphone_Amplifiers':Mobile_Headphone_Amplifiers,
-
-                'Mobile_Headphone_Splitters':Mobile_Headphone_Splitters,'Mobile_Screen_Gaurds':Mobile_Screen_Gaurds,
-
-                'Mobile_Displays':Mobile_Displays,'Mobile_Phone_Lens':Mobile_Phone_Lens,
-
-                'Mobile_Charging_Pad_Receivers':Mobile_Charging_Pad_Receivers,
-
-                'Mobile_Headphone_Cushions_Earbuds':Mobile_Headphone_Cushions_Earbuds,'Mobile_Chargers':Mobile_Chargers,
-
-                'Mobile_Mobile_Batteries':Mobile_Mobile_Batteries,'Mobile_Anti_Dust_Plugs':Mobile_Anti_Dust_Plugs,
-
-                'Tablet_Accessories':Tablet_Accessories})
+               })
 
 
-    # Post requests
+    # Post request
     else:
         Quantity = request.POST.get('Quantity')
         main_cat = request.POST.get('main_cat')
@@ -456,6 +327,12 @@ def AddProduct3(request):
                 number_of_pieces = request.POST.get('number_of_pieces_'+str_i)
                 product_brand = request.POST.get('product_brand_'+str_i)
                 Product_images = request.FILES.getlist('ProductImage_'+str_i+'[]')
+                Product_weight = request.POST.get('Package_Weight_'+str_i)
+                Product_length = request.POST.get('Package_Length_'+str_i)
+                Product_breadth = request.POST.get('Package_Breath_'+str_i)
+                Product_height = request.POST.get('Package_Height_'+str_i)
+                Product_warranty = request.POST.get('Product_warranty_'+str_i)
+                Product_warranty_summary = request.POST.get('Product_warranty_summary_value_'+str_i)
                 Product_images_array = []
                 for imgs in Product_images:
                     Product_images_array.append(imgs)
@@ -482,7 +359,14 @@ def AddProduct3(request):
                     sub_sub_category=sub_sub_cat,
                     sub_sub_sub_category=sub_sub_sub_cat,
                     Stock=Stock,
-                    video= Video_link
+                    video= Video_link,
+                    weight_of_product = Product_weight,
+                    product_length = Product_length,
+                    product_breadth = Product_breadth,
+                    product_height = Product_height,
+                    Product_warranty = Product_warranty,
+                    Warranty_summary = Product_warranty_summary,
+
                 )
                 try:
                     product.image = Product_images_array[0]
@@ -522,11 +406,26 @@ def AddProduct3(request):
 @login_required
 def Delete_Product(request):
     if request.method =='GET':
-        profile = SellerProfile.objects.get(user=request.user)
-        products = Product.objects.filter(user = request.user)
+        try:
+            profile = SellerProfile.objects.get(user=request.user)
+            Seller = True
+        except SellerProfile.DoesNotExist:
+            messages.error(request, "Your account is not a Seller Account !")
+            return redirect("Base:Homepage")
+        products = profile.products.all()
+        Orders = profile.My_orders.all()
+        if products.count() == 0:
+            Noproduct = True
+        else:
+            Noproduct = False
+        day = datetime.date.today()
         return render(request,'Seller/Delete-product.html',{
             'MyProducts':products,
             'profile':profile,
+            'Seller': Seller,
+            'orders': Orders,
+            'today': day,
+            'Noproduct': Noproduct,
         })
     else:
         delete_product = request.POST.getlist('DeleteProduct[]')
@@ -537,49 +436,93 @@ def Delete_Product(request):
 
 @login_required
 def Order_history(request):
-    profile = SellerProfile.objects.get(user=request.user)
-    PreOrders = Order_Item.objects.filter(items__UID = profile)
-    Orders=[]
-    for items in PreOrders:
-        if items.shipped ==True and items.delivered == True:
-            Orders.append(items)
+    try:
+        profile = SellerProfile.objects.get(user=request.user)
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    products = profile.products.all()
+    Orders = profile.Order_history.all().order_by('date_of_order')
+    if products.count() == 0:
+        Noproduct = True
+    else:
+        Noproduct = False
+    day = datetime.date.today()
     return render(request,'Seller/Order-history.html',{
         'profile':profile,
-        'Orders':Orders,
+        'Orders':profile.Order_history.all(),
+        'products': products,
+        'Seller': Seller,
+        'orders': Orders,
+        'today': day,
+        'Noproduct': Noproduct,
     })
 
 # View for orders
 @login_required
 def Ordered_products(request):
-    profile = SellerProfile.objects.get(user=request.user)
-    PreOrders = Order_Item.objects.filter(items__UID = profile)
-    Orders = PreOrders.filter(ordered=True,delivered=False)
-
+    try:
+        profile = SellerProfile.objects.get(user=request.user)
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    day = datetime.date.today()
+    # My Orders
+    Orders = profile.My_orders.all()
+    products = profile.products.all()
+    if products.count() == 0:
+        Noproduct = True
+    else:
+        Noproduct = False
     return render(request,'Seller/My-orders.html',{
         'profile':profile,
-        'Orders':Orders,
+        'orders':Orders,
+        'today':day,
+        'products':products,
+        'Noproduct':Noproduct,
+        'Seller':Seller
+
     })
 
-# Function to set the Order_item dispatched == True || Some more stuff to be done so that the user can prepare or acknowledge the order and order gets removed from My Orders
+# Function to set the Order_item dispatched == True using ajax
 @login_required
 def Dispatch_item(request,id):
+    profile = SellerProfile.objects.get(user=request.user)
     order_item = Order_Item.objects.get(unique_id=id)
     order_item.shipped = True
+    profile.My_orders.remove(order_item)
     order_item.save()
-    return redirect('Seller:orders')
+    return HttpResponse('Item Dispatched')
 
 @login_required
 def refund_requests(request):
-    profile = SellerProfile.objects.get(user=request.user)
-    PreOrders = Order_Item.objects.filter(items__UID=profile)
-    requested_orders = []
-    for items in PreOrders:
-        if items.refund_requested==True and items.refund_granted==False:
-            requested_orders.append(items)
+    try:
+        profile = SellerProfile.objects.get(user=request.user)
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    day = datetime.date.today()
+    # My Orders
+    Orders = profile.Order_history.all()
+    products = profile.products.all()
+    if products.count() == 0:
+        Noproduct = True
+    else:
+        Noproduct = False
+    return render(request, 'Seller/refunds-requested.html', {
+        'profile': profile,
+        'orders': Orders,
+        'today': day,
+        'products': products,
+        'Noproduct': Noproduct,
+        'Seller': Seller
 
-    return render(request,'Seller/refunds-requested.html',{
-        'requested_orders':requested_orders,
     })
+
+
 
 @login_required
 def returns(request):
@@ -597,12 +540,230 @@ def returns(request):
 # My products
 @login_required
 def My_products(request):
-    profile = SellerProfile.objects.get(user=request.user)
-    products = Product.objects.filter(user=request.user)
+    try:
+        profile = SellerProfile.objects.get(user=request.user)
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    products = profile.products.all()
+    if products.count() == 0:
+        Noproduct = True
+    else:
+        Noproduct = False
+    day = datetime.date.today()
+    # My Orders
+    Orders = profile.My_orders.all()
     return render(request,'Seller/seller_my_products.html',{
         'products':products,
+        'profile':profile,
+        'today':day,
+        'orders':Orders,
+        'Seller':Seller,
+        'Noproduct':Noproduct
     })
 
+# My Mall
+@login_required
+def My_Mall(request):
+    try:
+        profile = SellerProfile.objects.get(user=request.user)
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    products = profile.products.all()
+    if products.count() == 0:
+        Noproduct = True
+    else:
+        Noproduct = False
+    # My Orders
+    Orders = profile.My_orders.all()
+    day = datetime.date.today()
+    # All Malls
+    Malls = Mall.objects.all()
+    Markets = Market.objects.all()
+    content = {
+        'profile': profile,
+        'products': products,
+        'Seller': Seller,
+        'Noproduct': Noproduct,
+        'today': day,
+        'orders': Orders,
+        'Malls':Malls,
+        'Markets':Markets
+    }
+    return render(request,'Seller/My_Mall.html',content)
 
-def Bank_details(request):
-    return render(request,'Seller/seller_bank_details.html',{})
+
+# My Mall
+@login_required
+def My_Market(request):
+    try:
+        profile = SellerProfile.objects.get(user=request.user)
+        Seller = True
+    except SellerProfile.DoesNotExist:
+        messages.error(request, "Your account is not a Seller Account !")
+        return redirect("Base:Homepage")
+    products = profile.products.all()
+    if products.count() == 0:
+        Noproduct = True
+    else:
+        Noproduct = False
+    # My Orders
+    Orders = profile.My_orders.all()
+    day = datetime.date.today()
+    # All Malls
+    Malls = Mall.objects.all()
+    Markets = Market.objects.all()
+    content = {
+        'profile': profile,
+        'products': products,
+        'Seller': Seller,
+        'Noproduct': Noproduct,
+        'today': day,
+        'orders': Orders,
+        'Malls':Malls,
+        'Markets':Markets
+    }
+    return render(request,'Seller/My_Market.html',content)
+# To add New Market
+def Add_New_Market(request):
+    if request.method =='GET':
+        try:
+            profile = SellerProfile.objects.get(user=request.user)
+            Seller = True
+        except SellerProfile.DoesNotExist:
+            messages.error(request, "Your account is not a Seller Account !")
+            return redirect("Base:Homepage")
+        products = profile.products.all()
+        if products.count() == 0:
+            Noproduct = True
+        else:
+            Noproduct = False
+        # My Orders
+        Orders = profile.My_orders.all()
+        day = datetime.date.today()
+        return render(request,'Seller/Add_New_Market.html',{
+            'profile': profile,
+            'products': products,
+            'Seller': Seller,
+            'Noproduct': Noproduct,
+            'today': day,
+            'orders': Orders,
+        })
+        # For post request
+    else:
+        Name = request.POST['Name']
+        Area = request.POST['Area']
+        District = request.POST['District']
+        State = request.POST['State']
+        shop_photo1 = request.FILES['shop_photo1']
+        shop_photo2 = request.FILES['shop_photo2']
+        New_Market = Market(
+            name=Name,
+            Area=Area,
+            district=District,
+            state=State,
+            unique_id=str(random.randint(0, 999999))+"_".join(Name.split()),
+            shop_photo1=shop_photo1,
+            shop_photo2=shop_photo2
+        )
+        New_Market.save()
+        if request.FILES.get('shop_photo3', False):
+            shop_photo3 = request.FILES['shop_photo3']
+            New_Market.shop_photo3 = shop_photo3
+        if request.FILES.get('shop_photo4', False):
+            shop_photo4 = request.FILES['shop_photo4']
+            New_Market.shop_photo4 = shop_photo4
+        if request.FILES.get('shop_photo5', False):
+            shop_photo5 = request.FILES['shop_photo5']
+            New_Market.shop_photo5 = shop_photo5
+        if request.FILES.get('shop_photo6', False):
+            shop_photo6 = request.FILES['shop_photo6']
+            New_Market.shop_photo6 = shop_photo6
+        if request.FILES.get('shop_photo7', False):
+            shop_photo7 = request.FILES['shop_photo7']
+            New_Market.shop_photo7 = shop_photo7
+        if request.FILES.get('shop_photo8', False):
+            shop_photo8 = request.FILES['shop_photo8']
+            New_Market.shop_photo8 = shop_photo8
+        if request.FILES.get('shop_photo9', False):
+            shop_photo9 = request.FILES['shop_photo9']
+            New_Market.shop_photo9 = shop_photo9
+        if request.FILES.get('shop_photo10', False):
+            shop_photo10 = request.FILES['shop_photo10']
+            New_Market.shop_photo10 = shop_photo10
+        New_Market.save()
+        messages.success(request, 'Congratulation , Market has been added successfully :)')
+        return redirect('Seller:my-market')
+# To add New Mall
+def Add_New_Mall(request):
+    if request.method =='GET':
+        try:
+            profile = SellerProfile.objects.get(user=request.user)
+            Seller = True
+        except SellerProfile.DoesNotExist:
+            messages.error(request, "Your account is not a Seller Account !")
+            return redirect("Base:Homepage")
+        products = profile.products.all()
+        if products.count() == 0:
+            Noproduct = True
+        else:
+            Noproduct = False
+        # My Orders
+        Orders = profile.My_orders.all()
+        day = datetime.date.today()
+        return render(request,'Seller/Add_New_Mall.html',{
+            'profile': profile,
+            'products': products,
+            'Seller': Seller,
+            'Noproduct': Noproduct,
+            'today': day,
+            'orders': Orders,
+        })
+    # For post request
+    else:
+        Name = request.POST['Name']
+        Area = request.POST['Area']
+        District = request.POST['District']
+        State = request.POST['State']
+        shop_photo1 = request.FILES['shop_photo1']
+        shop_photo2 = request.FILES['shop_photo2']
+        New_Mall = Mall(
+            name = Name,
+            Area = Area,
+            district = District,
+            state = State,
+            unique_id = str(random.randint(0,999999))+"_".join(Name.split()),
+            shop_photo1 = shop_photo1,
+            shop_photo2 = shop_photo2
+        )
+        New_Mall.save()
+        if request.FILES.get('shop_photo3', False):
+            shop_photo3 = request.FILES['shop_photo3']
+            New_Mall.shop_photo3 = shop_photo3
+        if request.FILES.get('shop_photo4', False):
+            shop_photo4 = request.FILES['shop_photo4']
+            New_Mall.shop_photo4 = shop_photo4
+        if request.FILES.get('shop_photo5', False):
+            shop_photo5 = request.FILES['shop_photo5']
+            New_Mall.shop_photo5 = shop_photo5
+        if request.FILES.get('shop_photo6', False):
+            shop_photo6 = request.FILES['shop_photo6']
+            New_Mall.shop_photo6 = shop_photo6
+        if request.FILES.get('shop_photo7', False):
+            shop_photo7 = request.FILES['shop_photo7']
+            New_Mall.shop_photo7 = shop_photo7
+        if request.FILES.get('shop_photo8', False):
+            shop_photo8 = request.FILES['shop_photo8']
+            New_Mall.shop_photo8 = shop_photo8
+        if request.FILES.get('shop_photo9', False):
+            shop_photo9 = request.FILES['shop_photo9']
+            New_Mall.shop_photo9 = shop_photo9
+        if request.FILES.get('shop_photo10', False):
+            shop_photo10 = request.FILES['shop_photo10']
+            New_Mall.shop_photo10 = shop_photo10
+        New_Mall.save()
+        messages.success(request,'Congratulation , Mall has been added successfully :)')
+        return redirect('Seller:my-mall')

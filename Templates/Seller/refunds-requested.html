@@ -1,10 +1,235 @@
-{% extends 'base.html' %}
-{% block content %}
-    {% if requested_orders %}
-        {% for order_item in requested_orders %}
-            <div class="row border">
-					<!-- Image column -->
+{% load static %}
+<html>
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- base:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/typicons/typicons.css' %}">
+  <link rel="stylesheet" href="{% static 'Dashboard/vendors/css/vendor.bundle.base.css' %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'Dashboard/css/vertical-layout-light/style.css' %}">
+  <!-- endinject -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
 
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+
+
+</head>
+<body>
+    {% if messages %}
+
+        {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible  text-white d-flex justify-content-center font-weight-bold"  style="position:fixed;top:85px;z-index:3;width:100%;opacity:0.7;background-color:#a31818;">
+                  {{ message }}
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+        {% endfor %}
+
+    {% endif %}
+<i class="typcn typcn-delete-outline" id="bannerClose"></i>
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row " >
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100"><!-- URl -->
+          <a href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
+          <!-- URL -->
+          <!-- Small Screen logo and url-->
+          <a class="navbar-brand brand-logo-mini" href="{% url 'Base:Homepage' %}"><img src="{% static 'Dashboard/images/logo-mini.svg' %}" alt="logo"/></a>
+          <!-- Small Screen logo -->
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" id="ToggleLogo">
+            <span class="typcn typcn-th-menu"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav mr-lg-2">
+          <li class="nav-item nav-profile dropdown">
+            <!-- Image and Name of owner-->
+            <a class="nav-link" href="#" data-toggle="dropdown" id="profileDropdown">
+              {% if profile.photo_of_owner %}
+              <img src="{{profile.photo_of_owner.url}}" />
+              {% else %}
+              <img src="{% static 'img/user.png' %}" />
+              {% endif %}
+              <span class="nav-profile-name">{{profile.name_of_owner}}</span>
+            </a>
+            <!-- Image and Name of owner-->
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item d-flex align-items-center nav-date dropdown">
+            <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
+              <h6 class="date mb-0">Today : {{today}}</h6>
+            </a>
+          </li>
+          <li class="nav-item d-flex justify-content-center align-items-center dropdown">
+            <a class="nav-link " id="messageDropdown" href="#" data-toggle="dropdown">
+              <i class="typcn typcn-cog-outline mx-0"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <!-- Edit Profile -->
+              <a class="dropdown-item" href="{% url 'Seller:profile-edit' %}">
+                <i class="typcn typcn-cog-outline text-primary"></i>
+                Settings
+              </a>
+              <!-- Logout -->
+              <a class="dropdown-item" href="{% url 'users:logout' %}">
+                <i class="typcn typcn-eject text-primary"></i>
+                Logout
+              </a>
+              <!-- Logout End -->
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="typcn typcn-th-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="container-fluid page-body-wrapper">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <!-- Dashboard -->
+           <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:dashboard' %}">
+              <i class="typcn typcn-device-desktop menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <!-- Dashboard -->
+          <!-- My orders -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:orders' %}" >
+              <i class="typcn typcn-gift menu-icon"></i>
+              <span class="menu-title" >My Orders</span>
+              <!-- Display Number of orders-->
+              <div class="badge badge-danger">{{orders.count}}</div>
+            </a>
+          </li>
+          <!-- My orders -->
+          <!-- Public Profile -->
+          <li class="nav-item">
+          <a class="nav-link" href="{{profile.get_abs_url}}">
+              <i class="typcn typcn-world-outline menu-icon"></i>
+              <span class="menu-title">Public Profile</span>
+              <div class="badge badge-danger">web</div>
+            </a>
+          </li>
+          <!-- Public Profile -->
+          <!-- My products -->
+          <!-- Make changes to the quantity -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:my-products' %}" aria-expanded="false">
+              <i class="typcn typcn-shopping-cart menu-icon"></i>
+              <span class="menu-title">My Products</span>
+              <div class="badge badge-danger">{{products.count}}</div>
+            </a>
+          </li>
+          <!-- My products -->
+          <!-- Add products -->
+          <!-- Only enter when Adhaar and bank details has been provided -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:add-product' %}"  aria-expanded="false" aria-controls="ui-basic">
+              <i class="typcn typcn-plus-outline menu-icon"></i>
+              <span class="menu-title">Add Products</span>
+            </a>
+          </li>
+          <!-- Add products -->
+          <!-- Delete products -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:delete-product' %}" aria-expanded="false" aria-controls="form-elements">
+              <i class="typcn typcn-trash menu-icon"></i>
+              <span class="menu-title">Remove Products</span>
+            </a>
+          </li>
+          <!-- Delete products -->
+          <!-- Order History -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:order-history' %}" aria-expanded="false" aria-controls="tables">
+              <i class="typcn typcn-stopwatch menu-icon"></i>
+              <span class="menu-title">Order History</span>
+            </a>
+          </li>
+          <!-- Order History -->
+          <!-- Refund Requests -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:refund-requests' %}" aria-expanded="false" aria-controls="icons">
+              <i class="typcn typcn-arrow-sync-outline menu-icon"></i>
+              <span class="menu-title">Refund Requests</span>
+              <div class="badge badge-danger">0</div>
+            </a>
+          </li>
+          <!-- Refund Requests -->
+          <!-- Returns -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:returns' %}" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-arrow-sync menu-icon"></i>
+              <span class="menu-title">Returns</span>
+            </a>
+          </li>
+          <!-- Returns -->
+          <!-- Mall -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:my-mall' %}" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/mall1.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Mall</span>
+            </a>
+          </li>
+          <!-- Mall -->
+          <!-- Market -->
+          <li class="nav-item">
+            <a class="nav-link" href="" aria-expanded="false" aria-controls="auth">
+              <img src="{% static 'img/market.jpg'%}" height="40" width="40">
+              <span class="menu-title">My Market</span>
+            </a>
+          </li>
+          <!-- Market -->
+          <!-- Bank Details -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'Seller:bank-details' %}" aria-expanded="false" aria-controls="auth">
+              <i class="fas fa-university menu-icon"></i>
+              <span class="menu-title">Bank Details</span>
+              {% if not profile.bank_account_number %}
+              <i class="fas fa-exclamation menu-icon text-danger pl-2"></i>
+              {% endif %}
+            </a>
+          </li>
+          <!-- Bank Details End-->
+           <!-- Settings -->
+          <li class="nav-item">
+            <a class="nav-link"  href="{% url 'Seller:profile-edit' %}" aria-expanded="false" aria-controls="auth">
+              <i class="typcn typcn-cog-outline menu-icon"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+          <!-- Settings End-->
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">
+                <h5 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">Refund Requests</h5>
+          </div>
+          <hr>
+          {% for order_item in orders %}
+          <div class="row mt-3" id="OrderItem{{forloop.counter}}">
+            <!-- Image column -->
 					<div class="col-3 p-4 ">
 						<!-- Image of the product -->
 						<div class="row  d-flex justify-content-center">
@@ -16,55 +241,134 @@
 						<!-- + - and quantity -->
 						<div class="row pt-2 pb-2 d-flex justify-content-start">
 							<div class="col-12 d-flex justify-content-center align-items-center">
-
-								<b class="pl-3 pr-3  border border-dark">{{order_item.quantity}}</b>
-
+								<b id="ItemCount{{forloop.counter}}" class="pl-3 pr-3  border border-dark">{{order_item.quantity}}</b>
 							</div>
 						</div>
 						<!-- + - and quantity -->
 					</div>
-
-					<!-- Image column -->
-
-					<!-- Product details column -->
+          <!-- Image column -->
+           <!-- Product details column -->
 					<div class="col pl-3 pt-4 pb-4">
 						<div class="row ">
 							<a href="{{order_item.items.get_abs_url}}">
 								<h6 class="itemName">{{order_item.items.Name}}</h6>
 							</a>
 						</div>
-						<div class="row pt-1 pb-1">
-							<small class="text-muted">Seller:{{order_item.items.Brand}}</small>
-						</div>
-
-						{% if order_item.items.discount_price %}
-
-					    	<div class="row">
-						    		<small class="text-success">Special Price</small>
-						    </div>
-						    <div class="row d-flex align-items-center">
-						    		<h4 class="font-weight-normal">₹{{order_item.get_total_discount_item_price}}</h4> <h6 style="text-decoration:line-through;"><span class="discount text-muted pl-2">₹{{order_item.get_total_item_price}}</span> </h6>
-						    </div>
-
-					    {% else %}
-							<div class="row d-flex align-items-center">
-
-					    			<h4 class="font-weight-normal">₹{{order_item.get_total_item_price}} </h4>
-					    	</div>
-				    	{% endif %}
-
+                        <div class="row">
+                                <small class="text-success">Total Price</small>
+                        </div>
+                        <span hidden id="OriginalPrice{{forloop.counter}}">{{order_item.items.discount_price}}</span>
+                        <span hidden id="OriginalMPrice{{forloop.counter}}">{{order_item.items.price}}</span>
+                        <div class="row d-flex align-items-center">
+                            <h6 class="font-weight-bold" >₹<span id="Price{{forloop.counter}}">{{order_item.get_total_discount_item_price}}</span></h6> <h6 class="discount text-muted pl-2" style="text-decoration:line-through;">₹<span  id="OPrice{{forloop.counter}}">{{order_item.get_total_item_price}}</span> </h6>
+                        </div>
+                        <div class="row">
+                                <small class="text-success" style="white-space:pre;">Ordered By :- </small>
+                                <small style="white-space:pre;">{{order_item.user.username}} [{{order_item.order_to.Address.mobile_number}}]</small>
+                        </div>
+                       <div class="row">
+                                <small class="text-success" style="white-space:pre;">Address :- </small>
+                                <small>{{order_item.order_to.Address.address}},{{order_item.order_to.Address.locality}},{{order_item.order_to.Address.district}},{{order_item.order_to.Address.zip_code}}</small>
+                        </div>
+                        <div class="row mt-3">
+                            <button class="btn btn-success ml-0" style="white-space:pre;height:40px;" id="Dispatch{{forloop.counter}}"><i class="fas fa-check"></i> Grant </button>
+                        </div>
 					</div>
-					<!-- Product details column -->
+          <!-- Product details column -->
+          </div>
+          <hr id="{{forloop.counter}}">
+          {% endfor %}
+        </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+  <!-- Footer End -->
+    <div class="container-fluid " style="margin-top:10px;background-color:#162691;">
+      <div class="row pt-4 pb-5">
+        <div class="col-md-3 col-12">
+            <!-- Logo -->
+              <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+            <!-- Logo -->
 
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
 
+            <!-- Social Sites -->
+              <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+            <!-- Social Sites -->
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">About</h5>
+          <h6 style="color:#c0c3cf">Contact Us</h6>
+          <h6 style="color:#c0c3cf">Careers</h6>
+          <h6 style="color:#c0c3cf">About Us</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Help</h5>
+          <h6 style="color:#c0c3cf">Payments</h6>
+          <h6 style="color:#c0c3cf">Shipping</h6>
+          <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+          <h6 style="color:#c0c3cf">FAQ</h6>
+          <h6 style="color:#c0c3cf">Report Infringement</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Policy</h5>
+          <h6 style="color:#c0c3cf">Return Policy</h6>
+          <h6 style="color:#c0c3cf">Terms of Use</h6>
+          <h6 style="color:#c0c3cf">Security</h6>
+          <h6 style="color:#c0c3cf">Privacy</h6>
+          <h6 style="color:#c0c3cf">Terms of Service</h6>
+        </div>
+      </div>
+    </div>
+  <!-- Footer End -->
+  <!-- base:js -->
+  <script src="{% static 'Dashboard/vendors/js/vendor.bundle.base.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static 'Dashboard/vendors/chart.js/Chart.min.js' %}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'Dashboard/js/off-canvas.js' %}"></script>
+  <script src="{% static 'Dashboard/js/hoverable-collapse.js' %}"></script>
+  <script src="{% static 'Dashboard/js/template.js' %}"></script>
+  <script src="{% static 'Dashboard/js/settings.js' %}"></script>
+  <script src="{% static 'Dashboard/js/todolist.js' %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static 'Dashboard/js/dashboard.js' %}"></script>
+  <!-- End custom js for this page-->
+  <script>
+    $('#ToggleLogo').on('click',function(){
+    $('#Logo').toggle();
+    })
+    // Ajax to Dispatch Order items
+    {% for order_item in orders %}
+     $('#Dispatch{{forloop.counter}}').on('click',function(){
+     $.ajax({
+      method:"GET",
+      url:'{% url 'Seller:dispatched' order_item.unique_id %}',
+      data:{},
+      success:function(data){
+      $('#OrderItem{{forloop.counter}}').hide();
+      $('#{{forloop.counter}}').hide();
+      }
+      })
+     })
 
-				</div>
-				<!-- Check if the Cart is empty or not -->
-				{% empty %}
-					<div class="row border">
-						<h4 class="pl-2">No Orders</h4>
-					</div>
-				<!-- Check if the Cart is empty or not -->
-        {% endfor %}
-    {% endif %}
-{% endblock %}
+    {% endfor %}
+  </script>
+</body>
+
+</html>
+

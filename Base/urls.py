@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import Home,Product_Detail,add_to_cart,remove_from_cart,Cart,Checkout,searchbar,Wishlist_Add,Wishlist_Remove,Wishlist_View\
-    ,delete_from_cart,add_to_saved,delete_from_saved,move_to_cart,reviews_page,add_review
+    ,delete_from_cart,add_to_saved,delete_from_saved,move_to_cart,reviews_page,add_review,MyOrdersView
 
 app_name = 'Base'
 urlpatterns = [
@@ -27,6 +27,8 @@ urlpatterns = [
         path('Cart/',Cart,name='Cart'),
         path('Checkout/',Checkout,name='Checkout'),
         path('search/',searchbar,name='searchbar'),
+        # Order History
+        path('MyOrders/',MyOrdersView,name="MyOrders"),
             ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,

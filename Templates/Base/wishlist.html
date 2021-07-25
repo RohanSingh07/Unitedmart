@@ -1,118 +1,110 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block Navbar1 %}
-	{% include 'Base/Navbar1.html' %}
+    {% include "Base/Navbar1.html" %}
 {% endblock %}
 {% block content %}
-<style type="text/css">
-
-	.Place1{
-		color: white;
-		font-weight: normal;
-	}
-	.itemName{
+<style>
+	.cartDelete{
 		color:black;
 		}
-	.itemName:hover{
-		color:#2b7af0;
-		}
+	.cartDelete:hover{
+			color:red;
+			text-decoration:underline;
+			}
 </style>
-<body class="bg-light mt-5 pt-2">
-
-	<div class="container  mt-2 ">
-		<div class="row">
-
-			<!-- Content desciption Column -->
-
-			<div class="col-9 mt-3 bg-white border border-dark">
-				<div class="row ml-2 mt-2">
-					<h5 class="text-dark">Wishlist(
-						{% if Wishlist %}
-						{{Wishlist.items.count}}
-						{% else %}
-						0
-						{% endif %})</h5>
-				</div>
-
-
-				{% for item in Wishlist.items.all %}
-				<div class="row border">
-					<!-- Image column -->
-
-					<div class="col-3 p-4">
+<body class="bg-light">
+<div class="container bg-white" style="margin-top:100px;">
+	<div  id="MyAlert" class="bg-success text-white d-flex justify-content-center align-items-center font-weight-bold"  style="position:fixed;left:0;top:89px;z-index:2;width:100%;opacity:0.7;background-color:#a31818;">
+                  <h6 class="pt-1 pb-1 font-weight-normal" id="Message"></h6>
+		  <a  style="position:absolute;right:50px;font-size:14px;font-weight:bold;" id="Close">x</a>
+ 	</div>
+    <div class="row ml-4 pt-3" >
+        <h6 style="text-decoration:underline;font-weight:bold;color:#785730;">WISHLIST</h6>
+    </div>
+    {% for items in Wishlist.items.all %}
+          <div class="row mt-3"  id="Wish{{forloop.counter}}">
+            <!-- Image column -->
+					<div class="col-3 p-4 ">
 						<!-- Image of the product -->
-						<div class="row">
-							<a href="{{item.get_abs_url}}">
-								<img src="{{item.image.url}}" height="150px" width="150px">
+						<div class="row  d-flex justify-content-center">
+							<a href="{{items.get_abs_url}}">
+								<img src="{{items.image.url}}" height="160px" width="160px">
 							</a>
 						</div>
 						<!-- Image of the product -->
-
 					</div>
-
-					<!-- Image column -->
-
-					<!-- Product details column -->
+          <!-- Image column -->
+           <!-- Product details column -->
 					<div class="col pl-3 pt-4 pb-4">
-						<div class="row">
-							<a href="{{item.get_abs_url}}">
-								<h6 class="itemName">{{item.Name}}</h6>
+						<div class="row ">
+							<a href="{{items.get_abs_url}}">
+								<h6 class="itemName text-dark">{{items.Name}}</h6>
 							</a>
 						</div>
-						<div class="row pt-1 pb-1">
-							<small class="text-muted">Seller:{{item.Brand}}</small>
+                        <div class="row">
+                                <small style="color:grey">Brand : {{items.Brand}}</small>
+
+                        </div>
+						<div class="row">
+                                <small class="text-success">Special Price</small>
+                        </div>
+						<div class="row">
+                                <h6 class="text-dark font-weight-bold">₹ {{items.discount_price}}</h6>
+								<h6 class="ml-2 text-muted" style="text-decoration:line-through;">₹ {{items.price}}</h6>
+                        </div>
+						<div class="row d-flex justify-content-start align-items-center pt-3">
+								<h6><a id="Delete{{forloop.counter}}"  class="font-weight-normal cartDelete " >Delete</a></h6>
+								<h6 ><a id="AddToCart{{forloop.counter}}"  class="pl-3 font-weight-normal cartDelete"  >Add to cart</a></h6>
 						</div>
-
-						{% if item.discount_price %}
-
-					    	<div class="row">
-						    		<small class="text-success">Special Price</small>
-						    </div>
-						    <div class="row d-flex align-items-center">
-						    		<h2>₹{{item.discount_price}}</h2> <h6><span class="discount text-muted pl-2">₹{{item.price}}</span> </h6>
-						    </div>
-
-
-					    {% else %}
-							<div class="row">
-
-					    			<h2>₹{{item.price}} </h2>
-					    	</div>
-				    	{% endif %}
-							<div class="row d-flex align-items-center">
-						    		<a href="{{item.get_remove_from_wishlist_url}}"  >
-										<h6 class="font-weight-normal" onmouseover="this.style.color='red'" onmouseout="this.style.color='#11a7ed'">REMOVE</h6></a>
-						    </div>
 					</div>
-					<!-- Product details column -->
-
-				</div>
-				<!-- Check if the Cart is empty or not -->
-				{% empty %}
-					<div class="row border">
-						<h4>Your wishlist is Empty</h4>
-					</div>
-				<!-- Check if the Cart is empty or not -->
-
-				{% endfor %}
-
-
-
-
+          <!-- Product details column -->
+          </div>
+          <hr id="{{forloop.counter}}">
+	      {% empty %}
+			<div class="row" style="position:relative;" >
+						<img src="{% static 'img/wishlist.png' %}" style="height:75vh;width:100%;">
+						<h5 style="position:absolute;top:15%;left:25%;font-weight:bold;color:#594f35;font-size:40px;font-family:Monospace;" >Your Wishlist is Empty</h5>
 			</div>
-			<!-- Content desciption Column -->
-		</div>
-
-
-
-	</div>
+          {% endfor %}
+</div>
 </body>
+<script>
+	$('#MyAlert').hide();
+	$('#Message').hide();
+	{% for items in Wishlist.items.all %}
+	// Delete the items from Wishlist
+	 $('#Delete{{forloop.counter}}').on('click',function(){
+	 console.log('h');
+	$.ajax({
+		 method: "GET",
+				  url: "{% url 'Base:remove-from-wishlist' items.slug %}",
+				  data: {},
+				  success: function(data) {
 
+				  }
+		})
+		$('#Wish{{forloop.counter}}').hide();
+	})
+	// Add item to cart
+	 $('#AddToCart{{forloop.counter}}').on('click',function(){
+	$.ajax({
+		 method: "GET",
+				  url: "{% url 'Base:add-to-cart' items.slug %}",
+				  data: {},
+				  success: function(data) {
 
+				  }
+		})
+		 document.getElementById('Message').innerHTML = "This item has been added to your cart";
+	$('#MyAlert').show();
+	$('#Message').show();
+	})
 
-
-<!--   # {% for order_items in order.items.all %}-->
-
-<!--    -->
-
-<!--    #{% endfor %} &ndash;&gt;-->
+	{% endfor %}
+	$('#Close').on('click',function(){
+	 $('#MyAlert').hide();
+	$('#Message').hide();
+	});
+</script>
 {% endblock %}

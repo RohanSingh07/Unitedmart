@@ -3420,7 +3420,6 @@ class Product(models.Model):
         color10 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
         color11 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
         color12 = models.CharField(max_length=50, blank=True, null=True, choices=Colors_choices)
-        colors=models.ManyToManyField("self",blank=True)
         #Date Added
         date=models.DateField(auto_now_add=True)
         # size
@@ -3428,10 +3427,10 @@ class Product(models.Model):
         # size chart
         def __str__(self):
             return self.Name
+
         # Fields for seller
         user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,blank=True,null=True)
         UID = models.ForeignKey(SellerProfile, on_delete=models.SET_NULL, blank=True, null=True)
-
         NumberOfPieces = models.IntegerField(default=1)
         Stock = models.IntegerField(default=1)
         # Packaging detail
@@ -4013,7 +4012,7 @@ class Order_Item(models.Model):
     quantity = models.IntegerField(default=1,blank=True,null=True)
     unique_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True,blank=True,null=True)
     date_of_order = models.DateField(blank=True, null=True, editable=True)
-    Seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, blank=True, null=True)
+    order_to = models.ForeignKey("Order",on_delete=models.CASCADE,blank=True,null=True)
 
     def add_to_saved(self):
         return reverse(viewname="Base:add-to-saved",
@@ -4083,6 +4082,11 @@ class Order(models.Model):
         for order_item in self.items.all():
             total+=order_item.get_final_price()
         return total
+    def amount_saved(self):
+        saved=0
+        for order_item in self.items.all():
+            saved += order_item.get_amount_save()
+        return saved
 # rating and reviews
 class rating_images(models.Model):
     image_to=models.ForeignKey('rating_and_reviews',on_delete=models.CASCADE,blank=True,null=True)
@@ -4097,8 +4101,8 @@ class rating_and_reviews(models.Model):
 class Wishlist(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,blank=True,null=True)
     items = models.ManyToManyField(Product,blank=True)
-
-
-# size for product
-
+# My Orders
+class MyOrders(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,blank=True,null=True)
+    items = models.ManyToManyField(Order_Item, blank=True)
 

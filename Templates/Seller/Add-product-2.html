@@ -24,8 +24,28 @@
 
 
 </head>
+<style>
+        input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+</style>
 <body>
+    {% if messages %}
 
+        {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible  text-white d-flex justify-content-center font-weight-bold"  style="position:fixed;top:85px;z-index:3;width:100%;opacity:0.7;background-color:#a31818;">
+                  {{ message }}
+                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+        {% endfor %}
+
+    {% endif %}
 
 <i class="typcn typcn-delete-outline" id="bannerClose"></i>
 
@@ -34,12 +54,12 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100"><!-- URl -->
-          <a class="navbar-brand brand-logo" href="{% url 'Base:Homepage' %}"><span class="text-white">Prototype</span></a>
+          <a href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
           <!-- URL -->
           <!-- Small Screen logo and url-->
           <a class="navbar-brand brand-logo-mini" href="{% url 'Base:Homepage' %}"><img src="{% static 'Dashboard/images/logo-mini.svg' %}" alt="logo"/></a>
           <!-- Small Screen logo -->
-          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" id="ToggleLogo">
             <span class="typcn typcn-th-menu"></span>
           </button>
         </div>
@@ -64,16 +84,15 @@
           <li class="nav-item nav-date dropdown">
             <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
               <h6 class="date mb-0">Today : {{today}}</h6>
-              <i class="typcn typcn-calendar"></i>
+
             </a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
+          <li class="nav-item d-flex justify-content-center align-items-center dropdown">
+            <a class="nav-link " id="messageDropdown" href="#" data-toggle="dropdown">
               <i class="typcn typcn-cog-outline mx-0"></i>
               <span class="count"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-
               <!-- Edit Profile -->
               <a class="dropdown-item" href="{% url 'Seller:profile-edit' %}">
                 <i class="typcn typcn-cog-outline text-primary"></i>
@@ -85,57 +104,9 @@
                 Logout
               </a>
               <!-- Logout End -->
+            </div>
+          </li>
 
-            </div>
-          </li>
-          <li class="nav-item dropdown mr-0">
-            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="typcn typcn-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-success">
-                    <i class="typcn typcn-info mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Just now
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-warning">
-                    <i class="typcn typcn-cog-outline mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">Settings</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    Private message
-                  </p>
-                </div>
-              </a>
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="typcn typcn-user mx-0"></i>
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New user registration</h6>
-                  <p class="font-weight-light small-text mb-0 text-muted">
-                    2 days ago
-                  </p>
-                </div>
-              </a>
-            </div>
-          </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="typcn typcn-th-menu"></span>
@@ -207,26 +178,9 @@
             </a>
           </li>
           <!-- Order History -->
-          <!-- Refund Requests -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Seller:refund-requests' %}" aria-expanded="false" aria-controls="icons">
-              <i class="typcn typcn-arrow-sync-outline menu-icon"></i>
-              <span class="menu-title">Refund Requests</span>
-              <div class="badge badge-danger">0</div>
-            </a>
-          </li>
-          <!-- Refund Requests -->
-          <!-- Returns -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Seller:returns' %}" aria-expanded="false" aria-controls="auth">
-              <i class="typcn typcn-arrow-sync menu-icon"></i>
-              <span class="menu-title">Returns</span>
-            </a>
-          </li>
-          <!-- Returns -->
           <!-- Mall -->
           <li class="nav-item">
-            <a class="nav-link"  href="" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link"  href="{% url 'Seller:my-mall' %}" aria-expanded="false" aria-controls="auth">
               <img src="{% static 'img/mall1.jpg'%}" height="40" width="40">
               <span class="menu-title">My Mall</span>
             </a>
@@ -234,23 +188,13 @@
           <!-- Mall -->
           <!-- Market -->
           <li class="nav-item">
-            <a class="nav-link" href="" aria-expanded="false" aria-controls="auth">
+            <a class="nav-link" href="{% url 'Seller:my-market' %}" aria-expanded="false" aria-controls="auth">
               <img src="{% static 'img/market.jpg'%}" height="40" width="40">
               <span class="menu-title">My Market</span>
             </a>
           </li>
           <!-- Market -->
-          <!-- Bank Details -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'Seller:bank-details' %}" aria-expanded="false" aria-controls="auth">
-              <i class="fas fa-university menu-icon"></i>
-              <span class="menu-title">Bank Details</span>
-              {% if not profile.bank_account_number %}
-              <i class="fas fa-exclamation menu-icon text-danger pl-2"></i>
-              {% endif %}
-            </a>
-          </li>
-          <!-- Bank Details End-->
+
            <!-- Settings -->
           <li class="nav-item">
             <a class="nav-link"  href="{% url 'Seller:profile-edit' %}" aria-expanded="false" aria-controls="auth">
@@ -307,26 +251,57 @@
         </div>
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2020 <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center text-muted">Free <a href="https://www.bootstrapdash.com/" class="text-muted" target="_blank">Bootstrap dashboard</a> templates from Bootstrapdash.com</span>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- partial -->
-
       <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
   </div>
+  <!-- Footer End -->
+    <div class="container-fluid " style="margin-top:10px;background-color:#162691;">
+      <div class="row pt-4 pb-5">
+        <div class="col-md-3 col-12">
+            <!-- Logo -->
+              <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+            <!-- Logo -->
 
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+              <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+            <!-- Social Sites -->
+              <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+              <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+            <!-- Social Sites -->
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">About</h5>
+          <h6 style="color:#c0c3cf">Contact Us</h6>
+          <h6 style="color:#c0c3cf">Careers</h6>
+          <h6 style="color:#c0c3cf">About Us</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Help</h5>
+          <h6 style="color:#c0c3cf">Payments</h6>
+          <h6 style="color:#c0c3cf">Shipping</h6>
+          <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+          <h6 style="color:#c0c3cf">FAQ</h6>
+          <h6 style="color:#c0c3cf">Report Infringement</h6>
+        </div>
+        <div class="col-md-3 col-12">
+          <h5 class="text-white font-weight-bold">Policy</h5>
+          <h6 style="color:#c0c3cf">Return Policy</h6>
+          <h6 style="color:#c0c3cf">Terms of Use</h6>
+          <h6 style="color:#c0c3cf">Security</h6>
+          <h6 style="color:#c0c3cf">Privacy</h6>
+          <h6 style="color:#c0c3cf">Terms of Service</h6>
+        </div>
+      </div>
+    </div>
+  <!-- Footer End -->
   <!-- base:js -->
   <script src="{% static 'Dashboard/vendors/js/vendor.bundle.base.js' %}"></script>
   <!-- endinject -->
@@ -384,7 +359,10 @@ quantity.on("input",function(){
     $('#errors').text('');
   }
 })
-
+// For Logo of unitedmart
+ $('#ToggleLogo').on('click',function(){
+    $('#Logo').toggle();
+   })
 
 </script>
 </body>

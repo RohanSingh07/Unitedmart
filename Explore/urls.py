@@ -1,14 +1,18 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import Explore_Home,Seller_Detail,Marketplace_Detail
+from .views import Explore_Home,Seller_Detail,Marketplace_Detail,Join_Market,Leave_Market
 app_name = 'Explore'
 
 urlpatterns=[
             path('Explore/',Explore_Home,name = 'Explore-home'),
             path('Explore/<slug>/',Seller_Detail,name = 'seller-page'),
+            # For Mall / Marketplace
             path('Marketplace/<slug>/',Marketplace_Detail,name='Marketplace-page'),
-           # # path('Malls/<slug>/',Mall_Detail,name='Mall-page'),
+            # Join Market / Mall
+            path('Explore/JoinMarket/<slug>/',Join_Market,name='JoinMarket'),
+            # Leave Market / Mall
+            path('Explore/LeaveMarket/<slug>/',Leave_Market,name='LeaveMarket'),
 
 ]
 

@@ -4,12 +4,7 @@ from Base.models import States
 from django.shortcuts import reverse
 import uuid
 from django.core.validators import MinValueValidator, MaxValueValidator
-
-# Pickup pin codes
-class Pincodes(models.Model):
-    pincode = models.IntegerField(blank=True,null=True)
-    state = models.CharField(choices=States,blank=True,null=True,max_length=100)
-    district = models.CharField(blank=True,null=True,max_length=100)
+# Pincode deleted
 
 # Malls
 class Mall(models.Model):
@@ -17,7 +12,7 @@ class Mall(models.Model):
     name =  models.CharField(max_length=100)
     unique_id = models.CharField(blank=True,null=True,unique=True,max_length=100)
     Area = models.CharField(max_length=200, blank=True, null=True)
-    shops = models.ManyToManyField('SellerProfile')
+    shops = models.ManyToManyField('SellerProfile',blank=True)
     shop_photo1 = models.ImageField(upload_to='Malls/')
     shop_photo2 = models.ImageField(upload_to='Malls/')
     shop_photo3 = models.ImageField(upload_to='Malls/', blank=True, null=True)
@@ -53,7 +48,7 @@ class SellerProfile(models.Model):
     photo_of_owner = models.ImageField(upload_to='sellers/',blank=True,null=True)
     email_of_owner = models.EmailField(blank=True,null=True)
 
-
+    # Bank Details
     signature = models.ImageField(upload_to='sellers/',blank=True,null=True)
     cancel_cheque = models.ImageField(upload_to='sellers/',blank=True,null=True)
     bank_account_name = models.CharField(blank=True,null=True,max_length=100)
@@ -64,7 +59,7 @@ class SellerProfile(models.Model):
     mobile_number = models.BigIntegerField(blank=True, null=True)
     alternate_number = models.BigIntegerField(blank=True, null=True)
 
-    shop_name= models.CharField(max_length=100,blank=True,null=True)
+    name= models.CharField(max_length=100,blank=True,null=True)
     shop_photo1 = models.ImageField(upload_to='Shops/',blank=True,null=True)
     shop_photo2 = models.ImageField(upload_to='Shops/',blank=True,null=True)
     shop_photo3 = models.ImageField(upload_to='Shops/',blank=True,null=True)
@@ -82,7 +77,12 @@ class SellerProfile(models.Model):
     products = models.ManyToManyField("Base.Product",blank=True)
     mall_to = models.ForeignKey(Mall,on_delete=models.SET_NULL,blank=True,null=True)
     market_to = models.ForeignKey('Market',on_delete=models.SET_NULL,blank=True,null=True)
-    Order_history = models.ManyToManyField("Base.Order",blank=True)
+
+    Order_history = models.ManyToManyField("Base.Order_Item",blank=True,symmetrical=False,related_name="OH")
+    My_orders = models.ManyToManyField("Base.Order_Item",blank=True,symmetrical=False,related_name='MO')
+    # sales and total earning
+    sales = models.IntegerField(blank=True,null=True,default=0)
+    Earning = models.BigIntegerField(blank=True,null=True,default=0)
     # url of the shop
     def get_abs_url(self):
         return reverse(viewname="Explore:seller-page",  # url-app-name:url_patter_name
@@ -96,8 +96,8 @@ class Market(models.Model):
 
     name = models.CharField(max_length=100)
     # Changes
-    malls = models.ManyToManyField(Mall)
-    shops = models.ManyToManyField(SellerProfile)
+    malls = models.ManyToManyField(Mall,blank=True)
+    shops = models.ManyToManyField(SellerProfile,blank=True)
     Area = models.CharField(max_length=100,blank=True,null=True)
     unique_id = models.CharField(unique=True,blank=True,null=True,max_length=100)
     shop_photo1 = models.ImageField(upload_to='Markets/')

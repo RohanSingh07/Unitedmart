@@ -14,9 +14,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 </style>
 <body style="background-color:#ebedf5;">
-<div class="container-fluid d-flex justify-content-center" style="margin-top:100px;">
-  <div style="position:absolute;top:25%;height:50%;width:600px;background-color:white;" class="d-flex align-items-center justify-content-center ">
-
+<div class="container-fluid  d-md-block d-none" style="margin-top:100px;">
+  <div style="position:absolute;top:25%;height:50%;left:30%;width:600px;background-color:white;" class="d-flex align-items-center justify-content-center ">
         <form  method="post" action="{% url 'users:seller-signup-3' %}">
                {% csrf_token %}
                 <h6 style="text-decoration:underline;margin-bottom:20px;font-weight:bold;color:#785730;" >SELLER REGISTRATION</h6>
@@ -25,6 +24,21 @@ input[type=number]::-webkit-outer-spin-button {
                     <input style="left:12px;width:300px;position:absolute;height:45px;border-radius:0;" class="form-control" type="number" name="pincode" placeholder="Enter your pick up pincode" required>
                     <input type="number" name="mobile" value="{{mobile}}" hidden>
                    <button style="position:absolute;left:312px;height:45px;" class="btn btn-primary" type="submit">VERIFY</button>
+                </div>
+        </form>
+  </div>
+</div>
+
+<div class="container-fluid d-md-none d-block pl-0 pr-0" style="margin-top:190px;overflow:hidden;">
+  <div style="position:relative;top:25%;height:250px;left:0;width:100%;background-color:white;" class="d-flex align-items-center justify-content-center pl-2">
+        <form  method="post" action="{% url 'users:seller-signup-3' %}">
+               {% csrf_token %}
+                <h6 style="text-decoration:underline;margin-bottom:20px;font-weight:bold;color:#785730;" >SELLER REGISTRATION</h6>
+                <h6 style="color:#2a313b;font-size:14px;">Pincode of the location from where our agents will collect products from you</h6><br>
+                <div class="row d-flex align-items-center " style="position:relative;">
+                    <input style="left:12px;width:180px;position:absolute;height:45px;border-radius:0;font-size:13px;" class="form-control" type="number" name="pincode" placeholder="Enter your pick up pincode" required>
+                    <input type="number" name="mobile" value="{{mobile}}" hidden>
+                   <button style="position:absolute;left:190px;height:45px;" class="btn btn-primary" type="submit">VERIFY</button>
                 </div>
         </form>
   </div>

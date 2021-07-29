@@ -21,8 +21,41 @@
   <component name="ChangeListManager">
     <list default="true" id="95d3b069-45e3-4ed7-a183-99c5ca8b6a3f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Explore/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Explore/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Checkout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Home_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Home_main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/MyOrders.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/MyOrders.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/Navbar1.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Navbar1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/add_review.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/add_review.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/product-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/product-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/ratings_and_reviews.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/searchbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/searchbar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Base/wishlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/wishlist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Explore/Mall_Market_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Explore/Mall_Market_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Explore/seller-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Explore/seller-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-product-2.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-product-2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-product-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-product-3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-product.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add_New_Mall.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add_New_Mall.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add_New_Market.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add_New_Market.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Delete-product.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Delete-product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/My-orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/My-orders.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/My_Mall.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/My_Mall.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/My_Market.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/My_Market.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/Order-history.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Order-history.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_home.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_profile_edit.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_profile_edit.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_signup.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_signup_2.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_signup_2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/account/seller_success.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/account/seller_success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/search/search.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,17 +138,17 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="526" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1625917720881" />
-    <state x="592" y="218" key="FileChooserDialogImpl" timestamp="1627220480677">
+    <state x="592" y="218" key="FileChooserDialogImpl" timestamp="1627564711669">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="592" y="218" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1627220480677" />
+    <state x="592" y="218" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1627564711669" />
     <state x="277" y="57" key="SettingsEditor" timestamp="1627221135360">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1627221135360" />
-    <state x="498" y="178" width="672" height="678" key="search.everywhere.popup" timestamp="1625765279202">
+    <state x="498" y="178" width="672" height="678" key="search.everywhere.popup" timestamp="1627301481091">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="498" y="178" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1625765279202" />
+    <state x="498" y="178" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1627301481091" />
   </component>
 </project>

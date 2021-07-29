@@ -24,12 +24,6 @@
 
 	/* for small screen */
 	@media only screen and (max-width: 991px){
-	.HideCart{
-		display:none;
-		}
-	.ShowCart{
-		display:block;
-		}
 
 	/* place order button */
 	.PlaceOrder{
@@ -43,12 +37,7 @@
 	/* for small screen end */
 
 	@media only screen and (min-width:991px){
-		.HideCart{
-			display:block!important;
-			}
-		.ShowCart{
-			display:none;
-			}
+
 		/* place order button */
 		.PlaceOrder{
 		background-color:#f09e2b;
@@ -66,7 +55,7 @@
 </style>
 
 <body class="bg-light">
-	<div class="container-fluid bg-light HideCart" style="margin-top:88px;">
+	<div class="container-fluid bg-light d-md-block d-none" style="margin-top:88px;">
 		<div class="row d-flex  ">
 			<div class="col-1">
 			</div>
@@ -132,11 +121,6 @@
 
 				</div>
 				<!-- Check if the Cart is empty or not -->
-				 <a href="{% url 'Base:Checkout' %}" id="PlaceOrderButton">
-                <div class="row d-flex justify-content-center align-items-center border-top PlaceOrder pt-2"  >
-                	<h5 class="Place1" >PLACE ORDER</h5>
-                </div>
-				</a>
 				{% empty %}
 					<div class="row" style="position:relative;" >
 						<img src="{% static 'img/empty_cart.gif' %}" style="height:50vh;width:100%;">
@@ -145,6 +129,12 @@
 				<!-- Check if the Cart is empty or not -->
 				{% endfor %}
                 <!-- Place Order -->
+
+				 <a href="{% url 'Base:Checkout' %}" id="PlaceOrderButton">
+                <div class="row d-flex justify-content-center align-items-center border-top PlaceOrder pt-2"  >
+                	<h5 class="Place1" >PLACE ORDER</h5>
+                </div>
+				</a>
 			</div>
 			<!-- Content desciption Column -->
 			{% if order.items.count %}
@@ -188,7 +178,7 @@
 		</div>
 	</div>
 	<!-- Container to show saved item -->
-	<div class="container-fluid pt-2 HideCart bg-light">
+	<div class="container-fluid pt-2 pb-5 d-md-block d-none bg-light">
 		<div class="row">
 			<div class="col-1">
 			</div>
@@ -213,11 +203,8 @@
 							</a>
 						</div>
 						<!-- Image of the product -->
-
 					</div>
-
 					<!-- Image column -->
-
 					<!-- Product details column -->
 					<div class="col pl-3 pt-4 pb-4">
 						<div class="row ">
@@ -228,19 +215,15 @@
 						<div class="row pt-1 pb-1">
 							<small class="text-muted">Seller:{{order_item.items.Brand}}</small>
 						</div>
-
 						{% if order_item.items.discount_price %}
-
 					    	<div class="row">
 						    		<small class="text-success">Special Price</small>
 						    </div>
 						    <div class="row d-flex align-items-center">
 						    		<h6 class="font-weight-bold">₹{{order_item.get_total_discount_item_price}}</h6> <h6 style="text-decoration:line-through;"><span class="discount text-muted pl-2">₹{{order_item.get_total_item_price}}</span> </h6>
 						    </div>
-
 					    {% else %}
 							<div class="row">
-
 					    			<h6 class="font-weight-bold">₹{{order_item.items.price}} </h6>
 					    	</div>
 				    	{% endif %}
@@ -258,11 +241,12 @@
 	</div>
 
 	<!-- Container to show saved item -->
-</body>
+
 	<!-- Small screen Cart -->
-	<div class="container-fluid ShowCart mt-5 mb-4 pt-4">
-		<div class="row ">
-			{% if item %}
+	<div class="container-fluid d-block d-md-none mb-4 " style="margin-top:88px;">
+
+			{% if order.items.count %}
+			<div class="row ">
 			<!-- Order details -->
 					<div class="col-12 ">
 						<div class="row  pt-3 bg-white">
@@ -272,24 +256,20 @@
 																						0
 																						{% endif %}
 																						{{item}})</h6>
-							<h6 class="text-dark font-weight-normal pl-3 ">- ₹{{Subtotal}}</h6>
+							<h6 class="text-dark font-weight-normal pl-3 ">- ₹ {{order.get_total}}</h6>
 						</div>
 						<div class="row  pt-3 bg-white">
 							<h6 class="text-dark font-weight-normal pl-3 ">Delivery Charges</h6>
-							{% if delivery %}
-							<h6 class="text-danger font-weight-normal pl-3">- ₹{{delivery}}</h6>
-							{% else %}
 							<h6 class="text-success font-weight-normal pl-3">- Free</h6>
-							{% endif %}
 						</div>
 
 						<div class="row  pt-3 bg-white">
 							<h6 class="text-dark font-weight-bold pl-3 ">Total Amount</h6>
-							<h6 class="text-success font-weight-bold pl-3">- ₹{{total}}</h6>
+							<h6 class="text-success font-weight-bold pl-3">- ₹ {{order.get_total}}</h6>
 
 						</div>
 						<div class="row bg-white pt-1 ">
-							<h6 class="text-success font-weight-bold pl-3">You will save  ₹{{saved_amount}} on this order </h6>
+							<h6 class="text-success font-weight-bold pl-3">You will save  ₹ {{order.amount_saved}} on this order </h6>
 						</div>
 						 <!-- Place Order -->
 							<a href="{% url 'Base:Checkout' %}">
@@ -300,13 +280,23 @@
 					</div>
 
 			<!-- Order Details -->
-			{% endif %}
+
 		</div>
-		<div class="row d-flex  ">
+		{% endif %}
+		<div class="row  mt-1 pl-0">
 			<!-- Content desciption Column -->
 			<div class="col-12  bg-white ">
+				<div class="row border pt-3 pl-2">
+					<h6 style="text-decoration:underline;font-weight:bold;color:#785730;" class="pl-2 ml-1">Shopping Cart(<span id="OrderCount_sm">
+						{% if order %}
+						{{order.items.count}}
+						{% else %}
+						0
+						{% endif %}
+						</span>)</h6>
+				</div>
 				{% for order_item in order.items.all %}
-				<div class="row border">
+				<div class="row border" id="sm{{forloop.counter}}">
 					<!-- Image column -->
 					<div class="col-12 pt-2 pb-2">
 						<!-- Image of the product -->
@@ -319,69 +309,56 @@
 							<!-- + - and quantity -->
 							<div class="col-9 pt-2 pb-2 d-flex justify-content-center">
 								<div class="row d-flex  align-items-center">
-									<a href="{{order_item.items.get_remove_from_cart_url}}"><i class="fas fa-minus pl-2 pr-2" style="font-size: 15px;"></i></a>
-									<b class="pl-3 pr-3  border border-dark">{{order_item.quantity}}</b>
-									<a href="{{order_item.items.get_add_to_cart_url}}"><i class="fas fa-plus pl-2 pr-2" style="font-size: 15px;"></i></a>
+									<a id="RemoveFromCart_sm{{forloop.counter}}" ><i class="fas fa-minus pl-2 pr-2" style="font-size: 15px;"></i></a>
+									<b id="ItemCount_sm{{forloop.counter}}" class="pl-3 pr-3  border border-dark">{{order_item.quantity}}</b>
+									<a id="AddToCart_sm{{forloop.counter}}" ><i class="fas fa-plus pl-2 pr-2" style="font-size: 15px;"></i></a>
 								</div>
 							</div>
 							<!-- + - and quantity -->
 						</div>
 						<!-- Image of the product -->
-
 					</div>
-
 					<!-- Image column -->
-
 					<!-- Product details column -->
 					<div class="col-12  pl-3 pb-4">
-						<div class="row pl-1">
+						<div class="row pl-2">
 							<a href="{{order_item.items.get_abs_url}}">
 								<small class="text-dark">{{order_item.items.Name}}</small>
 							</a>
 						</div>
-						<div class="row pt-1 pl-1">
+						<div class="row pt-1 pl-2">
 							<small class="text-muted">{{order_item.items.Brand}}</small>
 						</div>
 
-						{% if order_item.items.discount_price %}
-
-
-						    <div class="row d-flex align-items-center pt-1 pl-1">
-						    		<h6 class="font-weight-normal text-danger">₹{{order_item.get_total_discount_item_price}}</h6> <h6 style="text-decoration:line-through;"><span class="discount text-muted pl-2">₹{{order_item.get_total_item_price}}</span> </h6>
+							<span hidden id="OriginalPrice_sm{{forloop.counter}}">{{order_item.items.discount_price}}</span>
+							<span hidden id="OriginalMPrice_sm{{forloop.counter}}">{{order_item.items.price}}</span>
+							<div class="row pl-2 d-flex align-items-center">
+								<h6 class="font-weight-bold" style="color:red;">₹<span id="Price_sm{{forloop.counter}}">{{order_item.get_total_discount_item_price}}</span></h6> <h6 class="discount text-muted pl-2" style="text-decoration:line-through;">₹<span  id="OPrice_sm{{forloop.counter}}">{{order_item.get_total_item_price}}</span> </h6>
 						    </div>
-
-					    {% else %}
-							<div class="row d-flex align-items-center">
-
-					    			<h6 class="font-weight-normal text-danger">₹{{order_item.get_total_item_price}} </h6>
-					    	</div>
-				    	{% endif %}
 							<div class="row d-flex justify-content-start align-items-center pt-3">
-								<h6 ><a href="{{order_item.items.delete_from_cart_url}}" class="font-weight-normal cartDelete pl-1 " >Delete</a></h6>
+								<h6 ><a href="{{order_item.items.delete_from_cart_url}}" class="font-weight-normal cartDelete pl-2 " >Delete</a></h6>
 								<h6 ><a href="{{order_item.add_to_saved}}" class="pl-2 font-weight-normal cartDelete pl-1"  >Save for Later</a></h6>
 							</div>
 					</div>
-					<!-- Product details column -->
-
 				</div>
 				<!-- Check if the Cart is empty or not -->
 				{% empty %}
-					<div class="row ">
-						<h4 class="pl-2">Your cart is Empty !</h4>
+
+					<div class="row  mt-1 pl-0" style="position:relative;" >
+						<img src="{% static 'img/empty_cart.gif' %}" style="height:35vh;max-width:100vw">
+						<h6 style="position:absolute;top:35%;left:8%;font-weight:bold;color:#c77c1a;font-family:Monospace;font-size:16px" >Your Cart is Empty</h6>
 					</div>
 				<!-- Check if the Cart is empty or not -->
 				{% endfor %}
 			</div>
 		</div>
-	</div>
+
 	<!-- Container to show saved item -->
-	{% if is_saved %}
-	<div class="container-fluid ShowCart bg-white">
-		<div class="row d-flex  mb-4">
+		<div class="row d-flex pb-5 mt-2 " >
 			<!-- Content desciption Column -->
 			<div class="col-12  bg-white ">
 				<div class="row">
-					<h6 class="pt-1 pl-2 font-weight-bold">Saved Items ({{saved.items.count}})</h6>
+					<h6  style="text-decoration:underline;font-weight:bold;color:#785730;" class="pt-1 pl-2 font-weight-bold">Saved Items ({{saved.items.count}})</h6>
 				</div>
 				{% for order_item in saved.items.all %}
 				<div class="row border">
@@ -433,9 +410,9 @@
 			</div>
 		</div>
 	</div>
-		{% endif %}
-	<!-- Container to show saved item -->
 
+	<!-- Container to show saved item -->
+</body>
 	<!-- Small screen Cart -->
  <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
 <script>
@@ -471,6 +448,36 @@ $.ajax({
 	// To update total saved from this order
 	document.getElementById("SaveAmount").innerHTML = document.getElementById('TotalCharge').innerHTML-document.getElementById('OPrice{{forloop.counter}}').innerHTML;
 })
+
+$('#RemoveFromCart_sm{{forloop.counter}}').on('click',function(){
+$.ajax({
+	 method: "GET",
+              url: "{% url 'Base:remove-from-cart' order_item.items.slug %}",
+              data: {},
+              success: function(data) {
+              }
+	})
+	var current = Number(document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML);
+	if(current===1){
+	$('#sm{{forloop.counter}}').hide();
+	document.getElementById('OrderCount_sm').innerHTML = {{order.items.count}}-1;
+	// to hide the order button link when no product
+	if(document.getElementById('OrderCount_sm').innerHTML==0){
+	$('#PlaceOrderButton').hide();}
+	}
+	document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML=current-1;
+	var price = document.getElementById('OriginalPrice_sm{{forloop.counter}}').innerHTML ;
+	var oprice = document.getElementById('OriginalMPrice_sm{{forloop.counter}}').innerHTML;
+	document.getElementById('Price_sm{{forloop.counter}}').innerHTML = price * document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML ;
+	document.getElementById('OPrice_sm{{forloop.counter}}').innerHTML= oprice * document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML ;
+	var Subtotal = document.getElementById('SubtotalCharge').innerHTML;
+	document.getElementById('SubtotalCharge').innerHTML = Subtotal-price;
+	var total = document.getElementById('TotalCharge').innerHTML;
+	document.getElementById('TotalCharge').innerHTML = total-price;
+	// To update total saved from this order
+	document.getElementById("SaveAmount").innerHTML = document.getElementById('TotalCharge').innerHTML-document.getElementById('OPrice_sm{{forloop.counter}}').innerHTML;
+})
+
 $('#AddToCart{{forloop.counter}}').on('click',function(){
 $.ajax({
 	 method: "GET",
@@ -491,6 +498,28 @@ $.ajax({
 	document.getElementById('TotalCharge').innerHTML = Number(total)+Number(price);
 	// To update total saved from this order
 	document.getElementById("SaveAmount").innerHTML = document.getElementById('TotalCharge').innerHTML-document.getElementById('OPrice{{forloop.counter}}').innerHTML;
+})
+
+$('#AddToCart_sm{{forloop.counter}}').on('click',function(){
+$.ajax({
+	 method: "GET",
+              url: "{% url 'Base:add-to-cart' order_item.items.slug %}",
+              data: {},
+              success: function(data) {
+              }
+	})
+	var current = Number(document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML);
+	document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML=current+1;
+	var price = document.getElementById('OriginalPrice_sm{{forloop.counter}}').innerHTML ;
+	var oprice = document.getElementById('OriginalMPrice_sm{{forloop.counter}}').innerHTML;
+	document.getElementById('Price_sm{{forloop.counter}}').innerHTML = price * document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML ;
+	document.getElementById('OPrice_sm{{forloop.counter}}').innerHTML= oprice * document.getElementById('ItemCount_sm{{forloop.counter}}').innerHTML ;
+	var Subtotal = document.getElementById('SubtotalCharge').innerHTML;
+	document.getElementById('SubtotalCharge').innerHTML = Number(Subtotal)+Number(price);
+	var total = document.getElementById('TotalCharge').innerHTML;
+	document.getElementById('TotalCharge').innerHTML = Number(total)+Number(price);
+	// To update total saved from this order
+	document.getElementById("SaveAmount").innerHTML = document.getElementById('TotalCharge').innerHTML-document.getElementById('OPrice_sm{{forloop.counter}}').innerHTML;
 })
 {% endfor %}
 </script>

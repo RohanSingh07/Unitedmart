@@ -15,8 +15,8 @@
 	}
 </style>
 
-<div class="container-fluid bg-white" style="margin-top:100px;">
-	 <div  id="MyAlert" class="bg-success text-white d-flex justify-content-center align-items-center font-weight-bold"  style="position:fixed;top:89px;z-index:2;width:100%;opacity:0.7;background-color:#a31818;">
+<div class="container-fluid bg-white d-md-block d-none" style="margin-top:100px;">
+	 <div  id="MyAlert" class="bg-success text-white d-flex justify-content-center align-items-center font-weight-bold"  style="position:fixed;top:89px;z-index:2;width:100%;opacity:0.9;background-color:#a31818;">
                   <h6 class="pt-1 pb-1 font-weight-normal" id="Message"></h6>
 		  <a  style="position:absolute;right:50px;font-size:14px;font-weight:bold;" id="Close">x</a>
  	</div>
@@ -143,9 +143,300 @@
 
 	</div>
 </div>
+<!-- Small Screen Cart -->
+<div class="container-fluid bg-white d-md-none d-block  pl-0 pr-0 pb-5" style="margin-top:100px;">
+     <div  id="MyAlert_sm" class="bg-success row text-white d-flex justify-content-center align-items-center font-weight-bold"  style="left:15px;right:0;position:fixed;top:85px;z-index:2;width:100%;opacity:0.9;background-color:#a31818;">
+                  <h6 class="pt-1 pb-1 font-weight-normal" id="Message_sm" style="font-size:14px;"></h6>
+		           <a style="font-size:18px;font-weight:bold;" class="ml-3 mb-2" id="Close_sm">x</a>
+ 	</div>
+        <!--Carousel Wrapper-->
+              <div id="multi-item-example" class="carousel slide carousel-multi-item " data-ride="carousel" data-interval="false" style="width:100vw;">
+                <!--Slides-->
+                {% if object.image %}
+                <div class="carousel-inner " role="listbox" >
+                  <!--First slide-->
+                  <div class="carousel-item active ">
+                    <div class="row ">
+                      <div class="col-12 ">
+                        <div class="card mb-2 ">
+                         <a href="{{object.image.url}}" ><img class="card-img-top w-100" src="{{ object.image.url }}"
+                            alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                  </div>
+                  </div>
+                 {% endif %}
+                  <!--/.First slide-->
+                  <!--Second slide-->
+                  {% if object.video %}
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <iframe style="border-radius:0;height:360px;width:100%;border:none;" src="{{object.video}}">
+						</iframe>
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  <!--/.Second slide-->
+                  {% endif %}
+                  {% if object.image1 %}
+                  <!--Third slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image1.url}}" ><img class="card-img-top" src="{{object.image1.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Third slide-->
+                  {% endif %}
+                  {% if object.image2 %}
+                    <!--Fourth slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image2.url}}" ><img class="card-img-top" src="{{object.image2.url}}"
+                                  alt="Card image cap"style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Fourth slide-->
+                  {% endif %}
+                  {% if object.image3 %}
+                    <!--Fifth slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image3.url}}" ><img class="card-img-top" src="{{object.image3.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Fifth slide-->
+                  {% endif %}
+                  {% if object.image4 %}
+                    <!--Sixth slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image4.url}}" ><img class="card-img-top" src="{{object.image4.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Sixth slide-->
+                  {% endif %}
+                  {% if object.image5 %}
+                    <!--Seventh slide-->
+                  <div class="carousel-item">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image5.url}}" ><img class="card-img-top" src="{{object.image5.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Seventh slide-->
+                   {% endif %}
+                   {% if object.image6 %}
+                    <!--Eighth slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image6.url}}" ><img class="card-img-top" src="{{object.image6.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Eighth slide-->
+                   {% endif %}
+                   {% if object.image7 %}
+                    <!--ninth slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image7.url}}"  ><img class="card-img-top" src="{{object.image7.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.ninth slide-->
+                   {% endif %}
+                   {% if object.image8 %}
+                    <!--Tenth slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image8.url}}" ><img class="card-img-top" src="{{object.image8.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Tenth slide-->
+                   {% endif %}
+                   {% if object.image9 %}
+                    <!--Eleventh slide-->
+                  <div class="carousel-item">
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-2">
+                          <a href="{{object.image9.url}}" ><img class="card-img-top" src="{{object.image9.url}}"
+                                  alt="Card image cap" style="height:360px;width:100%;"></a>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!--/.Eleventh slide-->
+                    {% endif %}
+                </div>
+                <!--/.Slides-->
+
+                <!--Indicators-->
+                <ol class="carousel-indicators bg-light " style="z-index:1;position:relative;top:50hv;">
+                  {% if object.image %}
+                  <li data-target="#multi-item-example" data-slide-to="0" class="active " style="background-color:#868a58" ></li>
+                   {% endif %}
+                   {% if object.video %}
+                  <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="1"></li>
+                    {% endif %}
+                   {% if object.image1 %}
+                  <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="2"></li>
+                   {% endif %}
+                   {% if object.image2 %}
+                  <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="3"></li>
+                   {% endif %}
+                   {% if object.image3 %}
+                   <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="4"></li>
+                   {% endif %}
+                   {% if object.image4 %}
+                   <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="5"></li>
+                   {% endif %}
+                   {% if object.image5 %}
+                   <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="6"></li>
+                   {% endif %}
+                   {% if object.image6 %}
+                   <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="7"></li>
+                    {% endif %}
+                    {% if object.image7 %}
+                   <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="8"></li>
+                   {% endif %}
+                   {% if object.image8 %}
+                   <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="9"></li>
+                    {% endif %}
+                   {% if object.image9%}
+                    <li data-target="#multi-item-example" style="background-color:#868a58" data-slide-to="10"></li>
+                    {% endif %}
+                </ol>
+                <!--/.Indicators-->
+              </div>
+              <!--/.Carousel Wrapper-->
+            <div class="row">
+                <h6 class="ml-4 font-weight-normal" style=" text-transform: uppercase;">{{object.Brand}}</h6>
+            </div>
+            <div class="row">
+                <h6 class="ml-4 font-weight-normal text-muted" >{{object.Name}}</h6>
+            </div>
+            <div class="row">
+             <small class="ml-4 text-success">Special Price</small>
+            </div>
+			<div class="row mt-2 ">
+			  <h5 class="ml-4 font-weight-bold">₹{{object.discount_price}}</h5>
+			  <span class="discount text-muted pl-2"><strike>₹{{object.price}}</strike></span>
+			</div>
+            <hr>
+            <div class="row mt-2">
+			    <h6 class="ml-4" style="font-weight:bold;">SELLER</h6>
+            </div>
+            <div class="row">
+			<a class="ml-4" href="{% url 'Explore:seller-page' object.UID.unique_id %}"><h6 style="font-weight:normal;" >{{object.UID.name}}</h6></a>
+            </div>
+			<hr>
+            <!-- Ratings -->
+			<div class="row" >
+                <h6 class="ml-4" style="font-weight:bold;">RATINGS AND REVIEWS</h6>  <a href="{% url 'Base:review-page' object.slug %}"><i class=" ml-4 fas fa-pencil-alt" style="font-size:20px;color:#03a5fc;"></i></a>
+            </div>
+
+			{% if reviews %}
+			<span class="row"><h1 class="font-weight-normal ml-4">{{overall}}</h1> <i class="fas fa-star text-warning ml-2 pt-2" style="font-size:25px;"></i></span>
+			<h6 class="font-weight-normal ml-2">Customer Images ({{reviews.count }})</h6>
+			{% for rates in reviews %}
+				{% for images in rates.photos.all %}
+					<a class="ml-2 mt-1" href="{{images.image.url}}"><img src="{{images.image.url}}" height="60" width="60"></a>
+				{% endfor %}
+			{% endfor %}
+			<h6 class="font-weight-normal mt-3 ml-2">Ratings ({{reviews.count }})</h6>
+			<hr>
+			{% for rates in reviews %}
+				<span class="row "><h6 class="bg-success text-white ml-4" style="white-space:pre;color:#595557;font-size:16px;">{{rates.rating}}<i class="fas fa-star text-white"></i></h6> <h6 class="ml-2">{{rates.review}}</h6></span>
+				<span class="row ">
+				{% for imgs in rates.photos.all %}
+					<a class="ml-4" href="{{imgs.image.url}}"><img src="{{imgs.image.url}}"  height="60" width="60"></a>
+				{% endfor %}
+				</span>
+				<h6 class="mt-3 ml-2">{{rates.user.username}} | {{rates.Date}}</h6>
+				<hr>
+			{% endfor %}
+			{% else %}
+            <div class="row">
+				<h6 class="ml-4" style="white-space:pre;color:#595557;font-size:16px;">Be the first one to rate this item</h6>
+            </div>
+			{% endif %}
+			<!-- Ratings -->
+            <!-- Product Details -->
+
+			<h6 class="ml-2" style="font-weight:bold;">PRODUCT DETAILS</h6>
+			<h6 class="ml-2" style="white-space:pre;color:#595557;font-size:16px;">{{object.description}}</h6>
+			<h6 class="ml-2" style="font-weight:bold;font-size:16px;">SPECIFICATIONS</h6>
+			<hr>
+			<!-- Product Details -->
+
+            <a id="AddToCart_sm" class="ml-0 mr-0 btn mb-0 mt-0" style="font-weight:normal;color:white;white-space:pre;background-color:#f09e2b;width:50%;position:fixed;bottom:0;left:0;"><i class="fas fa-shopping-bag"></i>  ADD TO CART</a>
+            <a id="AddToWishlist_sm" class="btn ml-0 mr-0 mb-0 mt-0 bg-white" style="font-weight:normal;white-space:pre;color:black;width:50%;position:fixed;bottom:0;right:0;"><i class="far fa-heart"></i>  WISHLIST</a>
+
+</div>
+
 
 <!-- Footer -->
-<div class="container-fluid " style="margin-top:100px;background-color:#162691;">
+<div class="container-fluid d-md-block d-none" style="margin-top:100px;background-color:#162691;">
   <div class="row pt-4 pb-5">
     <div class="col-md-3 col-12">
         <!-- Logo -->
@@ -191,12 +482,15 @@
 
   </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <!-- rating.js file -->
 <script>
 	// Script for adding item to cart and updating the value
 	$('#MyAlert').hide();
 	$('#Message').hide();
+    $('#Close').hide();
+
 	$('#AddToCart').on('click',function(){
 	$.ajax({
               method: "GET",
@@ -204,16 +498,22 @@
               data: {},
               success: function(data) {
               document.getElementById('CartCount').innerHTML = data;
+              document.getElementById('CartCount_sm').innerHTML = data;
               }
         })
     document.getElementById('Message').innerHTML = "This item has been added to your cart";
 	$('#MyAlert').show();
 	$('#Message').show();
+	 $('#Close').show();
 	})
+
+
 	$('#Close').on('click',function(){
 	 $('#MyAlert').hide();
 	$('#Message').hide();
+	 $('#Close').hide();
 	});
+
 	// Script for adding item to Wishlist and updating the value
 	$('#AddToWishlist').on('click',function(){
 	$.ajax({
@@ -226,7 +526,50 @@
     document.getElementById('Message').innerHTML = "This item has been added to your wishlist";
 	$('#MyAlert').show();
 	$('#Message').show();
+	$('#Close').show();
 	})
+
+	// Small cart
+	$('#MyAlert_sm').hide();
+	$('#Message_sm').hide();
+	$('#Close_sm').hide();
+
+    $('#AddToCart_sm').on('click',function(){
+	$.ajax({
+              method: "GET",
+              url: "{% url 'Base:add-to-cart' object.slug %}",
+              data: {},
+              success: function(data) {
+              document.getElementById('CartCount').innerHTML = data;
+              document.getElementById('CartCount_sm').innerHTML = data;
+              }
+        })
+    document.getElementById('Message_sm').innerHTML = "This item has been added to your cart";
+	$('#MyAlert_sm').show();
+	$('#Message_sm').show();
+	$('#Close_sm').show();
+	})
+
+	$('#Close_sm').on('click',function(){
+	 $('#MyAlert_sm').hide();
+	$('#Message_sm').hide();
+	$('#Close_sm').hide();
+	});
+
+    $('#AddToWishlist_sm').on('click',function(){
+	$.ajax({
+              method: "GET",
+              url: "{% url 'Base:add-to-wishlist' object.slug %}",
+              data: {},
+              success: function(data) {
+              }
+        })
+    document.getElementById('Message_sm').innerHTML = "This item has been added to your wishlist";
+	$('#MyAlert_sm').show();
+	$('#Message_sm').show();
+	$('#Close_sm').show();
+	})
+
 </script>
 
 

@@ -145,10 +145,17 @@ def Join_Market(request,slug):
     except :
         market = Mall.objects.get(unique_id=slug)
         # Check if the seller belongs here
+    # if Previously added to any market or mall remove from there
     market.shops.add(profile)
     try:
+        if profile.market_to is not None:
+            pre_market = profile.market_to
+            pre_market.shops.remove(profile)
         profile.market_to = market
     except:
+        if profile.mall_to is not None:
+            pre_market = profile.mall_to
+            pre_market.shops.remove(profile)
         profile.mall_to = market
     profile.save()
     messages.success(request,'Congratulations,Your Shop has been added to this Marketplace')

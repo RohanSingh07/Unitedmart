@@ -24,7 +24,7 @@ input[type=number]::-webkit-outer-spin-button {
     transform:scale(1.01);
 }
 </style>
-<div class="container-fluid bg-white " style="margin-top:84px;">
+<div class="container-fluid bg-white d-md-block d-none" style="margin-top:84px;">
     <div class="row bg-info" style="height:12px;">
 
     </div>
@@ -4898,9 +4898,9 @@ input[type=number]::-webkit-outer-spin-button {
                         <table>
                             <thead><h6  class="pt-2" style="font-size:15px;">Sort By </h6></thead>
                             <thead ><a onclick="relevance()" id="Relevance" class="ml-5" style="font-size:14px;font-weight:light">Relevance</a></thead>
-                            <thead><a onclick="ascending()" id="LowPrice" class="ml-5 font-weight-light" style="font-size:14px;">Price : Low to High </a></thead>
-                            <thead><a onclick="descending()" id="HighPrice" class="ml-5 font-weight-light" style="font-size:14px;">Price : High to Low </a></thead>
-                            <thead><a onclick="NewestArrival()" id="NewArrival" class="ml-5 font-weight-light" style="font-size:14px;">Newest Arrivals </a></thead>
+                            <thead><a onclick="ascending()" id="LowPrice" class="ml-5 " style="font-size:14px;font-weight:light;">Price : Low to High </a></thead>
+                            <thead><a onclick="descending()" id="HighPrice" class="ml-5 " style="font-size:14px;font-weight:light;">Price : High to Low </a></thead>
+                            <thead><a onclick="NewestArrival()" id="NewArrival" class="ml-5 " style="font-size:14px;font-weight:light;">Newest Arrivals </a></thead>
                         </table>
                     </div>
                     <div class="row wow fadeIn d-flex justify-content-start pl-2 pt-2 ">
@@ -4911,7 +4911,7 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="card ml-2 mr-2 mt-2 " style="max-width:280px;">
                           <!--Card image-->
                           <div class="view overlay ">
-                            <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="300" width="280" style="max-width:280px;">
+                            <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="300" width="280" style="min-width:280px;max-width:280px;">
                             {% if item.shops %}
                               <a href="{% url 'Explore:Marketplace-page' item.unique_id %}">
                               <div class="mask rgba-white-slight"></div>
@@ -4949,7 +4949,7 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="card ml-2 mr-2 mt-2 " style="max-width:280px;">
                           <!--Card image-->
                           <div class="view overlay ">
-                            <img src="{{ item.image_url }}" class="card-img-top " height="300" width="280" style="max-width:280px;">
+                            <img src="{{ item.image_url }}" class="card-img-top " height="300" width="280" style="min-width:280px;max-width:280px;">
                             <a href="{{item.get_abs_url}}">
                               <div class="mask rgba-white-slight"></div>
                             </a>
@@ -4989,8 +4989,219 @@ input[type=number]::-webkit-outer-spin-button {
     </div>
 
 </div>
+
+
+<!-- Small Screen -->
+<div class="container-fluid d-md-none d-block " style="margin-top:102px;" id="Small_screen_search">
+    {% if results %}
+    <div class="row" style="position:fixed;top:73px;z-index:1;width:100%;">
+      <button class="btn bg-white navbar-toggler col-6 pt-2 pb-2 ml-0 mr-0" data-toggle="collapse" data-target="" onclick="SortByOpen()">SORT BY</button>
+      <button class="btn bg-white navbar-toggler col-6 pt-2 pb-2 ml-0 mr-0" data-toggle="collapse" data-target="" onclick="FilterOpen()">FILTERS</button>
+    </div>
+    <div class="row wow fadeIn d-flex justify-content-start pl-0 pr-0 pt-2 ">
+              {% for item in results %} <!-- When we use Listview we call objects using object_list -->
+              <!--Grid column-->
+                {% if item.shop_photo1 %}
+                <!--Card-->
+                <div class="card col-6 pl-0 pr-0 ml-0 mr-0" style="border-radius:0;">
+                      <!--Card image-->
+                      <div class="view overlay ">
+                            <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="140" style="border-radius:0;" >
+                            {% if item.shops %}
+                              <a href="{% url 'Explore:Marketplace-page' item.unique_id %}">
+                              <div class="mask rgba-white-slight"></div>
+                            </a>
+                            {% else %}
+                              <a href="{% url 'Explore:seller-page' item.unique_id %}">
+                              <div class="mask rgba-white-slight"></div>
+                              </a>
+                            {% endif %}
+
+                      </div>
+                      <!--Card image-->
+                      <!--Card content-->
+                      {% if item.shops %}
+                    <a href="{% url 'Explore:Marketplace-page' item.unique_id %}" class="dark-grey-text"></a>
+                      {% else %}
+                    <a href="{% url 'Explore:seller-page' item.unique_id %}" class="dark-grey-text"></a>
+                      {% endif %}
+                      <div class="card-body text-center" style="height:120px;">
+                        <h6 style="text-overflow:ellipsis;font-size:16px;overflow:hidden;white-space:nowrap;font-weight:bold;">
+                            {{ item.name }}  <!-- Here we have used reverse and passes the url of product -->
+                               <!-- Used for fetching data from label-->
+                        </h6>
+                        <h6 class="font-weight-bold Filterhead pt-2 blue-text">
+                          {{item.district}}
+                        </h6>
+                        <span style="font-size:small;font-weight:bold;background-color:red;color:white;" class="pl-1 pr-1 pt-1 pb-1">Marketplace</span>
+                      </div>
+                      <!--Card content-->
+                </div>
+              <!--Card-->
+                {% else %}
+                <!--Card-->
+                <div class="card col-6 pl-0 pr-0 ml-0 mr-0" style="border-radius:0;">
+                  <!--Card image-->
+                  <div class="view overlay ">
+                    <img src="{{ item.image_url }}" class="card-img-top" height="140" style="border-radius:0;">
+                    <a href="{{item.get_abs_url}}">
+                      <div class="mask rgba-white-slight"></div>
+                    </a>
+                  </div>
+                  <!--Card image-->
+                  <!--Card content-->
+                  <a href="{{item.get_abs_url}}" class="dark-grey-text">
+                  <div class="card-body text-center" style="height:100px;">
+                    <h6 style="font-weight:bold;">{{item.Brand}}</h6>
+                    <h6 class="pt-0" style="text-overflow:ellipsis;font-size:14px;overflow:hidden;white-space:nowrap;">
+                        {{ item.Name }}  <!-- Here we have used reverse and passes the url of product -->
+                           <!-- Used for fetching data from label-->
+                    </h6>
+                    <h6 class="font-weight-bold Filterhead pt-2 blue-text">
+                        {% if item.discount_price %}
+                        ₹{{ item.discount_price }}
+                        {% else %}
+                        ₹{{ item.price }}
+                        {% endif %}
+                    </h6>
+                  </div>
+                  </a>
+                  <!--Card content-->
+                </div>
+              <!--Card-->
+                {% endif %}
+            <!--Grid column-->
+          {% endfor %}
+     </div>
+    {% endif %}
+</div>
+<div id="Filters" class="bg-white container-fluid " style="position:fixed;top:0;z-index:3;width:100vw;height:100%; overflow-y: scroll;">
+    <div class="row d-flex justify-content-center bg-info pt-2 pb-2">
+       <i class="fas fa-arrow-left " onclick="FilterClose()" style="color:white;font-size:20px;position:absolute;left:20px;"></i> <h6 class="ml-4 font-weight-bold text-white" style="font-size:20px;">FILTERS</h6>
+    </div>
+    <div class="row ">
+        <button class="col-4 btn btn-secondary border pl-0 pr-0 ml-0 mr-0" onclick="RemoveAllFilters()">
+            CLEAR ALL
+        </button>
+        <button class="col-8 btn btn-warning border pl-0 pr-0 ml-0 mr-0" onclick="ApplyFilter_sm()">
+            Apply Filters
+        </button>
+    </div>
+     <!-- MarketPlace or Products -->
+    <div class="row d-flex justify-content-start align-items-center pl-2 pb-4 border" id="MARKET_sm">
+        <div class="col">
+            <h6 class="font-weight-bold Filterhead pt-2 " style="font-size:14px;">SEARCH FOR</h6>
+            <input type="radio" name="Marketplace_sm" id="Marketplace_sm" value="Marketplace"> <label class="FilterContent" id="Marketplace_label_sm"> MARKETPLACE</label><br>
+            <input type="radio" name="Marketplace_sm" id="Products_sm" value="Products"> <label id="Products_label_sm" class="FilterContent"> PRODUCTS </label><br>
+        </div>
+    </div>
+    <!-- MarketPlace or Products -->
+    <!-- Price Filter -->
+    <div class="row d-flex justify-content-start align-items-center pl-2 pb-4 border" id="PRICE_sm">
+        <div class="col">
+            <h6 class="font-weight-bold Filterhead pt-2 " style="font-size:14px;">PRICE</h6>
+            <input type="number" style="width:40%;border-radius:0px;border:2px solid grey;font-size:12px;" placeholder="Min" id="LowerPrice_sm" >
+            <input type="number"  style="width:40%;border-radius:0px;border:2px solid grey;font-size:12px;" placeholder="Max" id="UpperPrice_sm">
+        </div>
+    </div>
+    <!-- Price Filter End-->
+    <!-- Brand Filter -->
+    {% if Brands %}
+    <div class="row d-flex justify-content-start align-items-center pl-2  border">
+        <div class="col" id="BRAND_sm">
+            <h6 class="font-weight-bold Filterhead pt-2 " >BRAND</h6>
+            <div id="hidden-items-brand_sm">
+
+            {% for brand in Brands %}
+                <input  type="checkbox"  value="{{brand}}"> <label class="FilterContent" >{{brand}}</label>
+                <span class="mark"></span>
+                <br>
+            {% endfor %}
+            </div>
+            <a onclick="DisplayBrandItems_sm()"><i id="Brand-arrow_sm" class="fas fa-chevron-up" style="position:absolute;right:10px;top:2px;color:grey;font-size:13px;"></i></a>
+        </div>
+
+    </div>
+    {% endif %}
+    <!-- Brand Filter End-->
+    <!-- Color Filter-->
+    {% if Colors %}
+    <div class="row d-flex justify-content-start align-items-center pl-2 border" id="Colors_sm">
+        <div class="col">
+            <h6 class="font-weight-bold Filterhead pt-2 " >COLOR</h6>
+            <div id="hidden-items-color_sm">
+            {% for color in Colors %}
+                <input  type="checkbox" value="{{color}}"> <label class="FilterContent">{{color}}</label>
+                <br>
+            {% endfor %}
+            </div>
+            <a onclick="DisplayColorItems_sm()"><i id="Color-arrow_sm" class="fas fa-chevron-up" style="position:absolute;right:10px;top:2px;color:grey;font-size:13px;"></i></a>
+        </div>
+    </div>
+    {% endif %}
+    <!-- Color Filter-->
+    <!-- Reviews Filter -->
+    <div class="row d-flex justify-content-start align-items-center pl-2 border" id="RATINGS_sm">
+        <div class="col">
+            <h6 class="font-weight-bold Filterhead pt-2 ">CUSTOMER RATINGS</h6>
+            <input type="radio" name="Ratings_sm" value="4"> <label class="FilterContent"> 4 <i class="far fa-star" style="font-size:12px"></i> & above</label><br>
+            <input type="radio" name="Ratings_sm" value="3"> <label class="FilterContent"> 3 <i class="far fa-star" style="font-size:12px"></i> & above</label><br>
+            <input type="radio" name="Ratings_sm" value="2"> <label class="FilterContent"> 2 <i class="far fa-star" style="font-size:12px"></i> & above</label><br>
+            <input type="radio" name="Ratings_sm" value="1"> <label class="FilterContent"> 1 <i class="far fa-star" style="font-size:12px"></i> & above</label><br>
+        </div>
+    </div>
+    <!-- Reviews Filter End -->
+</div>
+<div id="SortBy_sm" class="bg-white container-fluid " style="position:fixed;top:0;z-index:4;width:100vw;height:100%; overflow-y: scroll;">
+    <div class="row d-flex justify-content-center bg-info pt-2 pb-2">
+       <i class="fas fa-arrow-left " onclick="SortByClose()" style="color:white;font-size:20px;position:absolute;left:20px;"></i> <h6 class="ml-4 font-weight-bold text-white" style="font-size:20px;">SORT BY</h6>
+    </div>
+    <div class="row">
+    <a onclick="relevance()" id="Relevance_sm" class=" col-12 mt-3" style="font-size:14px;font-weight:light;">Relevance</a>
+    <a onclick="ascending()" id="LowPrice_sm" class="   col-12 mt-3" style="font-size:14px;font-weight:light">Price : Low to High </a>
+    <a onclick="descending()" id="HighPrice_sm" class="   col-12 mt-3" style="font-size:14px;font-weight:light">Price : High to Low </a>
+    <a onclick="NewestArrival()" id="NewArrival_sm" class="   col-12 mt-3" style="font-size:14px;font-weight:light">Newest Arrivals </a>
+    </div>
+</div>
 <script>
+var searchParams = new URLSearchParams(window.location.search);
+
+
+// Filter SMall Screen
+$('#Filters').hide()
+// Sort By SMall Screen
+$('#SortBy_sm').hide()
+
+function FilterOpen(){
+$('#Filters').show()
+$('#Small_screen_search').hide()
+
+}
+function SortByOpen(){
+$('#SortBy_sm').show()
+$('#Small_screen_search').hide()
+
+}
+
+function FilterClose(){
+$('#Filters').hide();
+$('#Small_screen_search').show()
+}
+
+function SortByClose(){
+$('#SortBy_sm').hide();
+$('#Small_screen_search').show()
+}
+
 //Products_label
+$('#Marketplace_label_sm').on('click',function(){
+$('#Marketplace_sm').prop("checked",true);
+
+})
+$('#Products_label_sm').on('click',function(){
+$('#Products_sm').prop("checked",true);
+
+})
 $('#Marketplace_label').on('click',function(){
 $('#Marketplace').prop("checked",true);
 
@@ -5000,18 +5211,137 @@ $('#Products').prop("checked",true);
 
 })
 
-   $('#Marketplace_section').hide();
-// Hide Products show marketplace section
+// Marketplace_sm
+Marketplace_sm = document.getElementsByName('Marketplace_sm');
+searchParams_Marketplace_sm=searchParams.get("next[300]");
+for(var k=0;k<Marketplace_sm.length;k++){
+    if(searchParams_Marketplace_sm === Marketplace_sm[k].value){
+        Marketplace_sm[k].checked=true;
+    }  }
 
-    function Hide_Products_Show_Marketplace(){
-          $('#Marketplace_section').show();
-          $('#Products_section').hide();
+// Price
+LowerPrice_sm = document.getElementById('LowerPrice_sm');
+UpperPrice_sm = document.getElementById('UpperPrice_sm');
+if(searchParams.get("next[3]")!==null){
+searchParams_Price_sm=searchParams.get("next[3]").split(",");
+LowerPrice_sm.value = searchParams_Price_sm[0];
+UpperPrice_sm.value = searchParams_Price_sm[1];
+
+}
+// Brand_sm Display
+
+function DisplayBrandItems_sm(){
+$('#hidden-items-brand_sm').toggle(100);
+if(document.getElementById('Brand-arrow_sm').className ==="fas fa-chevron-up"){
+document.getElementById('Brand-arrow_sm').className ="fas fa-chevron-down";
+}else{
+document.getElementById('Brand-arrow_sm').className ="fas fa-chevron-up";
+}
+}
+// Color Sm display
+// Colors
+function DisplayColorItems_sm(){
+$('#hidden-items-color_sm').toggle(100);
+if(document.getElementById('Color-arrow_sm').className ==="fas fa-chevron-up"){
+document.getElementById('Color-arrow_sm').className ="fas fa-chevron-down";
+}else{
+document.getElementById('Color-arrow_sm').className ="fas fa-chevron-up";
+}}
+
+// Brand_sm checked
+Brand_div_sm = document.getElementById('BRAND_sm');
+if(searchParams.get("next[2]")!==null){
+searchParams_brand_sm = searchParams.get("next[2]").split(",");
+for(var i=0;i<Brand_div_sm.getElementsByTagName('input').length;i++){
+    if(searchParams_brand_sm.includes(Brand_div_sm.getElementsByTagName('input')[i].value)){
+        Brand_div_sm.getElementsByTagName('input')[i].checked=true;
+    } } }
+
+// Colors_sm checked
+colors_div_sm = document.getElementById('Colors_sm');
+if(searchParams.get("next[4]")!==null){
+searchParams_colors_sm = searchParams.get("next[4]").split(",");
+for(var k=0;k<colors_div_sm.getElementsByTagName('input').length;k++){
+    if(searchParams_colors_sm.includes(colors_div_sm.getElementsByTagName('input')[k].value)){
+        colors_div_sm.getElementsByTagName('input')[k].checked=true;
+    }}}
+
+// Ratings_sm checked
+ratings_sm = document.getElementsByName('Ratings_sm');
+searchParams_ratings_sm=searchParams.get("next[5]");
+for(var k=0;k<ratings_sm.length;k++){
+    if(searchParams_ratings_sm === ratings_sm[k].value){
+        ratings_sm[k].checked=true;
+    }  }
+
+function ApplyFilter_sm(){
+    //Price
+    let PriceArray_sm=[]
+
+
+    // Brand_sm
+    let Brand_Array_sm=[];
+
+    if(Brand_div_sm!==null){
+    for(var i=0;i<Brand_div_sm.getElementsByTagName('input').length;i++){
+        if(Brand_div_sm.getElementsByTagName('input')[i].checked){
+        Brand_Array_sm.push(Brand_div_sm.getElementsByTagName('input')[i].value);}
+        }}
+
+     // Color Loop
+    Color_Array_sm=[];
+    if(colors_div_sm!==null){
+    for(var k=0;k<colors_div_sm.getElementsByTagName('input').length;k++){
+        if(colors_div_sm.getElementsByTagName('input')[k].checked){
+        Color_Array_sm.push(colors_div_sm.getElementsByTagName('input')[k].value);}
+        }}
+
+    if ('URLSearchParams' in window) {
+    var searchParams = new URLSearchParams(window.location.search);
+
+    //Brands
+    var Brand_tam = 0;
+    if(searchParams.get("next[2]")){
+         Brand_tam = 1;
+        }
+    if(Brand_Array_sm.length!==0 || Brand_tam===1){ // To remove unnecessary sets in the URL
+    searchParams.set("next[2]", Brand_Array_sm);}
+
+    // Marketplace_sm
+    let marketplace_sm;
+    for(var k=0;k<Marketplace_sm.length;k++){
+        if(Marketplace_sm[k].checked){
+        marketplace_sm= Marketplace_sm[k].value;}
+        }
+    searchParams.set("next[300]",marketplace_sm);
     }
-// Show Products hide marketplace section
-     function Hide_Marketplace_Show_Products(){
-          $('#Marketplace_section').hide();
-          $('#Products_section').show();
+    // Price
+    PriceArray_sm[0]=LowerPrice_sm.value
+    PriceArray_sm[1]=UpperPrice_sm.value
+    searchParams.set("next[3]", PriceArray_sm);
+
+      //Colors
+    var Color_tam = 0;
+    if(searchParams.get("next[4]")){
+         Color_tam = 1;
+        }
+    if(Color_Array_sm.length!==0 || Color_tam===1){
+    searchParams.set("next[4]",Color_Array_sm);
     }
+
+     //Ratings
+    let Rating_sm;
+    for(var k=0;k<ratings_sm.length;k++){
+        if(ratings_sm[k].checked){
+        Rating_sm = ratings_sm[k].value;}
+        }
+    searchParams.set("next[5]",Rating_sm);
+
+     // Set the entire url
+       window.location.search = searchParams.toString();
+
+}
+// Filter Small Screen End
 
 function ascending(){
   if ('URLSearchParams' in window) {
@@ -5043,20 +5373,23 @@ function NewestArrival(){
     }
 }
 
-var searchParams = new URLSearchParams(window.location.search);
 
 // For BorderBottom of Sort By
 if(searchParams.get("next[1]")==="rel"){
 document.getElementById("Relevance").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
+document.getElementById("Relevance_sm").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
 }
 if(searchParams.get("next[1]")==="Nwst"){
 document.getElementById("NewArrival").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
+document.getElementById("NewArrival_sm").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
 }
 if(searchParams.get("next[1]")==="asc"){
 document.getElementById("LowPrice").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
+document.getElementById("LowPrice_sm").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
 }
 if(searchParams.get("next[1]")==="dsc"){
 document.getElementById("HighPrice").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
+document.getElementById("HighPrice_sm").style="border-bottom:2px solid blue;font-weight:bold;font-size:14px;";
 }
 
 
@@ -9614,7 +9947,6 @@ document.getElementById('Brand-arrow').className ="fas fa-chevron-down";
 }else{
 document.getElementById('Brand-arrow').className ="fas fa-chevron-up";
 }
-
 }
 Brand_div = document.getElementById('BRAND');
 if(searchParams.get("next[2]")!==null){
@@ -9632,6 +9964,7 @@ searchParams_Price=searchParams.get("next[3]").split(",");
 LowerPrice.value = searchParams_Price[0];
 UpperPrice.value = searchParams_Price[1];
 
+
 }
 
 // Colors
@@ -9641,9 +9974,7 @@ if(document.getElementById('Color-arrow').className ==="fas fa-chevron-up"){
 document.getElementById('Color-arrow').className ="fas fa-chevron-down";
 }else{
 document.getElementById('Color-arrow').className ="fas fa-chevron-up";
-}
-
-}
+}}
 colors_div = document.getElementById('Colors');
 if(searchParams.get("next[4]")!==null){
 searchParams_colors = searchParams.get("next[4]").split(",");
@@ -11786,6 +12117,7 @@ function ApplyFilter(){
         marketplace = Marketplace[k].value;}
         }
     searchParams.set("next[300]",marketplace);
+
 
     // Distress
     var Distress_tam = 0;
@@ -14856,52 +15188,3 @@ function RemoveAllFilters(){
 </script>
 
 {% endblock%}
-{% block Footer %}
-<!-- Footer -->
-<div class="container-fluid " style="margin-top:100px;background-color:#162691;">
-  <div class="row pt-4 pb-5">
-    <div class="col-md-3 col-12">
-        <!-- Logo -->
-          <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
-        <!-- Logo -->
-
-          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
-          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
-          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
-          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
-
-        <!-- Social Sites -->
-          <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
-          <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
-          <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
-          <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
-        <!-- Social Sites -->
-    </div>
-    <div class="col-md-3 col-12">
-      <h5 class="text-white font-weight-bold">About</h5>
-      <h6 style="color:#c0c3cf">Contact Us</h6>
-      <h6 style="color:#c0c3cf">Careers</h6>
-      <h6 style="color:#c0c3cf">About Us</h6>
-    </div>
-    <div class="col-md-3 col-12">
-      <h5 class="text-white font-weight-bold">Help</h5>
-      <h6 style="color:#c0c3cf">Payments</h6>
-      <h6 style="color:#c0c3cf">Shipping</h6>
-      <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
-      <h6 style="color:#c0c3cf">FAQ</h6>
-      <h6 style="color:#c0c3cf">Report Infringement</h6>
-    </div>
-    <div class="col-md-3 col-12">
-      <h5 class="text-white font-weight-bold">Policy</h5>
-      <h6 style="color:#c0c3cf">Return Policy</h6>
-      <h6 style="color:#c0c3cf">Terms of Use</h6>
-      <h6 style="color:#c0c3cf">Security</h6>
-      <h6 style="color:#c0c3cf">Privacy</h6>
-      <h6 style="color:#c0c3cf">Terms of Service</h6>
-    </div>
-
-
-
-  </div>
-</div>
-{% endblock %}

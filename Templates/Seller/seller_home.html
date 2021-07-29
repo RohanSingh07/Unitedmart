@@ -13,7 +13,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 </style>
-<div class="container-fluid " style="margin-top:95px;">
+<div class="container-fluid d-none d-md-block" style="margin-top:95px;">
     <form method="POST" action="{% url 'users:seller-signup-1' %}">
     {% csrf_token %}
     <div class="row">
@@ -25,20 +25,71 @@ input[type=number]::-webkit-outer-spin-button {
         <button style="background-color:#f09e2b;height:40px;color:white;border-radius:0px;position:absolute;top:400px;left:460px;" class="btn" type="submit">REGISTER</button>
     </div>
     </form>
-
-
-<!--    <div class="row mt-5 pt-2">-->
-<!--        <a href="{% url 'users:seller-login' %}">Login</a>-->
-<!--    </div>-->
-<!--    <div class="row">-->
-
-<!--    </div>-->
 </div>
-
+<div class="container-fluid d-block d-md-none" style="margin-top:95px;">
+    <form method="POST" action="{% url 'users:seller-signup-1' %}">
+    {% csrf_token %}
+    <div class="row">
+        <img src="{% static 'img/carousel/abcd.jpg' %}" height="600" style="width:100%;" class="border">
+        <img src="{% static 'img/carousel/seller_image2.png' %}" height="200" style="width:200px;position:absolute;right:20px;top:100px;" >
+        <h4 style="position:absolute;top:300px;left:20px;font-weight:bold;color:#022f52;font-size:25px;">Become a Seller on Unitedmart</h4>
+        <h6 style="position:absolute;top:360px;left:20px;color:#022f52">Make your products available to crores of customers & business 27x7</h6>
+        <input type="number" style="position:absolute;top:425px;left:20px;width:180px;border-radius:0px;height:40px;font-size:small;" name="mobile" placeholder="Enter your mobile number" class="form-control">
+        <button style="background-color:#f09e2b;height:40px;color:white;border-radius:0px;position:absolute;top:419px;left:192px;width:120px;font-size:10px;" class="btn" type="submit">REGISTER</button>
+    </div>
+    </form>
+</div>
 {% endblock %}
 {% block Footer %}
 <!-- Footer -->
-<div class="container-fluid " style="background-color:#162691;">
+<div class="container-fluid d-md-none d-block" style="margin-top:5px;background-color:#162691;">
+  <div class="row pt-4 pb-5">
+    <div class="col-6">
+        <!-- Logo -->
+          <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+        <!-- Logo -->
+
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+        <!-- Social Sites -->
+          <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+        <!-- Social Sites -->
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">About</h5>
+      <h6 style="color:#c0c3cf">Contact Us</h6>
+      <h6 style="color:#c0c3cf">Careers</h6>
+      <h6 style="color:#c0c3cf">About Us</h6>
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">Help</h5>
+      <h6 style="color:#c0c3cf">Payments</h6>
+      <h6 style="color:#c0c3cf">Shipping</h6>
+      <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+      <h6 style="color:#c0c3cf">FAQ</h6>
+      <h6 style="color:#c0c3cf">Report Infringement</h6>
+    </div>
+    <div class="col-6">
+      <h5 class="text-white font-weight-bold">Policy</h5>
+      <h6 style="color:#c0c3cf">Return Policy</h6>
+      <h6 style="color:#c0c3cf">Terms of Use</h6>
+      <h6 style="color:#c0c3cf">Security</h6>
+      <h6 style="color:#c0c3cf">Privacy</h6>
+      <h6 style="color:#c0c3cf">Terms of Service</h6>
+    </div>
+
+
+
+  </div>
+</div>
+<!-- Footer -->
+<div class="container-fluid d-md-block d-none" style="margin-top:5px;background-color:#162691;">
   <div class="row pt-4 pb-5">
     <div class="col-md-3 col-12">
         <!-- Logo -->
@@ -84,5 +135,4 @@ input[type=number]::-webkit-outer-spin-button {
 
   </div>
 </div>
-
 {% endblock %}

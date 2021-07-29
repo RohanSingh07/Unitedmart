@@ -8,7 +8,8 @@ from django.shortcuts import render, get_object_or_404, redirect,reverse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
-from datetime import datetime
+from datetime import datetime,date
+
 from . import  models
 from Seller.views import create_random_unique_product_slug
 # make a validation to check whether the entered data in the form is empty or not
@@ -268,7 +269,7 @@ def Checkout(request):
 
         for order_items in order.items.all():
             order_items.ordered=True # Set order =True
-            order_items.date_of_order = datetime.date.today() # Date or ordering
+            order_items.date_of_order = date.today() # Date or ordering
             order_items.items.UID.Earning +=order_items.get_total_discount_item_price() # Increase the Earning of the seller
             order_items.items.UID.sales+=order_items.quantity # Increse the quantity of the products sold by seller
             order_items.items.UID.My_orders.add(order_items) # Add this order items to seller my_orders
@@ -2151,24 +2152,27 @@ def searchbar(request):
             shop_qs = list(r_shops.to_queryset())
             mall_qs = list(r_malls.to_queryset())
             market_qs = list(r_markets.to_queryset())
-            ms = qs+shop_qs+mall_qs+market_qs
 
-            # Marketplace
+
+            # sorting for ascending order or descending order
+            if request.GET.get('next[1]')=="asc":
+                sorting_price_ascending(qs)
+            elif request.GET.get('next[1]')=="dsc":
+                sorting_price_descending(qs)
+            elif request.GET.get('next[1]')=='Nwst':
+                NewestArrivals(qs)
+            else:
+                pass
+
+            # Combined queryset
+            ms = qs + shop_qs + mall_qs + market_qs
+            # Marketplace or products
             if request.GET.get('next[300]'):
                 marketplace = request.GET.get('next[300]')
                 if marketplace == 'Marketplace':
                     ms= shop_qs+mall_qs+market_qs
                 else:
                     ms = qs
-            # sorting for ascending order or descending order
-            if request.GET.get('next[1]')=="asc":
-                sorting_price_ascending(ms)
-            elif request.GET.get('next[1]')=="dsc":
-                sorting_price_descending(ms)
-            elif request.GET.get('next[1]')=='Nwst':
-                NewestArrivals(ms)
-            else:
-                pass
             return render(request, 'Base/searchbar.html', {'results': ms,
                                                            'order':order,
                                                            'Brands':Brands,
@@ -2344,8 +2348,9 @@ def MyOrdersView(request):
             order = False
     except:
         order = False
+
     my_orders = MyOrders.objects.get_or_create(user = request.user)
     return render(request, 'Base/MyOrders.html', {
         'order':order,
-        'MyOrders':my_orders
+        'MyOrders':my_orders[0]
     })

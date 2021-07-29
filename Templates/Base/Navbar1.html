@@ -16,6 +16,9 @@
         position:fixed;
         z-index:2;
         top:0;
+        -webkit-box-shadow: 0 3px 6px -6px black;
+                -moz-box-shadow: 0 3px 6px -6px black;
+                    box-shadow: 0 3px 6px -6px black;
         }
 
 
@@ -42,9 +45,7 @@
 
         /* when the screen size is greater than 991px*/
          @media only screen and (min-width: 991px){
-           .show{
-              display: none ;
-            }
+
 
          }
          /* when the screen size is greater than 991px*/
@@ -55,14 +56,8 @@
            .collapse {
                display: none !important;
            }
-           .hide{
 
-                      display: none !important;
 
-                }
-            .show{
-              display: block !important;
-            }
             .navbar-toggler{
             display: block !important;}
 
@@ -242,7 +237,7 @@
 
 </style>
 <!-- Navbar for large screen -->
-<div class="container-fluid bg-white hide NavbarLg ">
+<div class="container-fluid bg-white d-md-block d-none NavbarLg ">
     <div class="row d-flex align-items-center">
         <!-- For Logo -->
         <div class="col-2">
@@ -777,105 +772,71 @@
 
 
 <!-- Small screen size navbar -->
-<div class="container-fluid show bg-info navbar1">
+<div class="container-fluid d-md-none d-block bg-white navbar1">
     <div class="row  d-flex align-items-center">
 
       <!-- Togler Button -->
       <div class=" navbar-toggler col-2 d-flex justify-content-center align-items-center " type="button" data-toggle="collapse" data-target="" onclick="openNav()">
-        <i class="fas fa-bars bar pl-1" ></i>
+        <i class="fas fa-bars bar text-dark pl-1" ></i>
       </div>
 
       <!--logo-->
            <div class=" d-flex justify-content-center align-items-center col-4 ">
-            <a class="navbar-brand  text-white " href="{% url 'Base:Homepage' %}">Prototype</a>
+            <a class="navbar-brand "style="color:orange;font-family:monospace;font-weight:bold;" href="{% url 'Base:Homepage' %}">Unitedmart</a>
           </div>
       <!--logo-->
-
       <!-- Cart icon -->
-        <div class="nav-item  col-6 d-flex justify-content-end align-items-center font-weight-normal">
-
+        <div class="nav-item col-6 d-flex justify-content-end align-items-center font-weight-normal">
         <a class="nav-link waves-effect " href="{% url 'Base:Cart' %}"> <!--Bcz core is a different url appname -->
-
                             {% if order %}
-                                <span class="badge red z-depth-1 mr-0">
+                                <span id="CartCount_sm" class="badge red z-depth-1 mr-0">
                                 {{order.items.count}}
                                 </span>
                                 {% else %}
                             {% endif %}
-
-
-                        <i class="fas fa-shopping-cart shopicon text-white "></i>
-
+                        <i class="fas fa-shopping-cart shopicon" style="color:#6a6c6e;"></i>
         </a>
       </div>
-
     </div>
     <div class="row d-flex justify-content-center">
-
            <!-- Searchbar -->
         <form method="GET" action="{% url 'Base:searchbar'%}"  class="input-group form-sm form-2  pr-2" autocomplete="off">
-
              <div class="input-group col-12 pb-1">
-              <input id="text-inside" class=" form-control " name="q" type="text"  placeholder="Search for markets, malls, shops and more" aria-label="search" aria-describedby="search">
+              <input id="text-inside" name="q" type="text" style="border-style:solid;border-right:0;border-width:0.5px;border-color:#d4d3d2;height:35px;width:85%;font-size:small;padding-left:20px;border-radius:0;outline:none;" placeholder="Search for markets, malls, shops and more" aria-label="search" aria-describedby="search" autocomplete="off">
               <input type="hidden" name="next[0]" value="{{request.path}}">
               <input type="hidden" name="next[1]" value="rel">
               <div class="input-group-prepend">
-                <button class="input-group-text" id="search">
-                  <i class="fas fa-search text-info"></i>
+                <button class="input-group-text bg-white" style="border-left:0;height:35px;border-color:#d4d3d2;" id="search">
+                  <i class="fas fa-search " style="color:grey"></i>
                 </button>
               </div>
             </div>
-
         </form>
     <!-- Searchbar -->
-
-
     </div>
 </div>
 <!-- Small screen size navbar -->
-
 <!-- Side Navbar content-->
-
-<div id="mySidenav" class="sidenav bg-white">
-
-            <a href="javascript:void(0)" class="closebtn text-warning" onclick="closeNav()">&times;</a>
-
+<div id="mySidenav" class="sidenav " style="background-color:white;z-index:2;position:fixed;">
+            <a href="javascript:void(0)" class="closebtn font-weight-bold" style="position:absolute;right:15px;color:black" onclick="closeNav()">&times;</a>
     <ul class="navbar-nav  ">
-                <a class="text-dark nav-item border  d-flex justify-content-center align-items-center bg-info nav-brand" href="{% url 'Base:Homepage' %}"><!-- Exlore url to be given -->
-                   Logo
-               </a>
+                <a class="nav-item bg-info d-flex justify-content-center align-items-center nav-brand pt-4 pb-2" href="{% url 'Base:Homepage' %}" style="border-bottom:1px solid grey;"><img src="{% static 'img/UnitedmartC.png' %}"  height="100" width="150"></a>
 
-               <a class="text-dark nav-item d-flex justify-content-center align-items-center" href="{% url 'Explore:Explore-home' %}"><!-- Exlore url to be given -->
-                   Explore
-               </a>
-        <div class="dropdown-divider"></div>
+                <a href="{% url 'Base:wishlist' %}" class=" d-flex justify-content-start align-items-center dropdown-item nav-item font-weight-normal" style="border-width:thin;border-bottom:0.5px solid grey;padding-top:3px;padding-bottom:8px;font-size:16px;white-space:pre;"><i class="fas fa-heart" style="color:#3266a8;"></i>  Wishlist</a>
 
-                <a class=" dropdown-toggle nav-item text-dark d-flex justify-content-center align-items-center " type="button" data-toggle="dropdown"
-                  aria-expanded="false">Profile</a>
+                <a href="{% url 'Seller:seller-home' %}" class="d-flex justify-content-start align-items-center dropdown-item nav-item font-weight-normal" style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:16px;white-space:pre;"><i class="fas fa-gift " style="color:#3266a8;"></i>  Seller</a>
 
-                <div class="dropdown-menu mt-2  ">
-                    {% if user.is_authenticated %}
+                <a href="{% url 'Base:MyOrders' %}" class="d-flex justify-content-start align-items-center dropdown-item nav-item font-weight-normal" style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:16px;white-space:pre;"><i class="fas fa-history " style="color:#3266a8;"></i>  My Orders</a>
 
-                        <a href="{% url 'users:logout' %}" class=" font-weight-bold d-flex justify-content-center align-items-center dropdown-item " >Logout</a>
+                {% if user.is_authenticated %}
 
-                     {% else %}
-                        <a href="{% url 'users:login' %}?next={{ request.path|urlencode }}" class="d-flex justify-content-center align-items-center dropdown-item font-weight-bold  " >Login</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="{% url 'users:signup' %}" class="d-flex justify-content-center align-items-center dropdown-item font-weight-bold  " >SignUp</a>
-                        <div class="dropdown-divider"></div>
-                    {% endif %}
-                </div>
+                    <a href="{% url 'users:logout' %}" class="font-weight-normal d-flex justify-content-start align-items-center dropdown-item " style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:16px;white-space:pre;"><i class="fas fa-sign-out-alt " style="color:#3266a8;"></i>  Logout</a>
+                 {% else %}
+                    <a href="{% url 'users:login' %}?next={{ request.path|urlencode }}" class="d-flex justify-content-start align-items-center dropdown-item font-weight-normal " style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:8px;font-size:16px;white-space:pre;"><i class="fas fa-sign-out-alt " style="color:#3266a8;"></i>  Login</a>
+                    <a href="{% url 'users:signup' %}" class=" d-flex justify-content-start align-items-center dropdown-item font-weight-normal " style="border-bottom:0.5px solid grey;padding-top:8px;padding-bottom:3px;font-size:16px;white-space:pre;"><i class="fas fa-user-plus " style="color:#3266a8;"></i>  Register</a>
 
-        <div class="dropdown-divider"></div>
-
-
-            <a href="{% url 'Seller:seller-home' %}" class="text-dark nav-item  ml-3 d-flex justify-content-center align-items-center" >Seller</a>
-
-        <div class="dropdown-divider"></div>
-
-           <a class="text-dark nav-item d-flex justify-content-center align-items-center " href="{% url 'Explore:Explore-home' %}"><!-- Exlore url to be given -->
-               All Categories
-           </a>
+                {% endif %}
+                <hr>
 
     </ul>
 </div>

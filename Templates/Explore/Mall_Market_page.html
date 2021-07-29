@@ -9,7 +9,7 @@
   transform:scale(1.01);
   }
 </style>
-<div class="container-fluid " style="margin-top:95px;">
+<div class="container-fluid  d-none d-md-block pb-5" style="margin-top:95px;overflow:hidden;">
   <!-- carousel main -->
             <div id="carouselExampleControls" class="carousel slide  w-100" data-ride="carousel">
               <div class="carousel-inner w-100">
@@ -253,7 +253,7 @@
     </div>
     <div class="row mt-4 d-flex justify-content-center align-items-center" style="background-color:#9c6d27">
         <h3 style="color:white;font-weight:bold;font-family:'Times New Roman';font-size:40px;">{{market.name}}</h3>
-        {% if Seller %}
+        {% if seller %}
             {% if belongs %}
                  <a href="{% url 'Explore:LeaveMarket' market.unique_id %}"><button class="btn btn-danger ml-3 " style="white-space:pre;height:40px;" ><i class="fas fa-external-link-alt"></i> LEAVE</button></a>
             {% else %}
@@ -311,7 +311,7 @@
             <div class="card ml-2 mr-2 mt-2 " style="max-width:280px;">
               <!--Card image-->
               <div class="view overlay ">
-                {% if item.shop_photo1.url %}
+                {% if item.shop_photo1 %}
                     <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="250" width="280" style="max-width:280px;">
                 {% else %}
                     <img src="{% static 'img/background_blank.jpg' %}" class="card-img-top " height="250" width="300" style="max-width:300px;">
@@ -339,8 +339,345 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- Small Screen Marketpage -->
+<div class="container-fluid pl-0 pr-0 d-block d-md-none" style="margin-top:95px;">
+  <!-- carousel main -->
+            <div id="carouselExampleControls_sm" class="carousel slide  w-100" data-ride="carousel">
+              <div class="carousel-inner w-100">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                <div class="carousel-item active">
+                    <input name="First_image_market_input" id="First_image_market_input_sm" onchange="Image1_display_sm(this)" accept="image/*" type="file" hidden>
+                    {% if market.shop_photo1 %}
+                        <img class="d-block" id="First_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo1.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a  id="First_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="First_image_button_sm">Save Changes</button>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <img class="d-block" id="First_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="First_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="First_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div class="carousel-item">
+                   <input name="Second_image_market_input" id="Second_image_market_input_sm" onchange="Image2_display_sm(this)" accept="image/*" type="file" hidden>
+                    {% if market.shop_photo2 %}
+                        <img class="d-block" id="Second_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo2.url}}"  alt="First slide">
+
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Second_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Second_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Second_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Second_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Second_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% endif %}
+              </div>
+              <div class="carousel-item">
+                  <input name="Third_image_market_input" id="Third_image_market_input_sm" onchange="Image3_display_sm(this)" accept="image/*" type="file" hidden>
+                  {% if market.shop_photo3 %}
+                        <img class="d-block" id="Third_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo3.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Third_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Third_image_button_sm">Save Changes</button>
+                            {% endif %}
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Third_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Third_image_market_sm"  style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Third_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% endif %}
+              </div>
+              <div class="carousel-item">
+                  <input name="Fourth_image_market_input" id="Fourth_image_market_input_sm" onchange="Image4_display_sm(this)" accept="image/*" type="file" hidden>
+                  {% if market.shop_photo4 %}
+                        <img class="d-block" id="Fourth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo4.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Fourth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Fourth_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% else %}
+                        <img id="Fourth_image_sm" class="d-block" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Fourth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Fourth_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% endif %}
+              </div>
+              <div class="carousel-item">
+                  <input name="Fifth_image_market_input" id="Fifth_image_market_input_sm" onchange="Image5_display_sm(this)" accept="image/*" type="file" hidden>
+                  {% if market.shop_photo5 %}
+                        <img class="d-block" id="Fifth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo5.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Fifth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Fifth_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Fifth_image_sm"   style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Fifth_image_market_sm"  style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Fifth_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% endif %}
+              </div>
+              <div class="carousel-item">
+                  <input name="Sixth_image_market_input" id="Sixth_image_market_input_sm" onchange="Image6_display_sm(this)" accept="image/*" type="file" hidden>
+                  {% if market.shop_photo6 %}
+                        <img class="d-block" id="Sixth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo6.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Sixth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Sixth_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Sixth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Sixth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Sixth_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% endif %}
+              </div>
+              <div class="carousel-item">
+                  <input name="Seventh_image_market_input" id="Seventh_image_market_input_sm" onchange="Image7_display_sm(this)" accept="image/*" type="file" hidden>
+                  {% if market.shop_photo7 %}
+                        <img class="d-block" id="Seventh_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo7.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Seventh_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Seventh_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Seventh_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Seventh_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Seventh_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% endif %}
+              </div>
+               <div class="carousel-item">
+                   <input name="Eighth_image_market_input" id="Eighth_image_market_input_sm" onchange="Image8_display_sm(this)" accept="image/*" type="file" hidden>
+                   {% if market.shop_photo8 %}
+                        <img class="d-block" id="Eighth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo8.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+
+                            {% if belongs %}
+                            <a id="Eighth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Eighth_image_button_sm">Save Changes</button>
+                            {% endif %}
+
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Eighth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+                           {% if belongs %}
+                            <a id="Eighth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Eighth_image_button_sm">Save Changes</button>
+                            {% endif %}
+                        </div>
+                   {% endif %}
+              </div>
+               <div class="carousel-item">
+                   <input name="Ninth_image_market_input" id="Ninth_image_market_input_sm" onchange="Image9_display_sm(this)" accept="image/*" type="file" hidden>
+                   {% if market.shop_photo9 %}
+                        <img class="d-block" id="Ninth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo9.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Ninth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Ninth_image_button_sm">Save Changes</button>
+                            {% endif %}
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Ninth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Ninth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Ninth_image_button_sm">Save Changes</button>
+                            {% endif %}
+                        </div>
+                   {% endif %}
+              </div>
+              <div class="carousel-item">
+                  <input name="Tenth_image_market_input" id="Tenth_image_market_input_sm" onchange="Image10_display_sm(this)" accept="image/*" type="file" hidden>
+                  {% if market.shop_photo10 %}
+                        <img class="d-block" id="Tenth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{{market.shop_photo10.url}}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Tenth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">EDIT IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Tenth_image_button_sm">Save Changes</button>
+                            {% endif %}
+                        </div>
+                   {% else %}
+                        <img class="d-block" id="Tenth_image_sm" style="height:40vh;max-width:100%;min-width:100%;" src="{% static 'img/background_blank.jpg' %}"  alt="First slide">
+                        <div class="carousel-caption ">
+                            {% if belongs %}
+                            <a id="Tenth_image_market_sm" style="color:white;"><h6 style="white-space:pre;">ADD SHOP IMAGE  <i class="fas fa-pen text-primary "></i></h6></a>
+                            <button type="submit" class="btn btn-success" id="Tenth_image_button_sm">Save Changes</button>
+                            {% endif %}
+                        </div>
+                   {% endif %}
+              </div>
+               </form>
+              <a class="carousel-control-prev" href="#carouselExampleControls_sm" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleControls_sm" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+<!-- carousel main -->
+    </div>
+    <div class="row mt-2 d-flex justify-content-center align-items-center" style="background-color:#9c6d27;">
+
+        <h3  style="text-align: center;color:white;font-weight:bold;font-family:'Times New Roman';font-size:22px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;width:250px;">{{market.name}}</h3>
+        {% if seller %}
+            {% if belongs %}
+                 <a href="{% url 'Explore:LeaveMarket' market.unique_id %}"><button class="btn btn-danger ml-1 d-flex align-items-center" style="white-space:pre;height:20px;" ><i class="fas fa-external-link-alt "></i> LEAVE</button></a>
+            {% else %}
+                <a href="{% url 'Explore:JoinMarket' market.unique_id %}"><button class="btn btn-success ml-1 d-flex align-items-center" style="white-space:pre;height:20px;" ><i class="fas fa-plus "></i> JOIN</button></a>
+            {% endif %}
+        {% endif %}
+
+    </div>
+    {% if market.malls %}
+    <div class="row mt-2 mb-2 pl-4">
+        <h4 class="font-weight-normal" style="color:#7d670e;text-decoration:underline;">Malls</h4>
+    </div>
+    <hr>
+    <!-- Malls if any -->
+    <div class="row mt-3 d-flex justify-content-start align-items-center pl-4 pr-2">
+        {% for item in market.malls.all %}
+        <!--Products -->
+            <!--Card-->
+            <div class="card ml-2 mr-2 mt-2" style="max-width:135px;">
+              <!--Card image-->
+              <div class="view overlay ">
+                <img src="{{ item.shop_photo1.url }}" class="card-img-top " height="135" width="135" style="max-width:135px;min-width:135px;">
+                <a href="{% url 'Explore:Marketplace-page' item.unique_id %}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+              <!--Card content-->
+              <a href="{% url 'Explore:Marketplace-page' item.unique_id %}" class="dark-grey-text">
+              <div class="card-body text-center">
+
+                <h5 style="text-overflow:ellipsis;font-size:16px;">
+                    {{ item.name }}  <!-- Here we have used reverse and passes the url of product -->
+                       <!-- Used for fetching data from label-->
+                </h5>
+                <h6 class="font-weight-bold Filterhead pt-2 blue-text">
+                    {{item.district}}
+                </h6>
+              </div>
+              </a>
+              <!--Card content-->
+            </div>
+          <!--Card-->
+        {% endfor %}
+    </div>
+    <hr>
+    <!-- Malls if any End -->
+    {% endif %}
+    <div class="row mt-2 mb-2 pl-4">
+        <h4 class="font-weight-normal" style="color:#7d670e;text-decoration:underline;">Shops</h4>
+    </div>
+    <div class="row mt-3 d-flex justify-content-start align-items-center pl-4 pr-2">
+        {% for item in market.shops.all %}
+        <!--Products -->
+            <!--Card-->
+            <div class="card ml-2 mr-2 mt-2 " style="max-width:135px;">
+              <!--Card image-->
+              <div class="view overlay ">
+                {% if item.shop_photo1 %}
+                    <img src="{{ item.shop_photo1.url }}" class="card-img-top" height="135" width="135" style="max-width:135px;min-width:135px;">
+                {% else %}
+                    <img src="{% static 'img/background_blank.jpg' %}" class="card-img-top " height="135" width="135" style="max-width:135px;min-width:135px;">
+                {% endif %}
+                <a href="{% url 'Explore:seller-page' item.unique_id %}">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+              <!--Card image-->
+              <!--Card content-->
+              <a href="{% url 'Explore:seller-page' item.unique_id %}" class="dark-grey-text">
+              <div class="card-body text-center">
+                <h6 style="text-overflow:ellipsis;font-size:16px;">
+                    {{ item.name }}  <!-- Here we have used reverse and passes the url of product -->
+                       <!-- Used for fetching data from label-->
+                </h6>
+                <h6 class="font-weight-bold Filterhead pt-2 blue-text">
+                    {{item.district}}
+                </h6>
+              </div>
+              </a>
+              <!--Card content-->
+            </div>
+          <!--Card-->
+        {% empty %}
+        <h3>No Shops here...</h3>
+        {% endfor %}
+    </div>
+</div>
+<!-- Small Screen Marketpage End -->
 <!-- Footer -->
-<div class="container-fluid " style="margin-top:100px;background-color:#162691;">
+<div class="container-fluid d-md-block d-none" style="margin-top:100px;background-color:#162691;">
   <div class="row pt-4 pb-5">
     <div class="col-md-3 col-12">
         <!-- Logo -->
@@ -386,7 +723,236 @@
 
   </div>
 </div>
+<div class="container-fluid d-md-none d-block" style="margin-top:100px;background-color:#162691;">
+  <div class="row pt-4 pb-5">
+    <div class="col-6">
+        <!-- Logo -->
+          <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+        <!-- Logo -->
+
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+        <!-- Social Sites -->
+          <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+        <!-- Social Sites -->
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">About</h5>
+      <h6 style="color:#c0c3cf">Contact Us</h6>
+      <h6 style="color:#c0c3cf">Careers</h6>
+      <h6 style="color:#c0c3cf">About Us</h6>
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">Help</h5>
+      <h6 style="color:#c0c3cf">Payments</h6>
+      <h6 style="color:#c0c3cf">Shipping</h6>
+      <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+      <h6 style="color:#c0c3cf">FAQ</h6>
+      <h6 style="color:#c0c3cf">Report Infringement</h6>
+    </div>
+    <div class="col-6">
+      <h5 class="text-white font-weight-bold">Policy</h5>
+      <h6 style="color:#c0c3cf">Return Policy</h6>
+      <h6 style="color:#c0c3cf">Terms of Use</h6>
+      <h6 style="color:#c0c3cf">Security</h6>
+      <h6 style="color:#c0c3cf">Privacy</h6>
+      <h6 style="color:#c0c3cf">Terms of Service</h6>
+    </div>
+
+
+
+  </div>
+</div>
 <script>
+// Small Screen JS
+    $('#First_image_button_sm').hide();
+    $('#Second_image_button_sm').hide();
+    $('#Third_image_button_sm').hide();
+    $('#Fourth_image_button_sm').hide();
+    $('#Fifth_image_button_sm').hide();
+    $('#Sixth_image_button_sm').hide();
+    $('#Seventh_image_button_sm').hide();
+    $('#Eighth_image_button_sm').hide();
+    $('#Ninth_image_button_sm').hide();
+    $('#Tenth_image_button_sm').hide();
+
+
+     $('#First_image_market_sm').on('click',function(){
+    $('#First_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image1_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#First_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#First_image_button_sm').show();
+      }
+
+    $('#Second_image_market_sm').on('click',function(){
+    $('#Second_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image2_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Second_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Second_image_button_sm').show();
+      }
+
+     $('#Third_image_market_sm').on('click',function(){
+    $('#Third_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image3_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Third_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Third_image_button_sm').show();
+      }
+
+    $('#Fourth_image_market_sm').on('click',function(){
+    $('#Fourth_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image4_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Fourth_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Fourth_image_button_sm').show();
+      }
+
+    $('#Fifth_image_market_sm').on('click',function(){
+    $('#Fifth_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image5_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Fifth_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Fifth_image_button_sm').show();
+      }
+
+     $('#Sixth_image_market_sm').on('click',function(){
+    $('#Sixth_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image6_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Sixth_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Sixth_image_button_sm').show();
+      }
+
+    $('#Seventh_image_market_sm').on('click',function(){
+    $('#Seventh_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image7_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Seventh_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Seventh_image_button_sm').show();
+      }
+
+     $('#Eighth_image_market_sm').on('click',function(){
+    $('#Eighth_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image8_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Eighth_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Eighth_image_button_sm').show();
+      }
+
+     $('#Ninth_image_market_sm').on('click',function(){
+    $('#Ninth_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image9_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Ninth_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Ninth_image_button_sm').show();
+      }
+
+     $('#Tenth_image_market_sm').on('click',function(){
+    $('#Tenth_image_market_input_sm').click();
+    })
+    // function to display selected image
+    function Image10_display_sm(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+
+              reader.onload = function (e) {
+                  $('#Tenth_image_sm').attr('src', e.target.result)
+              };
+
+              reader.readAsDataURL(input.files[0]);
+          }
+          $('#Tenth_image_button_sm').show();
+      }
+// Small Screen JS End
     $('#First_image_button').hide();
     $('#Second_image_button').hide();
     $('#Third_image_button').hide();

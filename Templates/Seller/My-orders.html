@@ -43,10 +43,10 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row " >
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100"><!-- URl -->
-          <a href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
+          <a class="d-md-block d-none" href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
           <!-- URL -->
           <!-- Small Screen logo and url-->
-          <a class="navbar-brand brand-logo-mini" href="{% url 'Base:Homepage' %}"><img src="{% static 'Dashboard/images/logo-mini.svg' %}" alt="logo"/></a>
+          <a class=" d-block d-md-none " href="{% url 'Base:Homepage' %}"><h3 style="font-weight:bold;color:orange;font-family:monospace;">UM</h3></a>
           <!-- Small Screen logo -->
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" id="ToggleLogo">
             <span class="typcn typcn-th-menu"></span>
@@ -195,7 +195,7 @@
       </nav>
       <!-- partial -->
       <div class="main-panel">
-        <div class="content-wrapper">
+        <div class="content-wrapper d-md-block d-none">
           <div class="row">
                 <h5 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">My Orders</h5>
           </div>
@@ -252,6 +252,65 @@
           <hr id="{{forloop.counter}}">
           {% endfor %}
         </div>
+        <!-- Small Screen -->
+        <div class="content-wrapper d-md-none d-block">
+          <div class="row">
+                <h5 style="text-decoration:underline;margin-top:0px;margin-left:0px;font-weight:bold;color:#785730;">My Orders</h5>
+          </div>
+          <hr>
+          {% for order_item in orders %}
+          <div class="row mt-1" id="OrderItem_sm{{forloop.counter}}">
+            <!-- Image column -->
+					<div class="col-2  ">
+						<!-- Image of the product -->
+						<div class="row  d-flex justify-content-center">
+							<a href="{{order_item.items.get_abs_url}}">
+								<img src="{{order_item.items.image.url}}" height="80" width="80">
+							</a>
+						</div>
+						<!-- Image of the product -->
+						<!-- + - and quantity -->
+						<div class="row pt-1 pb-1 d-flex justify-content-start">
+							<div class="col-12 d-flex justify-content-center align-items-center">
+								<b id="ItemCount_sm{{forloop.counter}}" class="pl-3 pr-3  border border-dark">{{order_item.quantity}}</b>
+							</div>
+						</div>
+						<!-- + - and quantity -->
+					</div>
+          <!-- Image column -->
+           <!-- Product details column -->
+					<div class="col-10 pl-5  pb-4">
+						<div class="row ">
+							<a href="{{order_item.items.get_abs_url}}">
+								<h6 class="itemName">{{order_item.items.Name}}</h6>
+							</a>
+						</div>
+                        <div class="row">
+                                <small class="text-success">Total Price</small>
+                        </div>
+                        <span hidden id="OriginalPrice_sm{{forloop.counter}}">{{order_item.items.discount_price}}</span>
+                        <span hidden id="OriginalMPrice_sm{{forloop.counter}}">{{order_item.items.price}}</span>
+                        <div class="row d-flex align-items-center">
+                            <h6 class="font-weight-bold" >₹<span id="Price_sm{{forloop.counter}}">{{order_item.get_total_discount_item_price}}</span></h6> <h6 class="discount text-muted pl-2" style="text-decoration:line-through;">₹<span  id="OPrice{{forloop.counter}}">{{order_item.get_total_item_price}}</span> </h6>
+                        </div>
+                        <div class="row">
+                                <small class="text-success" style="white-space:pre;">Ordered By :- </small>
+                                <small style="white-space:pre;">{{order_item.user.username}} [{{order_item.order_to.Address.mobile_number}}]</small>
+                        </div>
+                       <div class="row">
+                                <small class="text-success" style="white-space:pre;">Address :- </small>
+                                <small>{{order_item.order_to.Address.address}},{{order_item.order_to.Address.locality}},{{order_item.order_to.Address.district}},{{order_item.order_to.Address.zip_code}}</small>
+                        </div>
+                        <div class="row mt-3">
+                            <button class="btn btn-success ml-0" style="white-space:pre;height:40px;" id="Dispatch_sm{{forloop.counter}}"><i class="fas fa-check"></i> Dispatched</button>
+                        </div>
+					</div>
+          <!-- Product details column -->
+          </div>
+          <hr id="sm_{{forloop.counter}}">
+          {% endfor %}
+        </div>
+        <!-- Small Screen End -->
         <!-- content-wrapper ends -->
       </div>
       <!-- main-panel ends -->
@@ -260,7 +319,7 @@
   </div>
   <!-- container-scroller -->
   <!-- Footer End -->
-    <div class="container-fluid " style="margin-top:10px;background-color:#162691;">
+    <div class="container-fluid d-none d-md-block" style="margin-top:10px;background-color:#162691;">
       <div class="row pt-4 pb-5">
         <div class="col-md-3 col-12">
             <!-- Logo -->
@@ -303,6 +362,53 @@
         </div>
       </div>
     </div>
+
+    <div class="container-fluid d-md-none d-block" style="margin-top:100px;background-color:#162691;">
+  <div class="row pt-4 pb-5">
+    <div class="col-6">
+        <!-- Logo -->
+          <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+        <!-- Logo -->
+
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+        <!-- Social Sites -->
+          <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+        <!-- Social Sites -->
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">About</h5>
+      <h6 style="color:#c0c3cf">Contact Us</h6>
+      <h6 style="color:#c0c3cf">Careers</h6>
+      <h6 style="color:#c0c3cf">About Us</h6>
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">Help</h5>
+      <h6 style="color:#c0c3cf">Payments</h6>
+      <h6 style="color:#c0c3cf">Shipping</h6>
+      <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+      <h6 style="color:#c0c3cf">FAQ</h6>
+      <h6 style="color:#c0c3cf">Report Infringement</h6>
+    </div>
+    <div class="col-6">
+      <h5 class="text-white font-weight-bold">Policy</h5>
+      <h6 style="color:#c0c3cf">Return Policy</h6>
+      <h6 style="color:#c0c3cf">Terms of Use</h6>
+      <h6 style="color:#c0c3cf">Security</h6>
+      <h6 style="color:#c0c3cf">Privacy</h6>
+      <h6 style="color:#c0c3cf">Terms of Service</h6>
+    </div>
+
+
+
+  </div>
+</div>
   <!-- Footer End -->
   <!-- base:js -->
   <script src="{% static 'Dashboard/vendors/js/vendor.bundle.base.js' %}"></script>
@@ -324,6 +430,12 @@
   <script>
     $('#ToggleLogo').on('click',function(){
     $('#Logo').toggle();
+     if(document.getElementById('Logo').className == "d-md-block d-none"){
+    document.getElementById('Logo').className = " ";
+    }
+    else{
+    document.getElementById('Logo').className = "d-md-block d-none";
+    }
     })
     // Ajax to Dispatch Order items
     {% for order_item in orders %}
@@ -335,6 +447,22 @@
       success:function(data){
       $('#OrderItem{{forloop.counter}}').hide();
       $('#{{forloop.counter}}').hide();
+      }
+      })
+     })
+
+    {% endfor %}
+
+    // Sm
+      {% for order_item in orders %}
+     $('#Dispatch_sm{{forloop.counter}}').on('click',function(){
+     $.ajax({
+      method:"GET",
+      url:'{% url 'Seller:dispatched' order_item.unique_id %}',
+      data:{},
+      success:function(data){
+      $('#OrderItem_sm{{forloop.counter}}').hide();
+      $('#sm_{{forloop.counter}}').hide();
       }
       })
      })

@@ -48,10 +48,10 @@
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row " >
       <div class="navbar-brand-wrapper d-flex justify-content-center">
         <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100"><!-- URl -->
-          <a href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
+          <a class="d-none d-md-block" href="{% url 'Base:Homepage' %}" id="Logo"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150" ></a>
           <!-- URL -->
           <!-- Small Screen logo and url-->
-          <a class="navbar-brand brand-logo-mini" href="{% url 'Base:Homepage' %}"><img src="{% static 'Dashboard/images/logo-mini.svg' %}" alt="logo"/></a>
+           <a class=" d-block d-md-none " href="{% url 'Base:Homepage' %}"><h3 style="font-weight:bold;color:orange;font-family:monospace;">UM</h3></a>
           <!-- Small Screen logo -->
           <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize" id="ToggleLogo">
             <span class="typcn typcn-th-menu"></span>
@@ -200,7 +200,7 @@
       </nav>
       <!-- partial -->
       <div class="main-panel">
-        <div class="content-wrapper">
+        <div class="content-wrapper d-none d-md-block">
           <div class="row">
                 <h5 style="text-decoration:underline;margin-top:20px;margin-left:30px;font-weight:bold;color:#785730;">My Products</h5>
           </div>
@@ -208,12 +208,12 @@
           <div class="row ">
           {% for item in products %}
              <!--Grid column-->
-              <div class="col-lg-3 col-md-4 col-xl-3 col-12 d-flex  align-items-stretch pr-0 pl-1 pb-1">
+
                 <!--Card-->
-                <div class="card " style="width:250px;">
+                <div class="card ml-2 mr-2" style="max-width:250px;min-width:250px;">
                   <!--Card image-->
                   <div class="view overlay ">
-                    <img src="{{ item.image_url }}" class="card-img-top " height="250"  >
+                    <img src="{{ item.image_url }}" class="card-img-top " height="250" style="max-width:250px;min-width:250px;" >
                     <a href="{{item.get_abs_url}}">
                       <div class="mask rgba-white-slight"></div>
                     </a>
@@ -239,11 +239,60 @@
                   <!--Card content-->
                 </div>
               <!--Card-->
-            </div>
+
             <!--Grid column-->
           {% endfor %}
           </div>
+          <!-- Small Screen -->
         </div>
+
+        <!-- Small Screen -->
+        <div class="content-wrapper d-block d-md-none">
+          <div class="row">
+                <h5 style="text-decoration:underline;margin-top:0px;margin-left:0px;font-weight:bold;color:#785730;">My Products</h5>
+          </div>
+          <hr>
+          <div class="row ">
+          {% for item in products %}
+             <!--Grid column-->
+
+                <!--Card-->
+                <div class="card ml-1 mt-1" style="max-width:132px;min-width:132px;">
+                  <!--Card image-->
+                  <div class="view overlay ">
+                    <img src="{{ item.image_url }}" class="card-img-top " height="132" style="max-width:132px;min-width:135px;" >
+                    <a href="{{item.get_abs_url}}">
+                      <div class="mask rgba-white-slight"></div>
+                    </a>
+                  </div>
+                  <!--Card image-->
+                  <!--Card content-->
+                  <a href="{{item.get_abs_url}}" class="dark-grey-text">
+                  <div class="card-body text-center">
+                    <h6 style="font-weight:bold;">{{item.Brand}}</h6>
+                    <h6 style="text-overflow:ellipsis;font-size:14px;overflow:hidden;white-space:nowrap;">
+                        {{ item.Name }}  <!-- Here we have used reverse and passes the url of product -->
+                           <!-- Used for fetching data from label-->
+                    </h6>
+                    <h6 class="font-weight-bold Filterhead pt-2 blue-text">
+                        {% if item.discount_price %}
+                        ₹{{ item.discount_price }}
+                        {% else %}
+                        ₹{{ item.price }}
+                        {% endif %}
+                    </h6>
+                  </div>
+                  </a>
+                  <!--Card content-->
+                </div>
+              <!--Card-->
+
+            <!--Grid column-->
+          {% endfor %}
+          </div>
+          <!-- Small Screen -->
+        </div>
+        <!-- SMall Screen End -->
         <!-- content-wrapper ends -->
       </div>
       <!-- main-panel ends -->
@@ -252,7 +301,7 @@
   </div>
   <!-- container-scroller -->
   <!-- Footer End -->
-    <div class="container-fluid " style="margin-top:10px;background-color:#162691;">
+    <div class="container-fluid d-none d-md-block" style="margin-top:10px;background-color:#162691;">
       <div class="row pt-4 pb-5">
         <div class="col-md-3 col-12">
             <!-- Logo -->
@@ -295,6 +344,53 @@
         </div>
       </div>
     </div>
+
+    <div class="container-fluid d-md-none d-block" style="margin-top:100px;background-color:#162691;">
+  <div class="row pt-4 pb-5">
+    <div class="col-6">
+        <!-- Logo -->
+          <img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150">
+        <!-- Logo -->
+
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Call us :- +91 9658901234</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Mail us :- unitedmart@gmail.com</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Registered Office Address : 123 Shantipuram Building ,</p>
+          <p style="color:#c0c3cf;font-size:14px;" class="pl-2">Third Floor , New Delhi (226002)</p>
+
+        <!-- Social Sites -->
+          <a class="ml-1"><img src="{% static 'img/facebook-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/youtube-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/twitter-logo.svg' %}"></a>
+          <a class="ml-1"><img src="{% static 'img/linkedin-logo.svg' %}"></a>
+        <!-- Social Sites -->
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">About</h5>
+      <h6 style="color:#c0c3cf">Contact Us</h6>
+      <h6 style="color:#c0c3cf">Careers</h6>
+      <h6 style="color:#c0c3cf">About Us</h6>
+    </div>
+    <div class="col-6 mt-4">
+      <h5 class="text-white font-weight-bold">Help</h5>
+      <h6 style="color:#c0c3cf">Payments</h6>
+      <h6 style="color:#c0c3cf">Shipping</h6>
+      <h6 style="color:#c0c3cf">Cancellation & Returns</h6>
+      <h6 style="color:#c0c3cf">FAQ</h6>
+      <h6 style="color:#c0c3cf">Report Infringement</h6>
+    </div>
+    <div class="col-6">
+      <h5 class="text-white font-weight-bold">Policy</h5>
+      <h6 style="color:#c0c3cf">Return Policy</h6>
+      <h6 style="color:#c0c3cf">Terms of Use</h6>
+      <h6 style="color:#c0c3cf">Security</h6>
+      <h6 style="color:#c0c3cf">Privacy</h6>
+      <h6 style="color:#c0c3cf">Terms of Service</h6>
+    </div>
+
+
+
+  </div>
+</div>
   <!-- Footer End -->
   <!-- base:js -->
   <script src="{% static 'Dashboard/vendors/js/vendor.bundle.base.js' %}"></script>
@@ -316,6 +412,12 @@
   <script>
     $('#ToggleLogo').on('click',function(){
     $('#Logo').toggle();
+     if(document.getElementById('Logo').className == "d-md-block d-none"){
+    document.getElementById('Logo').className = " ";
+    }
+    else{
+    document.getElementById('Logo').className = "d-md-block d-none";
+    }
     })
 
   </script>

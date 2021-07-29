@@ -5074,9 +5074,15 @@ input[type=number]::-webkit-outer-spin-button {
               <!--Card-->
                 {% endif %}
             <!--Grid column-->
+
           {% endfor %}
      </div>
+    {% else %}
+    <div class="row wow fadeIn d-flex justify-content-start pl-0 pr-0 pt-2 ">
+        <h4 class="pl-2">Nothing Found !</h4>
+    </div>
     {% endif %}
+
 </div>
 <div id="Filters" class="bg-white container-fluid hid" style="position:fixed;top:0;z-index:3;width:100vw;height:100%; overflow-y: scroll;">
     <div class="row d-flex justify-content-center bg-info pt-2 pb-2">

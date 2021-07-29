@@ -143,8 +143,9 @@
             height:3em;
             }
 
-    .category:hover{
+    .active_cat{
         color:#22c2e6;
+        text-decoration:underline;
         }
     .category{
         color:black;
@@ -240,7 +241,7 @@
 <div class="container-fluid bg-white d-md-block d-none NavbarLg ">
     <div class="row d-flex align-items-center">
         <!-- For Logo -->
-        <div class="col-2">
+        <div class="col-2 ">
             <div class="row d-flex justify-content-center align-items-center">
                 <!--logo-->
                 <a href="{% url 'Base:Homepage' %}"><img class="" src="{% static 'img/UnitedmartC.png' %}" height="85" width="150"></a>
@@ -249,15 +250,15 @@
         </div>
         <!-- For Logo -->
         <!-- For content and Searchbar -->
-        <div class="col-7">
+        <div class="col-7 ">
             <div class="row d-flex justify-content-center align-items-center">
                 <!-- Entire content -->
-                <div class="col-6" id="All-Categories">
-                      <a href="" class="category Men font-weight-normal" style="font-size:14px;font-family:Arial;color:dark-grey">MEN</a>
-                      <a href="" class="ml-3 category Women font-weight-normal" style="font-size:14px;font-family:Arial;" >WOMEN</a>
-                      <a href="" class="ml-3 category Kids font-weight-normal" style="font-size:14px;font-family:Arial;">KIDS</a>
-                      <a href="" class="ml-3 category HomeLiving font-weight-normal" style="font-size:14px;font-family:Arial;">HOME & LIVING</a>
-                      <a href="" class="ml-3 category Sports font-weight-normal" style="font-size:14px;font-family:Arial;">SPORTS</a>
+                <div class="col-6 " id="All-Categories">
+                      <a href="" class="mt-2 mb-2  category Men font-weight-normal" style="padding-bottom:35px;;font-size:14px;font-family:Arial;color:dark-grey">MEN</a>
+                      <a href="" class="  category Women font-weight-normal" style="padding-left:15px;padding-bottom:35px;font-size:14px;font-family:Arial;" >WOMEN</a>
+                      <a href="" class="  category Kids font-weight-normal" style="padding-left:15px;padding-bottom:35px;font-size:14px;font-family:Arial;">KIDS</a>
+                      <a href="" class="  category HomeLiving font-weight-normal" style="padding-left:15px;padding-bottom:35px;font-size:14px;font-family:Arial;">HOME & LIVING</a>
+                      <a href="" class="  category Sports font-weight-normal" style="padding-left:15px;padding-bottom:35px;font-size:14px;font-family:Arial;">SPORTS</a>
                 </div>
                 <!-- Entire content -->
                 <!-- Searchbar -->
@@ -275,7 +276,7 @@
                 </form>
                 <!-- Searchbar -->
             </div>
-              <div class="Men-content bg-white">
+              <div class="Men-content bg-white" >
                     <div class="row d-flex justify-content-center align-item-center ">
                         <div class="col bg-white">
                           <a><h6 class="pl-3 mt-2 mb-2 font-weight-normal" style="color:#bf3013;font-size:14px;">Topwear</h6></a>
@@ -859,6 +860,8 @@ function closeNav() {
 
 // Men
   $(".Men").mouseover(function(){
+    $(".Men").addClass('active_cat');
+    $(".Men").removeClass('category');
     $(".Men-content").show();
     $(".Women-content").hide();
     $(".Kids-content").hide();
@@ -868,12 +871,15 @@ function closeNav() {
   $(".Men-content").mouseout(function(){
        if($(".Men-content:hover").length==0){
        $(".Men-content").hide();
+       $(".Men").removeClass('active_cat');
+        $(".Men").addClass('category');
         }
   })
    $(".Men").mouseout(function(){
-   if($(".Men-content:hover").length==0 && $("#All-Categories:hover").length==0){
+   if($(".Men-content:hover").length==0 ){
    $(".Men-content").hide();
-
+   $(".Men").removeClass('active_cat');
+    $(".Men").addClass('category');
 
     }
   })
@@ -881,6 +887,8 @@ function closeNav() {
 
 //Women
   $(".Women").mouseover(function(){
+    $(".Women").addClass('active_cat');
+    $(".Women").removeClass('category');
     $(".Women-content").show();
      $(".Men-content").hide();
     $(".Kids-content").hide();
@@ -890,12 +898,16 @@ function closeNav() {
      $(".Women-content").mouseout(function(){
        if($(".Women-content:hover").length==0){
        $(".Women-content").hide();
+       $(".Women").removeClass('active_cat');
+         $(".Women").addClass('category');
 
         }
   })
        $(".Women").mouseout(function(){
-       if($(".Women-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       if($(".Women-content:hover").length==0 ){
        $(".Women-content").hide();
+       $(".Women").removeClass('active_cat');
+        $(".Women").addClass('category');
 
         }
   })
@@ -903,6 +915,8 @@ function closeNav() {
 
 //Kids
   $(".Kids").mouseover(function(){
+  $(".Kids").addClass('active_cat');
+    $(".Kids").removeClass('category');
     $(".Kids-content").show();
      $(".Men-content").hide();
     $(".Women-content").hide();
@@ -912,18 +926,22 @@ function closeNav() {
      $(".Kids-content").mouseout(function(){
        if($(".Kids-content:hover").length==0){
        $(".Kids-content").hide();
-
+        $(".Kids").removeClass('active_cat');
+        $(".Kids").addClass('category');
         }
   })
        $(".Kids").mouseout(function(){
-       if($(".Kids-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       if($(".Kids-content:hover").length==0 ){
        $(".Kids-content").hide();
-
+        $(".Kids").removeClass('active_cat');
+         $(".Kids").addClass('category');
         }
   })
 //Kids
 //HomeLiving
   $(".HomeLiving").mouseover(function(){
+    $(".HomeLiving").addClass('active_cat');
+    $(".HomeLiving").removeClass('category');
     $(".HomeLiving-content").show();
      $(".Men-content").hide();
     $(".Women-content").hide();
@@ -933,18 +951,22 @@ function closeNav() {
      $(".HomeLiving-content").mouseout(function(){
        if($(".HomeLiving-content:hover").length==0){
        $(".HomeLiving-content").hide();
-
+        $(".HomeLiving").removeClass('active_cat');
+    $(".HomeLiving").addClass('category');
         }
   })
        $(".HomeLiving").mouseout(function(){
-       if($(".HomeLiving-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       if($(".HomeLiving-content:hover").length==0 ){
        $(".HomeLiving-content").hide();
-
+        $(".HomeLiving").removeClass('active_cat');
+         $(".HomeLiving").addClass('category');
         }
   })
 //Home&Living
 //Sports
   $(".Sports").mouseover(function(){
+    $(".Sports").addClass('active_cat');
+    $(".Sports").removeClass('category');
     $(".Sports-content").show();
      $(".Men-content").hide();
     $(".Women-content").hide();
@@ -954,13 +976,15 @@ function closeNav() {
      $(".Sports-content").mouseout(function(){
        if($(".Sports-content:hover").length==0){
        $(".Sports-content").hide();
-
+        $(".Sports").removeClass('active_cat');
+    $(".Sports").addClass('category');
         }
   })
        $(".Sports").mouseout(function(){
-       if($(".Sports-content:hover").length==0 && $("#All-Categories:hover").length==0){
+       if($(".Sports-content:hover").length==0 ){
        $(".Sports-content").hide();
-
+        $(".Sports").removeClass('active_cat');
+        $(".Sports").addClass('category');
         }
   })
 //Sports

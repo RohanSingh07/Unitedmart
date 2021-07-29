@@ -23,6 +23,9 @@ input[type=number]::-webkit-outer-spin-button {
 .card:hover{
     transform:scale(1.01);
 }
+.hid{
+ display:none;
+}
 </style>
 <div class="container-fluid bg-white d-md-block d-none" style="margin-top:84px;">
     <div class="row bg-info" style="height:12px;">
@@ -194,11 +197,10 @@ input[type=number]::-webkit-outer-spin-button {
             <!-- Fabric -->
             {% if Fabric %}
             <div class="row d-flex justify-content-start align-items-center pl-2 pt-2 pb-2 border">
-                <div class="col">
 
+                <div class="col">
                     <h6 class="font-weight-bold Filterhead pt-2" >FABRIC</h6>
                     <div id="hidden-items-fabric">
-
                     {% for fabs in Fabric %}
                         <input  type="checkbox" value="{{fabs}}"> <label class="FilterContent">{{fabs}}</label>
                         <br>
@@ -206,7 +208,8 @@ input[type=number]::-webkit-outer-spin-button {
                     </div>
                     <a onclick="DisplayFabricItems()"><i id="Fabric-arrow" class="fas fa-chevron-up" style="position:absolute;right:10px;top:2px;color:grey;font-size:13px;"></i></a>
                 </div>
-             </div>
+
+            </div>
             {% endif %}
             <!-- occasion -->
             {% if occasion %}
@@ -5075,7 +5078,7 @@ input[type=number]::-webkit-outer-spin-button {
      </div>
     {% endif %}
 </div>
-<div id="Filters" class="bg-white container-fluid " style="position:fixed;top:0;z-index:3;width:100vw;height:100%; overflow-y: scroll;">
+<div id="Filters" class="bg-white container-fluid hid" style="position:fixed;top:0;z-index:3;width:100vw;height:100%; overflow-y: scroll;">
     <div class="row d-flex justify-content-center bg-info pt-2 pb-2">
        <i class="fas fa-arrow-left " onclick="FilterClose()" style="color:white;font-size:20px;position:absolute;left:20px;"></i> <h6 class="ml-4 font-weight-bold text-white" style="font-size:20px;">FILTERS</h6>
     </div>
@@ -5152,7 +5155,7 @@ input[type=number]::-webkit-outer-spin-button {
     </div>
     <!-- Reviews Filter End -->
 </div>
-<div id="SortBy_sm" class="bg-white container-fluid " style="position:fixed;top:0;z-index:4;width:100vw;height:100%; overflow-y: scroll;">
+<div id="SortBy_sm" class="bg-white container-fluid hid" style="position:fixed;top:0;z-index:4;width:100vw;height:100%; overflow-y: scroll;">
     <div class="row d-flex justify-content-center bg-info pt-2 pb-2">
        <i class="fas fa-arrow-left " onclick="SortByClose()" style="color:white;font-size:20px;position:absolute;left:20px;"></i> <h6 class="ml-4 font-weight-bold text-white" style="font-size:20px;">SORT BY</h6>
     </div>
@@ -5164,6 +5167,12 @@ input[type=number]::-webkit-outer-spin-button {
     </div>
 </div>
 <script>
+// remove hid class
+$(document).ready(function() {
+    $("#Filters").removeClass("hid");
+    $("#SortBy_sm").removeClass("hid");
+});
+
 var searchParams = new URLSearchParams(window.location.search);
 
 

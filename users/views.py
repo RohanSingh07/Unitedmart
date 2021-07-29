@@ -45,19 +45,21 @@ class Signup(View):
                 messages.info(self.request, 'Phone number already in use !')
                 return redirect('users:signup')
             else:
-                # # random 6 digit OTP
-                # otp = randint(100000,999999)
-                # # Send OTP
-                # account_sid = 'AC4fee79de778c40fc8ee85cc6fdb4f382'
-                # auth_token = '1160813d2df068dc4c4da7da35b90639'
-                # client = Client(account_sid, auth_token)
-                # string_number = str(phone)
-                # message = client.messages.create(
-                #     body=f'Your OTP is {otp}',
-                #     from_='+12057843167',
-                #     to='+91' + string_number
-                # )
-                otp=123456
+                if phone == 6388274682:
+                    # random 6 digit OTP
+                    otp = randint(100000,999999)
+                    # Send OTP
+                    account_sid = 'AC4fee79de778c40fc8ee85cc6fdb4f382'
+                    auth_token = '1160813d2df068dc4c4da7da35b90639'
+                    client = Client(account_sid, auth_token)
+                    string_number = str(phone)
+                    message = client.messages.create(
+                        body=f'Your OTP is {otp}',
+                        from_='+16513831663',
+                        to='+91' + string_number
+                    )
+                else:
+                    otp=123456
                 # in order to redirect and to pass parameters to that view we need to use both of these,
                 # also if we pass something here we have to receive that in the view we are redirecting it to
                 return redirect(reverse('users:confirm-mobile', kwargs={
@@ -207,18 +209,20 @@ def Seller_Signup_1(request):
             messages.info(request, 'Phone number already in use !')
             return redirect('Seller:seller-home')
     # random 6 digit OTP
-    # otp = randint(100000, 999999)
-    # Send OTP
-    # account_sid = 'AC4fee79de778c40fc8ee85cc6fdb4f382'
-    # auth_token = '1160813d2df068dc4c4da7da35b90639'
-    # client = Client(account_sid, auth_token)
-    # string_number = str(mobile)s
-    # message = client.messages.create(
-    #     body=f'Your OTP is {otp}',
-    #     from_='+12057843167',
-    #     to='+91' + string_number
-    # )
-    otp = 123456
+    if mobile=='6388274682':
+        otp = randint(100000, 999999)
+        #Send OTP
+        account_sid = 'AC4fee79de778c40fc8ee85cc6fdb4f382'
+        auth_token = '1160813d2df068dc4c4da7da35b90639'
+        client = Client(account_sid, auth_token)
+        string_number = str(mobile)
+        message = client.messages.create(
+            body=f'Your OTP is {otp}',
+            from_='+16513831663',
+            to='+91' + string_number
+        )
+    else:
+        otp = 123456
     return render(request, 'account/seller_signup.html', {'mobile':mobile,'otp':otp})
 
 # Verify The OTP

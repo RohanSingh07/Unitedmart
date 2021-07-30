@@ -21,9 +21,10 @@
   <component name="ChangeListManager">
     <list default="true" id="95d3b069-45e3-4ed7-a183-99c5ca8b6a3f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/Home_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/Home_main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/Add-multi-product-3.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Base/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Base/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Seller/seller_my_products.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

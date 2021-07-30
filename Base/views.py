@@ -391,7 +391,7 @@ def searchbar(request):
 
             s = Products_Document.search().query("multi_match", query=q,
                                                   fields=["Name", "main_category","sub_category","sub_sub_category","sub_sub_sub_category",
-                                                          "description", "Brand"],
+                                                           "Brand"],
                                                  fuzziness="AUTO",
                                                  ).params(request_timeout=60)
             r_shops =  SellerProfile_Document.search().query("multi_match",query=q,

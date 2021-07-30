@@ -350,7 +350,7 @@ def activate_email(request, uidb64, token):
         user.save()
         login(request, user)
         # return redirect('home')
-        messages.success(request,'Congratulations your email has been verified ! Welcome abroad :)')
+        messages.success(request,'Congratulations your email has been verified ! Welcome on board :)')
         return redirect('Seller:dashboard')
     else:
         return HttpResponse('Activation link is invalid!')

@@ -3390,7 +3390,7 @@ class Product(models.Model):
         sub_sub_sub_category=models.CharField(choices=sub_sub_sub_category_choices,max_length=80,null=True,blank=True)
         #Brand
         Brand=models.CharField(max_length=50)
-        slug = models.SlugField(unique=True)
+        slug = models.SlugField(unique=True,max_length=200)
         description = models.TextField(blank=True,null=True)
         # Images of the products
         image = models.ImageField(upload_to='Products/')

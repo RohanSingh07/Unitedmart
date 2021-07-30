@@ -66,6 +66,7 @@ def reviews_page(request):
     return render(request,'Base/ratings_and_reviews.html',{})
 
 # add review to product
+@login_required
 def add_review(request,slug):
     product=get_object_or_404(Product, slug=slug)# call 1
     if request.method=='GET':

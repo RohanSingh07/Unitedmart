@@ -125,11 +125,12 @@ DATABASES = {
 ELASTICSEARCH_DSL ={
     'default':{
                           #name : # password             @ #Endpoint
-        'hosts':'https://admin:Imhulk_07@search-unilas-p3r33v3hiyoq64gyik2kxc7kfa.us-east-2.es.amazonaws.com/',
+        'hosts':'https://elastic:g651r3EOxPO7GS6ZNMag5m8o@elastic-1.es.us-west1.gcp.cloud.es.io:9243/',
         'timeout': 60,
 
         #'hosts':'localhost',
     }
+
 }
 
 # For auto updation of the search indexes

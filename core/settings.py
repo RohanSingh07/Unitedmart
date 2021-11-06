@@ -125,13 +125,19 @@ DATABASES = {
 ELASTICSEARCH_DSL ={
     'default':{
                           #name : # password             @ #Endpoint
-        'hosts':'https://elastic:mVFOv1bNU7wUS9yYAE3c3XPW@unitedmart.es.eastus2.azure.elastic-cloud.com:9243/',
+        'hosts':'https://elastic:y5iBC2wbLJNY1eAaalwpfdhR@elastic-932e66.es.us-central1.gcp.cloud.es.io:9243/',
         'timeout': 60,
 
         #'hosts':'localhost',
     }
 
 }
+
+#  To re upload elasticsearch create new mail and test for elastic.co
+# Then database snap is stored inside the app
+# after setting up postgres on heroku set
+# heroku pg:backups:restore "https://assets07.s3.us-east-2.amazonaws.com/latest.dump" DATABASE
+
 
 # For auto updation of the search indexes
 ELASTICSEARCH_DSL_SIGNAL_PROCESSOR = 'django_elasticsearch_dsl.signals.RealTimeSignalProcessor'

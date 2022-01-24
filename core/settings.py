@@ -125,11 +125,12 @@ DATABASES = {
 ELASTICSEARCH_DSL ={
     'default':{
                           #name : # password             @ #Endpoint
-        'hosts':'https://elastic:NgmRl5iS6dJzIGRmjm1euLAg@elastic-6d17d6.es.eastus2.azure.elastic-cloud.com:9243/',
+        'hosts':'https://elastic:Y7eAXJ1PhL0FlK1ALZAdDEn7@elastic-81cf47.es.us-east4.gcp.elastic-cloud.com:9243/',
+
         'timeout': 60,
 
         #'hosts':'localhost',
-        # rohan7igi@gmail.com
+        # rohan8igi@gmail.com
     }
 
 }

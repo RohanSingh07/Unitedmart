@@ -1,6 +1,6 @@
 # Pending
 # 1. Take Care of anonymous users , Admin and non admins , Seller and Non sellers.
-from django.shortcuts import render
+
 from .models import Product, Order_Item, Order, Delivery_Address,Wishlist,saved_order,rating_and_reviews,rating_images,MyOrders
 from django.views.generic import ListView, DetailView, View
 from django.contrib.auth.decorators import login_required

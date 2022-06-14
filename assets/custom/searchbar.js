@@ -1,4 +1,4 @@
-//
+
    $('#Marketplace_section').hide();
 // Hide Products show marketplace section
 

@@ -125,11 +125,11 @@ DATABASES = {
 ELASTICSEARCH_DSL ={
     'default':{
                           #name : # password             @ #Endpoint
-        'hosts':'https://elastic:3jkbsSlmRILsU0XLmRadjfzR@elastic-cc14aa.es.us-central1.gcp.cloud.es.io:9243/',
+        'hosts':'https://elastic:PRWfGrnYBDDqOjfmocRQ1Ssv@elastic-3b9755.es.us-central1.gcp.cloud.es.io/',
         'timeout': 60,
 
         #'hosts':'localhost',
-        # rohan13igi@gmail.com
+        # rohan14igi@gmail.com
     }
 
 }
@@ -220,8 +220,11 @@ CRISPY_TEMPLATE_PACK ='bootstrap4'
 #LOGIN_REDIRECT_URL = '/'
 
 # AWS settings
-AWS_ACCESS_KEY_ID = 'AKIAQVZDNG5NCVIFDPX4'
-AWS_SECRET_ACCESS_KEY = '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'
+
+#AWS_ACCESS_KEY_ID = 'AKIAQVZDNG5NCVIFDPX4'
+AWS_ACCESS_KEY_ID = 'AKIAXWJVQ76WFN3TQD5E'
+#AWS_SECRET_ACCESS_KEY = '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'
+AWS_SECRET_ACCESS_KEY = '0te9kxFFFcNSFL5O80wq+hQbir3Rxetr0qaiMfHZ'
 AWS_STORAGE_BUCKET_NAME = 'assets07'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {

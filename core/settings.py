@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'g&lsb1#xi-=&xkx_ivfm-%dk3yu-s%zalve)tj6p-lzj_tqfd)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['unitedmart.herokuapp.com','127.0.0.1',]
 
@@ -97,24 +97,24 @@ AUTH_USER_MODEL = 'users.Account'
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd5dp48c7ff68q9',
-        'HOST': 'ec2-3-237-55-96.compute-1.amazonaws.com',
-        'PORT': 5432,
-        'USER': 'qskdtbckhhyboo',
-        'PASSWORD': '6ef9e05443103bea5a93f2c3c6cb111b7f721ea3055a08b7be1bb6ab00a0ad15',
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         "NAME": os.path.join(BASE_DIR, 'db.sqlite3')
-#
-#
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'd5dp48c7ff68q9',
+#         'HOST': 'ec2-3-237-55-96.compute-1.amazonaws.com',
+#         'PORT': 5432,
+#         'USER': 'qskdtbckhhyboo',
+#         'PASSWORD': '6ef9e05443103bea5a93f2c3c6cb111b7f721ea3055a08b7be1bb6ab00a0ad15',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        "NAME": os.path.join(BASE_DIR, 'db.sqlite3')
+
+
+    }
+}
 #            USER      :password                                                         HOST                                    PORT/NAME
 #postgres://gveojcfdwivzyt:8deb2dc01fa1692f03ab8bc6456ef15a6834a6747b55c32b4bdd5d59581ea8e2@ec2-3-95-124-37.compute-1.amazonaws.com:5432/d9on728fs45501
 

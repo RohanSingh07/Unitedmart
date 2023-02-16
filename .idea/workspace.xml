@@ -21,8 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="95d3b069-45e3-4ed7-a183-99c5ca8b6a3f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Templates/Base/searchbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/Templates/Base/searchbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unitedmart/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/unitedmart/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +37,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/unitedmart" />
   </component>
   <component name="ProjectId" id="1hfQuVUTRbAKMUNqo3Zth4BZT1m" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

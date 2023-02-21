@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from .models import Account, MyAccountManager
-from twilio.rest import Client
+# from twilio.rest import Client
 from django.contrib import messages
 from .forms import signup, OTPForm, PasswordForm
 from random import randint
@@ -209,20 +209,20 @@ def Seller_Signup_1(request):
             messages.info(request, 'Phone number already in use !')
             return redirect('Seller:seller-home')
     # random 6 digit OTP
-    if mobile=='6388274682':
-        otp = randint(100000, 999999)
-        #Send OTP
-        account_sid = 'AC4fee79de778c40fc8ee85cc6fdb4f382'
-        auth_token = '1160813d2df068dc4c4da7da35b90639'
-        client = Client(account_sid, auth_token)
-        string_number = str(mobile)
-        message = client.messages.create(
-            body=f'Your OTP is {otp}',
-            from_='+16513831663',
-            to='+91' + string_number
-        )
-    else:
-        otp = 123456
+    # if mobile=='6388274682':
+    #     otp = randint(100000, 999999)
+    #     #Send OTP
+    #     account_sid = 'AC4fee79de778c40fc8ee85cc6fdb4f382'
+    #     auth_token = '1160813d2df068dc4c4da7da35b90639'
+    #     client = Client(account_sid, auth_token)
+    #     string_number = str(mobile)
+    #     message = client.messages.create(
+    #         body=f'Your OTP is {otp}',
+    #         from_='+16513831663',
+    #         to='+91' + string_number
+    #     )
+    # else:
+    otp = 123456
     return render(request, 'account/seller_signup.html', {'mobile':mobile,'otp':otp})
 
 # Verify The OTP

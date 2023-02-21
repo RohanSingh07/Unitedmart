@@ -25,7 +25,7 @@ SECRET_KEY = 'g&lsb1#xi-=&xkx_ivfm-%dk3yu-s%zalve)tj6p-lzj_tqfd)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['unitedmart.herokuapp.com','127.0.0.1',]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -125,7 +125,7 @@ DATABASES = {
 ELASTICSEARCH_DSL ={
     'default':{
                           #name : # password             @ #Endpoint
-        'hosts':'https://elastic:PRWfGrnYBDDqOjfmocRQ1Ssv@elastic-3b9755.es.us-central1.gcp.cloud.es.io/',
+        'hosts':'https://elastic:VnMA8UhqrLu1zeim8RSfDqbi@elastic-fa3351.es.us-central1.gcp.cloud.es.io/',
         'timeout': 60,
 
         #'hosts':'localhost',
@@ -212,6 +212,7 @@ STATIC_ROOT=os.path.join(BASE_DIR,'assets')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # django-crispy-forms
 CRISPY_TEMPLATE_PACK ='bootstrap4'

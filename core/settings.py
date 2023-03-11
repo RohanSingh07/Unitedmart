@@ -125,11 +125,10 @@ DATABASES = {
 ELASTICSEARCH_DSL ={
     'default':{
                           #name : # password             @ #Endpoint
-        'hosts':'https://elastic:VnMA8UhqrLu1zeim8RSfDqbi@elastic-fa3351.es.us-central1.gcp.cloud.es.io/',
-        'timeout': 60,
-
+        'hosts':'https://elastic:ZUjfHnhvO8s3rI8Rcyl17Arc@elastic-c4a497.es.us-central1.gcp.cloud.es.io/',
+        'timeout': 120,
         #'hosts':'localhost',
-        # rohan14igi@gmail.com
+        # rohan17igi@tutanota.com
     }
 
 }
@@ -164,7 +163,7 @@ EMAIL_PORT = 465
 # Optional SMTP authentication information for EMAIL_HOST.
 EMAIL_HOST_USER = 'singhrohanss007@gmail.com'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = 'Imhulk@07'
+EMAIL_HOST_PASSWORD = 'crabhywipzirtxpc'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
